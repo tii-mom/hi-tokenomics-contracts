@@ -38,9 +38,9 @@ Recorded in `docs/TESTNET_EVIDENCE.md`:
    - liquidity: `500,000,000 HI`
    - investor / early: `300,000,000 HI`
 3. Drop minter admin and verify mint is impossible.
-4. Execute GrowthEngine buy at `10100 HI / TON` and confirm `5%` immediate HI.
+4. Execute GrowthEngine buy at `10100 HI / TON` while growth level is 0 and confirm `5%` immediate HI.
 5. Confirm growth levels 1-3.
-6. Buy after level 3 and confirm historical levels are not claimable.
+6. Buy after level 3 and confirm level 0 plus historical levels are not claimable.
 7. Confirm level 4 and claim only the newly unlocked tranche.
 8. Confirm through growth level 10 and verify final `5%`.
 9. Confirm team levels 1-4 and claim each cumulative team release.

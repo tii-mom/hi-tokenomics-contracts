@@ -234,18 +234,18 @@ Users
         <tr><td>资金规模</td><td><code>5,000,000,000 HI</code></td></tr>
         <tr><td>购买价格</td><td><code>10100 HI / TON</code></td></tr>
         <tr><td>购买模式</td><td>仅锁仓购买，无即时池，无 <code>3000 HI / TON</code> 价格。</td></tr>
-        <tr><td>立即到账</td><td>购买后立即释放 <code>5%</code>。</td></tr>
+        <tr><td>初始释放</td><td>仅 growth level 0 购买后立即释放 <code>5%</code>。</td></tr>
         <tr><td>后续释放</td><td>growth level 1-9 每级 <code>10%</code>，growth level 10 最后 <code>5%</code>。</td></tr>
-        <tr><td>晚买规则</td><td>记录 entry growth level；历史已确认轮次不补发。</td></tr>
+        <tr><td>晚买规则</td><td>记录 entry growth level；level 0 和历史已确认轮次不补发。</td></tr>
         <tr><td>失败语义</td><td>库存不足、超过限制、gas 不足或 Jetton transfer bounce 均不能产生半成功状态；状态需回滚或交易失败。</td></tr>
         <tr><td>受限迁移</td><td>只能由两个指定迁移钱包之一迁移未售出、未承诺、未归属用户的 HI 到管理员 allowlist 后的目标地址。</td></tr>
       </table>
       <h3>GrowthEngine 解锁表</h3>
       <table>
         <tr><th>阶段</th><th>释放比例</th><th>累计释放</th><th>说明</th></tr>
-        <tr><td>购买后</td><td><code>5%</code></td><td><code>5%</code></td><td>立即到账</td></tr>
+        <tr><td>Level 0 购买后</td><td><code>5%</code></td><td><code>5%</code></td><td>仅 level 0 进入者立即到账</td></tr>
         <tr><td>Level 1</td><td><code>10%</code></td><td><code>15%</code></td><td>USDT 价格达标并确认后</td></tr>
-        <tr><td>Level 2</td><td><code>10%</code></td><td><code>25%</code></td><td>不补历史</td></tr>
+        <tr><td>Level 2</td><td><code>10%</code></td><td><code>25%</code></td><td>late buyer 不补 level 0 和历史</td></tr>
         <tr><td>Level 3</td><td><code>10%</code></td><td><code>35%</code></td><td>不补历史</td></tr>
         <tr><td>Level 4</td><td><code>10%</code></td><td><code>45%</code></td><td>不补历史</td></tr>
         <tr><td>Level 5</td><td><code>10%</code></td><td><code>55%</code></td><td>不补历史</td></tr>
@@ -304,7 +304,8 @@ Users
         <tr><td>每个 winner</td><td><code>5,000,000 HI</code></td></tr>
         <tr><td>注册</td><td>admin 注册，合约不做 Telegram、邀请、风控判断</td></tr>
         <tr><td>entryLevel</td><td>注册时记录当前 <code>growthConfirmedLevel</code></td></tr>
-        <tr><td>释放</td><td>注册后 5%，growth level 1-9 每轮 10%，growth level 10 最后 5%</td></tr>
+        <tr><td>释放</td><td>与 GrowthEngine 一致：若在 <code>growthConfirmedLevel = 0</code> 注册，注册后可领取 <code>5%</code>；level 1-9 每轮释放 <code>10%</code>；level 10 最后释放 <code>5%</code>。</td></tr>
+        <tr><td>晚注册规则</td><td>如果 winner 在第 N 轮已确认后注册，不领取 level 0 和历史 1-N 轮，只能从下一轮到 level 10 继续领取。</td></tr>
         <tr><td>历史补发</td><td>不补历史</td></tr>
         <tr><td>受限迁移</td><td>只能由两个指定迁移钱包之一迁移未注册、未分配给 winner 的剩余额度到管理员 allowlist 后的目标地址。</td></tr>
       </table>

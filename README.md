@@ -8,8 +8,10 @@ HI currently uses 7 deployable contracts:
 
 - `JettonMinter.tolk` and `JettonWallet.tolk`: HI Jetton master/wallet.
 - `GrowthEngine.tolk`: 50% allocation growth engine. Users buy at
-  `10100 HI / TON`; `5%` is released immediately, growth levels 1-9 release
-  `10%` each, and level 10 releases the final `5%`. There is no instant pool.
+  `10100 HI / TON`; level 0 buyers receive the initial `5%`, growth levels
+  1-9 release `10%` each, and level 10 releases the final `5%`. Later buyers
+  do not receive level 0 or already confirmed historical levels. There is no
+  instant pool.
 - `PriceOracle.tolk`: single-admin USDT/HI price reporting with independent
   `growthConfirmedLevel 0-10` and `teamConfirmedLevel 0-4`.
 - `TeamVestingVault.tolk`: 12% team allocation. Price levels at `0.1`, `0.5`,

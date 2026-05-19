@@ -229,8 +229,8 @@ fun buyGrowth(buyer: address, tonAmount: coins, attached: coins) {
     assert (
         counters.growthSoldHi + hiAmount <= growthAvailableForSale(counters)
     ) throw Errors.InsufficientInventory;
-    val immediateHi = hiAmount * 5 / 100;
-    val missedHi = hiAmount * historicalUnlockedBps(storage.growthConfirmedLevel) / 100;
+    val immediateHi = storage.growthConfirmedLevel == 0 ? hiAmount * 5 / 100 : 0;
+    val missedHi = hiAmount * missedUnlockedBps(storage.growthConfirmedLevel) / 100;
     val pos = position(maps, buyer, storage.growthConfirmedLevel);
     maps
         .positions
@@ -249,16 +249,20 @@ fun buyGrowth(buyer: address, tonAmount: coins, attached: coins) {
     maps.purchasedTon.set(buyer, newTotal);
     storage.counters = counters.toCell();
     storage.maps = maps.toCell();
-    sendJettons(
-        mutate storage,
-        buyer,
-        immediateHi,
-        4,
-        tonAmount,
-        attached - tonAmount,
-        hiAmount,
-        missedHi,
-    );
+    if (immediateHi > 0) {
+        sendJettons(
+            mutate storage,
+            buyer,
+            immediateHi,
+            4,
+            tonAmount,
+            attached - tonAmount,
+            hiAmount,
+            missedHi,
+        );
+    } else {
+        refundBuyReserve(buyer, attached - tonAmount);
+    }
     storage.save();
 }
 
@@ -345,6 +349,18 @@ fun sendJettons(
     transferMessage.send(SEND_MODE_PAY_FEES_SEPARATELY | SEND_MODE_BOUNCE_ON_ACTION_FAIL);
 }
 
+fun refundBuyReserve(buyer: address, value: coins) {
+    if (value > 0) {
+        val refundMessage = createMessage({
+            bounce: BounceMode.NoBounce,
+            dest: buyer,
+            value,
+            body: TopUpTons {},
+        });
+        refundMessage.send(SEND_MODE_PAY_FEES_SEPARATELY | SEND_MODE_IGNORE_ERRORS);
+    }
+}
+
 fun isMigrationCaller(storage: GrowthEngineStorage, caller: address): bool {
     val config = storage.config.load();
     val migration = config.migration.load();
@@ -393,22 +409,22 @@ fun position(
 }
 
 fun claimable(storage: GrowthEngineStorage, pos: PurchasePosition): coins {
-    val confirmedBps = historicalUnlockedBps(storage.growthConfirmedLevel);
-    if (confirmedBps == 0) {
-        return 0;
-    }
-    val unlocked = pos.totalLockedHi * (5 + confirmedBps) / 100;
+    val unlocked = pos.totalLockedHi * totalUnlockedBps(storage.growthConfirmedLevel) / 100;
     return unlocked - pos.missedHi - pos.claimedHi;
 }
 
-fun historicalUnlockedBps(level: uint8): int {
+fun totalUnlockedBps(level: uint8): int {
     if (level == 0) {
-        return 0;
+        return 5;
     }
     if (level < 10) {
-        return level * 10;
+        return 5 + level * 10;
     }
-    return 95;
+    return 100;
+}
+
+fun missedUnlockedBps(level: uint8): int {
+    return level == 0 ? 0 : totalUnlockedBps(level);
 }
 
 fun growthAvailableForSale(counters: GrowthEngineCounters): coins {

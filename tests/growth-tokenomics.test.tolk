@@ -70,7 +70,7 @@ fun setupGrowth(): (GrowthEngine, Treasury, Treasury, Treasury, Treasury) {
     return (growth, admin, oracle, buyer, projectFund);
 }
 
-get fun `test growth engine: buy uses 10100 HI per TON and releases immediate 5 percent`() {
+get fun `test growth engine: level 0 buy uses 10100 HI per TON and releases initial 5 percent`() {
     val (minter, minterAdmin, _) = setupTest();
     val (growth, admin, _, buyer, _) = setupGrowth();
     val growthWallet = mintTo(minter, minterAdmin, growth.address, GROWTH_POOL);
@@ -105,11 +105,12 @@ get fun `test growth engine: buy uses 10100 HI per TON and releases immediate 5 
     });
 }
 
-get fun `test growth engine: late buy does not catch up historical levels and level 10 final is 5 percent`() {
+get fun `test growth engine: late buy does not catch up level 0 or historical levels`() {
     val (minter, minterAdmin, _) = setupTest();
     val (growth, admin, oracle, buyer, _) = setupGrowth();
     val growthWallet = mintTo(minter, minterAdmin, growth.address, GROWTH_POOL);
     growth.sendSetGrowthJettonWallet(admin.address, growthWallet.address, { value: ton("0.05") });
+    val buyerWallet = userWallet(minter, buyer.address);
 
     expect(
         growth.sendSetGrowthConfirmedLevel(oracle.address, 3, { value: ton("0.05") }),
@@ -123,6 +124,8 @@ get fun `test growth engine: late buy does not catch up historical levels and le
         from: buyer.address,
         to: growth.address,
     });
+    expect(buyerWallet.getJettonBalance()).toEqual(0);
+    expect(growth.buyerState(buyer.address).3).toEqual(0);
     expect(growth.buyerState(buyer.address).4).toEqual(0);
 
     expect(
@@ -221,7 +224,7 @@ get fun `test price oracle: growth and team levels use independent confirmation 
     });
 
     expect(
-        oracle.sendReportGrowthPrice(admin.address, 800000, { value: ton("0.05") }),
+        oracle.sendReportGrowthPrice(admin.address, 396000, { value: ton("0.05") }),
     ).toHaveSuccessfulTx<ReportGrowthPrice>({
         from: admin.address,
         to: oracle.address,
@@ -296,10 +299,11 @@ get fun `test team vesting: four team price levels release 300M HI each`() {
     expect(team.vestingState().2).toEqual(300000000 * HI);
 }
 
-get fun `test campaign winner: registration follows growth level and immediate plus future release schedule`() {
+get fun `test campaign winner: registration follows growth engine unlock schedule`() {
     val admin = testing.treasury("campaign-admin");
     val oracle = testing.treasury("campaign-oracle");
     val winner = testing.treasury("campaign-winner");
+    val earlyWinner = testing.treasury("campaign-early-winner");
     val migration2 = testing.treasury("campaign-migration-2");
     val jettonWallet = testing.treasury("campaign-jetton-wallet");
     val vault = CampaignWinnerVault.fromStorage({
@@ -320,10 +324,34 @@ get fun `test campaign winner: registration follows growth level and immediate p
         oracle: oracle.address,
         winnerJettonWallet: jettonWallet.address,
         migrationTarget: null,
-        growthConfirmedLevel: 3,
+        growthConfirmedLevel: 0,
         nextQueryId: 1,
     });
     expect(vault.deploy(admin.address, { value: ton("0.1") })).toHaveSuccessfulDeploy({
+        to: vault.address,
+    });
+    expect(
+        vault.sendRegisterCampaignWinner(
+            admin.address,
+            earlyWinner.address,
+            { value: ton("0.05") },
+        ),
+    ).toHaveSuccessfulTx<RegisterCampaignWinner>({
+        from: admin.address,
+        to: vault.address,
+    });
+    expect(vault.claimable(earlyWinner.address)).toEqual(WINNER_ALLOCATION * 5 / 100);
+    expect(
+        vault.sendSetGrowthConfirmedLevel(oracle.address, 1, { value: ton("0.05") }),
+    ).toHaveSuccessfulTx<SetGrowthConfirmedLevel>({
+        from: oracle.address,
+        to: vault.address,
+    });
+    expect(vault.claimable(earlyWinner.address)).toEqual(WINNER_ALLOCATION * 15 / 100);
+    expect(
+        vault.sendSetGrowthConfirmedLevel(oracle.address, 3, { value: ton("0.05") }),
+    ).toHaveSuccessfulTx<SetGrowthConfirmedLevel>({
+        from: oracle.address,
         to: vault.address,
     });
     expect(
@@ -332,14 +360,21 @@ get fun `test campaign winner: registration follows growth level and immediate p
         from: admin.address,
         to: vault.address,
     });
-    expect(vault.claimable(winner.address)).toEqual(WINNER_ALLOCATION * 5 / 100);
+    expect(vault.claimable(winner.address)).toEqual(0);
     expect(
         vault.sendSetGrowthConfirmedLevel(oracle.address, 4, { value: ton("0.05") }),
     ).toHaveSuccessfulTx<SetGrowthConfirmedLevel>({
         from: oracle.address,
         to: vault.address,
     });
-    expect(vault.claimable(winner.address)).toEqual(WINNER_ALLOCATION * 15 / 100);
+    expect(vault.claimable(winner.address)).toEqual(WINNER_ALLOCATION * 10 / 100);
+    expect(
+        vault.sendSetGrowthConfirmedLevel(oracle.address, 10, { value: ton("0.05") }),
+    ).toHaveSuccessfulTx<SetGrowthConfirmedLevel>({
+        from: oracle.address,
+        to: vault.address,
+    });
+    expect(vault.claimable(winner.address)).toEqual(WINNER_ALLOCATION * 65 / 100);
 }
 
 get fun `test merkle reward: required growth level gates claims and tracks ecosystem cap`() {

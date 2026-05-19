@@ -118,10 +118,10 @@ Auditor tasks:
 2. Confirm price is exactly `10100 HI / TON`.
 3. Confirm minimum purchase is `0.1 TON`.
 4. Confirm per-wallet cap is `5000 TON`.
-5. Confirm purchase releases exactly `5%` immediately.
+5. Confirm only growth level 0 purchase releases exactly `5%` immediately.
 6. Confirm levels 1-9 release `10%` each.
 7. Confirm level 10 releases final `5%`.
-8. Confirm late buyers do not receive historical tranches.
+8. Confirm late buyers do not receive level 0 or already confirmed historical tranches.
 9. Confirm `entryLevel`, `claimedHi`, `missedHi`, and sold counters cannot be
    manipulated to over-claim.
 10. Confirm bounce from Jetton transfer rolls back pending purchase/claim state.
@@ -145,16 +145,27 @@ Auditor tasks:
 1. Confirm growth levels and team levels are separate states.
 2. Confirm growth levels can only advance from 0 to 10, one level at a time.
 3. Confirm team levels can only advance from 0 to 4, one level at a time.
-4. Confirm confirmed levels cannot roll back.
-5. Confirm candidate level timer resets if price drops below threshold.
-6. Confirm confirmation delay is storage-configured:
+4. Confirm growth thresholds are TON-chain USDT/HI values:
+   - `0.000396`
+   - `0.000792`
+   - `0.001584`
+   - `0.003168`
+   - `0.006337`
+   - `0.012673`
+   - `0.025347`
+   - `0.050693`
+   - `0.101386`
+   - `0.202772`
+5. Confirm confirmed levels cannot roll back.
+6. Confirm candidate level timer resets if price drops below threshold.
+7. Confirm confirmation delay is storage-configured:
    - testnet evidence uses `30` seconds;
    - mainnet package uses `86400` seconds.
-7. Confirm only oracle admin can report prices and update targets.
-8. Confirm anyone or the intended caller can confirm only after the delay,
+8. Confirm only oracle admin can report prices and update targets.
+9. Confirm anyone or the intended caller can confirm only after the delay,
    according to contract logic.
-9. Confirm level sync messages go only to configured target contracts.
-10. Confirm migration target allowlist management is admin-only where this
+10. Confirm level sync messages go only to configured target contracts.
+11. Confirm migration target allowlist management is admin-only where this
     oracle-adjacent target model is documented.
 
 Deliverable:
@@ -195,10 +206,11 @@ Auditor tasks:
 4. Confirm only admin can register winners.
 5. Confirm duplicate registration is impossible.
 6. Confirm registration records current `growthConfirmedLevel` as `entryLevel`.
-7. Confirm registration makes immediate `5%` claimable.
-8. Confirm future growth levels follow the `10%` levels 1-9 and final `5%`
-   level 10 schedule.
-9. Confirm historical levels before registration are not claimable.
+7. Confirm registration at `growthConfirmedLevel = 0` allows `5%` to be claimed.
+8. Confirm confirmed growth levels 1-9 release `10%` each, and level 10 releases
+   the final `5%`.
+9. Confirm winners registered after already-confirmed levels cannot claim level 0
+   or historical levels, and can only claim future levels.
 10. Confirm no winner can claim more than `5,000,000 HI`.
 11. Confirm only oracle can sync growth level and level cannot decrease.
 12. Confirm bounce from Jetton transfer rolls back claimed state.

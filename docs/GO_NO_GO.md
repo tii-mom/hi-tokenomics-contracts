@@ -37,7 +37,7 @@ Human Intention (HI) helps users better command Agents. Its innovative token rel
 GO can be considered only when:
 
 - fresh testnet evidence covers every critical flow;
-- `<local-100wan-workspace>` and `<local-growthengine-workspace>`
+- `/Users/yudeyou/Desktop/100wan` and `/Users/yudeyou/Desktop/GrowthEngine`
   contract-facing checks pass;
 - `CODE_HASHES.md` matches final build artifacts after all changes;
 - verifier dry-run succeeds for all seven contracts;

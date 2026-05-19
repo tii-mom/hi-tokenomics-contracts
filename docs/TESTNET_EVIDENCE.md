@@ -1,5 +1,9 @@
 # Final GrowthEngine Testnet Evidence
 
+> Stale after the latest CampaignWinner and growth-threshold rule changes.
+> A new fresh testnet rehearsal is required before this file can be used as
+> pre-mainnet evidence.
+
 Status: **fresh allowlist testnet rehearsal complete** for the current local
 7-contract hashes in `docs/CODE_HASHES.md`.
 
@@ -22,20 +26,20 @@ acton check
 Both app repositories were also checked for contract-facing integration health:
 
 ```text
-<local-100wan-workspace>:
+/Users/yudeyou/Desktop/100wan:
 npm run lint
 npm run test:growth-supporters
 npm run test:public-sale-supporters
 npm run test:agent-flow
 npm run build
 
-<local-growthengine-workspace>:
+/Users/yudeyou/Desktop/GrowthEngine:
 npm run lint
 npm run test:growth-supporters
 npm run build
 ```
 
-`npm run ops:check-production` in `<local-100wan-workspace>` still fails
+`npm run ops:check-production` in `/Users/yudeyou/Desktop/100wan` still fails
 only because production chain integration values are intentionally unset before
 mainnet deployment:
 

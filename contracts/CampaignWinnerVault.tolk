@@ -234,20 +234,24 @@ fun campaignUncommitted(storage: CampaignWinnerStorage): coins {
 }
 
 fun winnerClaimable(growthConfirmedLevel: uint8, pos: CampaignWinnerPosition): coins {
-    val unlockedBps = 5 + winnerHistoricalUnlockedBps(growthConfirmedLevel) -
-    winnerHistoricalUnlockedBps(pos.entryLevel);
+    val unlockedBps = winnerTotalUnlockedBps(growthConfirmedLevel) -
+    winnerMissedUnlockedBps(pos.entryLevel);
     val unlocked = CAMPAIGN_WINNER_ALLOCATION_HI * unlockedBps / 100;
     return unlocked - pos.claimedHi;
 }
 
-fun winnerHistoricalUnlockedBps(level: uint8): uint8 {
+fun winnerTotalUnlockedBps(level: uint8): uint8 {
     if (level == 0) {
-        return 0;
+        return 5;
     }
     if (level >= 10) {
-        return 95;
+        return 100;
     }
-    return level * 10;
+    return 5 + level * 10;
+}
+
+fun winnerMissedUnlockedBps(level: uint8): uint8 {
+    return level == 0 ? 0 : winnerTotalUnlockedBps(level);
 }
 
 get fun winner_state(winner: address): (bool, uint8, coins, coins) {

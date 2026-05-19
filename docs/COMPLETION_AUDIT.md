@@ -16,7 +16,7 @@ deployment stage, stopping before actual mainnet deployment.
 |---|---|---|
 | Replace PublicSale with GrowthEngine | `contracts/GrowthEngine.tolk`, `Acton.toml`; old PublicSale source/wrappers/scripts removed | Complete |
 | Remove instant pool | GrowthEngine tests cover no instant path and `10100 HI / TON` buy | Complete |
-| GrowthEngine release schedule | `tests/growth-tokenomics.test.tolk` covers immediate `5%`, late no catch-up, level 10 final `5%` | Complete |
+| GrowthEngine release schedule | `tests/growth-tokenomics.test.tolk` covers level 0 initial `5%`, late no catch-up including level 0, and level 10 final `5%` | Complete |
 | Split oracle levels | `PriceOracle.tolk`; tests cover independent growth/team timers | Complete |
 | Team 12% four price releases | `TeamVestingVault.tolk`; testnet evidence covers all four 300M releases | Complete |
 | CampaignWinner aligned to growth | `CampaignWinnerVault.tolk`; tests cover registration at growth level and future release | Complete |
@@ -26,7 +26,7 @@ deployment stage, stopping before actual mainnet deployment.
 | Fresh allowlist testnet deployment | `TESTNET_EVIDENCE.md` records fresh `hi2` testnet deployment matching current allowlist hashes | Complete |
 | TON Verifier dry-run | `TESTNET_EVIDENCE.md` records dry-run success for all seven fresh testnet contracts | Complete |
 | Migration permission model | Admin-managed target allowlist implemented locally | Complete locally |
-| App contract-facing checks | `<local-100wan-workspace>` and `<local-growthengine-workspace>` lint/test/build checks complete | Complete |
+| App contract-facing checks | `/Users/yudeyou/Desktop/100wan` and `/Users/yudeyou/Desktop/GrowthEngine` lint/test/build checks complete | Complete |
 | Mainnet deploy package | `DEPLOYMENT_PACKAGE.md` contains final command, env, interfaces, and blockers | Complete pending authorization |
 
 ## Remaining Mainnet Blockers

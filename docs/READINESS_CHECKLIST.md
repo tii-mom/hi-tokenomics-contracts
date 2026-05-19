@@ -21,10 +21,10 @@ authorization.
 - [x] `GrowthEngine` replaces `PublicSale`.
 - [x] GrowthEngine has no instant pool.
 - [x] GrowthEngine purchase price is `10100 HI / TON`.
-- [x] GrowthEngine immediate release is `5%`.
+- [x] GrowthEngine level 0 initial release is `5%`.
 - [x] Growth levels 1-9 release `10%` each.
 - [x] Growth level 10 releases final `5%`.
-- [x] Late GrowthEngine buyers do not receive historical tranches.
+- [x] Late GrowthEngine buyers do not receive level 0 or historical tranches.
 - [x] `PriceOracle` separates `growthConfirmedLevel 0-10` and
   `teamConfirmedLevel 0-4`.
 - [x] Testnet oracle delay is configurable to `30` seconds.
@@ -32,8 +32,9 @@ authorization.
 - [x] Team release is price based at `0.1`, `0.5`, `1`, and `5` USDT.
 - [x] Team releases `300,000,000 HI` per team level, total
   `1,200,000,000 HI`.
-- [x] `CampaignWinnerVault` uses growth level and the same `5/10/.../5`
-  release schedule.
+- [x] `CampaignWinnerVault` matches GrowthEngine release logic: level 0 `5%`,
+  levels 1-9 `10%` each, level 10 final `5%`, with no historical catch-up for
+  late winners.
 - [x] `MerkleRewardVault` supports `requiredGrowthLevel` per batch.
 - [x] Business vault migration/rescue transfers are restricted to two
   migration wallets, admin-managed target allowlists, and one selected target.
@@ -52,8 +53,8 @@ authorization.
 - [x] MerkleReward ecosystem / universal lottery / red packet batch evidence.
 - [x] Migration/rescue smoke evidence with allowlisted targets.
 - [x] TON Verifier dry-run for all seven fresh testnet addresses.
-- [x] `<local-100wan-workspace>` contract-facing checks.
-- [x] `<local-growthengine-workspace>` contract-facing checks.
+- [x] `/Users/yudeyou/Desktop/100wan` contract-facing checks.
+- [x] `/Users/yudeyou/Desktop/GrowthEngine` contract-facing checks.
 
 ## Mainnet Inputs
 

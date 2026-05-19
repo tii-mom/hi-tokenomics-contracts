@@ -26,10 +26,10 @@ contract workspace.
 - GrowthEngine holds `5,000,000,000 HI`.
 - GrowthEngine price is `10100 HI / TON`.
 - No instant sale pool remains.
-- Buy releases `5%` immediately.
+- Growth level 0 buy releases `5%` immediately.
+- Later buys do not receive level 0 or already confirmed historical levels.
 - Growth levels 1-9 release `10%` each.
 - Growth level 10 releases final `5%`.
-- Late buyers do not receive historical growth levels.
 - PriceOracle tracks independent:
   - `growthConfirmedLevel 0-10`
   - `teamConfirmedLevel 0-4`
@@ -66,8 +66,8 @@ Complete:
 3. TON Verifier dry-run for all seven fresh testnet addresses.
 4. `TESTNET_EVIDENCE.md` updated with fresh allowlist evidence.
 5. Local gates re-run after evidence/docs/script updates.
-6. `<local-100wan-workspace>` contract-facing checks.
-7. `<local-growthengine-workspace>` contract-facing checks.
+6. `/Users/yudeyou/Desktop/100wan` contract-facing checks.
+7. `/Users/yudeyou/Desktop/GrowthEngine` contract-facing checks.
 8. Independent review found no new high/medium code issue after remediation.
 
 Remaining before mainnet:

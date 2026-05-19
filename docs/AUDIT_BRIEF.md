@@ -44,8 +44,8 @@ code-hash checks or timelock governance.
 - Price: `10100 HI / TON`.
 - Per-wallet purchase cap: `5000 TON`.
 - Minimum purchase: `0.1 TON`.
-- Purchase sends `5%` immediately.
-- Late buyers do not receive historical tranches.
+- Growth level 0 purchase sends `5%` immediately.
+- Late buyers do not receive level 0 or historical tranches.
 - Growth levels 1-9 release `10%` each.
 - Growth level 10 releases final `5%`.
 - Unsold and missed/unclaimable HI can only be swept to fixed project-fund
@@ -56,7 +56,8 @@ code-hash checks or timelock governance.
 ## PriceOracle
 
 - Single admin reports USDT/HI price.
-- Growth thresholds are immutable levels 1-10.
+- Growth thresholds are immutable levels 1-10, denominated in TON-chain
+  USDT/HI fixed-point units.
 - Team thresholds are immutable levels 1-4:
   - `0.1 USDT`
   - `0.5 USDT`
@@ -85,9 +86,11 @@ code-hash checks or timelock governance.
 - Admin registers up to 80 winners.
 - Each winner allocation is `5,000,000 HI`.
 - Registration records current `growthConfirmedLevel` as `entryLevel`.
-- Registration makes `5%` claimable.
-- Future growth levels release `10%` for levels 1-9 and final `5%` at level 10.
-- Historical levels before registration are not claimable.
+- Campaign winner rewards use the same release curve as GrowthEngine:
+  level 0 registration can claim `5%`, confirmed growth levels 1-9 release
+  `10%` each, and confirmed growth level 10 releases the final `5%`.
+- Winners registered after already-confirmed levels do not receive level 0 or
+  historical level rewards; only future confirmed levels are claimable.
 - Eligibility, Telegram identity, invite graph, and risk control are off-chain.
 
 ## MerkleRewardVault
@@ -127,7 +130,7 @@ current allowlist hashes:
 
 - allocation and minter admin drop;
 - GrowthEngine buy and level 10 full claim;
-- local test coverage for late-buyer no-catch-up and level 10 final `5%`;
+- local test coverage for level 0 initial `5%`, late-buyer no-catch-up, and level 10 final `5%`;
 - PriceOracle growth levels 1-10 and team levels 1-4 with 30-second delay;
 - TeamVestingVault all four price releases;
 - CampaignWinnerVault registration and claim;
@@ -137,7 +140,7 @@ current allowlist hashes:
 - migration smoke for contracts with remaining uncommitted balance and
   allowlisted targets;
 - TON Verifier dry-run for all seven contracts;
-- `<local-100wan-workspace>` and `<local-growthengine-workspace>`
+- `/Users/yudeyou/Desktop/100wan` and `/Users/yudeyou/Desktop/GrowthEngine`
   contract-facing checks.
 
 ## Open Before Mainnet

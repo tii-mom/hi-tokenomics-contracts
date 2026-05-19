@@ -46,6 +46,9 @@ HI_MINT_TOTAL_TON_AMOUNT=0.08
 HI_ORACLE_CONFIRMATION_DELAY=86400
 ```
 
+The public repository intentionally keeps mainnet role addresses as placeholders.
+Use the private deployment environment for real role addresses.
+
 ## Metadata
 
 ```text

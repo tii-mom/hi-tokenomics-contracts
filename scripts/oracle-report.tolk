@@ -14,7 +14,7 @@ fun main() {
         "Enter oracle price kind: 1 growth, 2 team",
         "1",
     );
-    val price = promptJettonCoins("HI_ORACLE_PRICE", "Enter fixed-point HI price", "800000");
+    val price = promptJettonCoins("HI_ORACLE_PRICE", "Enter fixed-point HI price", "396000");
     val value = promptJettonCoins("HI_ORACLE_MSG_VALUE", "Enter oracle message value", "50000000");
     val res = kind == 2
         ? oracle.sendReportTeamPrice(admin.address, price as uint64, { value })

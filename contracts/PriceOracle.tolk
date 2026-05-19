@@ -229,34 +229,34 @@ get fun team_threshold_for(level: uint8): uint64 {
 
 fun growthThreshold(level: int): uint64 {
     if (level == 1) {
-        return 800000;
+        return 396000;
     }
     if (level == 2) {
-        return 1600000;
+        return 792000;
     }
     if (level == 3) {
-        return 3200000;
+        return 1584000;
     }
     if (level == 4) {
-        return 6400000;
+        return 3168000;
     }
     if (level == 5) {
-        return 12800000;
+        return 6337000;
     }
     if (level == 6) {
-        return 25600000;
+        return 12673000;
     }
     if (level == 7) {
-        return 51200000;
+        return 25347000;
     }
     if (level == 8) {
-        return 102400000;
+        return 50693000;
     }
     if (level == 9) {
-        return 204800000;
+        return 101386000;
     }
     if (level == 10) {
-        return 409600000;
+        return 202772000;
     }
     throw Errors.InvalidLevel;
 }
