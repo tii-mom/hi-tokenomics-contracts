@@ -184,9 +184,8 @@ fun vested(storage: TeamVestingStorage): coins {
     return counters.totalHi * storage.teamConfirmedLevel / 4;
 }
 
-fun uncommitted(storage: TeamVestingStorage): coins {
-    val counters = storage.counters.load();
-    return counters.totalHi - vested(storage) - counters.migratedHi;
+fun uncommitted(_storage: TeamVestingStorage): coins {
+    return 0;
 }
 
 get fun vesting_state(): (uint8, coins, coins) {

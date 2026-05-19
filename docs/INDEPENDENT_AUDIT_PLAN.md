@@ -187,9 +187,9 @@ Auditor tasks:
 5. Confirm payout destination is fixed team wallet, not caller-specified.
 6. Confirm only oracle can sync team level.
 7. Confirm bounce from Jetton transfer rolls back claimed state.
-8. Confirm migration transfer is restricted to migration wallet 1 or 2, can only
-   select an admin-allowlisted target, and cannot move already committed team
-   allocation.
+8. Confirm migration target selection is restricted to migration wallet 1 or 2
+   and can only select an admin-allowlisted target. Confirm TeamVestingVault has
+   no migratable HI because the full team allocation is committed.
 9. Confirm selecting a migration target before admin allowlisting fails.
 
 Deliverable:

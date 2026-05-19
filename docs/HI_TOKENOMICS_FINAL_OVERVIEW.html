@@ -139,8 +139,8 @@
         <tr><td>发起方</td><td>只能是部署前或初始化时写入的两个指定迁移权限钱包之一，例如两个迁移多签，或一个项目多签加一个强隔离备份多签。</td></tr>
         <tr><td>允许接收方</td><td>只能是管理员先加入迁移 allowlist、再由迁移钱包选定的目标地址；业务口径要求它是新版 GrowthEngine、新版奖励 vault、新版团队 vault 等目标合约。</td></tr>
         <tr><td>禁止接收方</td><td>未加入 allowlist 的地址、管理员个人钱包、项目方个人钱包、普通用户钱包。</td></tr>
-        <tr><td>可迁移额度</td><td>只能迁移未承诺、未售出、未注册、未发布 batch、未达到释放条件、未归属用户的余额。</td></tr>
-        <tr><td>不可迁移额度</td><td>用户已购买未领取额度、winner 已注册额度、Merkle batch 已发布未领取额度、团队已解锁未领取额度。</td></tr>
+        <tr><td>可迁移额度</td><td>只能迁移未承诺、未售出、未注册、未发布 batch、未归属用户的余额。团队 12% 在 TeamVestingVault 中全部视为已承诺，不能迁移。</td></tr>
+        <tr><td>不可迁移额度</td><td>用户已购买未领取额度、winner 已注册额度、Merkle batch 已发布未领取额度、全部团队释放额度。</td></tr>
         <tr><td>权限建议</td><td>使用两个固定迁移权限钱包，任意一个可发起迁移；主网建议两个钱包都使用多签。管理员 allowlist 操作需要在部署/运维记录中公开。</td></tr>
         <tr><td>审计目标</td><td>证明未 allowlist 的 target 不能被选择，两个迁移权限钱包不能迁移用户权益，只能迁移未承诺 HI。</td></tr>
       </table>
@@ -337,7 +337,7 @@ Users
         <tr><td>Minter admin</td><td>部署阶段 mint 和分配</td><td>分配完成后弃权，不能再 mint</td></tr>
         <tr><td>GrowthEngine admin / 双迁移权限钱包</td><td>暂停/关闭增长引擎、管理迁移 target allowlist、由两个迁移权限钱包之一迁移未承诺 HI 到 allowlist 目标、按规则 sweep 未售或 missed HI</td><td>不能改价格、不能转走用户已购未领权益、不能迁移到未 allowlist 地址</td></tr>
         <tr><td>Oracle admin</td><td>上报 USDT 价格</td><td>不能改门槛、不能跳过时间锁、不能回退 level</td></tr>
-        <tr><td>Team admin / 双迁移权限钱包</td><td>配置固定团队钱包和必要参数、管理迁移 target allowlist、由两个迁移权限钱包之一迁移未承诺余额到 allowlist 目标</td><td>不能把团队释放转到任意地址、不能迁移到未 allowlist 地址</td></tr>
+        <tr><td>Team admin / 双迁移权限钱包</td><td>配置固定团队钱包和必要参数、管理迁移 target allowlist、由两个迁移权限钱包之一选择 allowlist 目标</td><td>不能把团队释放转到任意地址；团队 12% 全部已承诺，实际可迁移 HI 为 0</td></tr>
         <tr><td>Campaign admin / 双迁移权限钱包</td><td>注册 winner、管理迁移 target allowlist、由两个迁移权限钱包之一迁移未注册剩余额度到 allowlist 目标</td><td>不能重复注册、不能超过 80 个、不能改变每人 500万 HI 额度、不能迁移已注册 winner 权益</td></tr>
         <tr><td>Merkle reward admin / 双迁移权限钱包</td><td>创建 immutable batch、管理迁移 target allowlist、由两个迁移权限钱包之一迁移未发布未承诺余额到 allowlist 目标</td><td>不能修改旧 root、不能领取用户奖励、不能迁移已发布 batch 额度</td></tr>
       </table>

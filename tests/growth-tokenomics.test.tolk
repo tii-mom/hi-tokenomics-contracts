@@ -741,6 +741,17 @@ get fun `test migration: target must be allowlisted before selection`() {
         from: teamAdmin.address,
         to: team.address,
     });
+    expect(
+        team.sendTransferTeamUncommittedHiToContract(
+            teamAdmin.address,
+            1 * HI,
+            { value: ton("0.3") },
+        ),
+    ).toHaveFailedTx({
+        from: teamAdmin.address,
+        to: team.address,
+        exitCode: Errors.InsufficientInventory,
+    });
 
     val campaignAdmin = testing.treasury("migration-campaign-admin");
     val campaignOracle = testing.treasury("migration-campaign-oracle");

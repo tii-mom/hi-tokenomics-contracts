@@ -509,7 +509,7 @@ Users
         <tr><td>admin / deployer / reward admin</td><td>部署、设置业务合约 Jetton Wallet、开关 GrowthEngine、创建 Merkle batch、注册 Campaign winner、设置 migration allowlist。</td><td>不能增发已 drop admin 后的 HI，不能转走用户已承诺权益，不能冻结用户钱包。</td></tr>
         <tr><td>oracle admin</td><td>上报 growth/team 价格，启动候选 level 计时。</td><td>不能修改门槛，不能跳过 24 小时，不能回退 confirmed level。</td></tr>
         <tr><td>keeper / anyone</td><td>在价格候选 level 满足时间锁后调用 confirm。</td><td>不能凭空确认，不能跳级。</td></tr>
-        <tr><td>migration wallet 1 / 2</td><td>选择 admin allowlist 中的迁移目标，并迁移未承诺 HI。</td><td>不能迁移用户已购、winner 已注册、Merkle 已发布、团队已解锁额度。</td></tr>
+        <tr><td>migration wallet 1 / 2</td><td>选择 admin allowlist 中的迁移目标，并迁移未承诺 HI。</td><td>不能迁移用户已购、winner 已注册、Merkle 已发布额度；团队 12% 全部视为已承诺，TeamVestingVault 可迁移 HI 为 0。</td></tr>
         <tr><td>用户</td><td>购买 GrowthEngine、领取 GrowthEngine、领取 CampaignWinner、领取 Merkle batch。</td><td>不能修改合约参数或替他人领取。</td></tr>
       </table>
     </section>
@@ -521,7 +521,7 @@ Users
         <tr><th>规则</th><th>说明</th></tr>
         <tr><td>目标 allowlist</td><td>管理员先通过 <code>Set*MigrationTargetAllowed</code> 把目标地址加入 allowlist。</td></tr>
         <tr><td>双迁移钱包</td><td>两个指定 migration wallet 任意一个都可以选择 allowlist 中的目标并发起迁移。</td></tr>
-        <tr><td>只能迁移未承诺 HI</td><td>未售、未注册、未发布 batch、未解锁的合约余额可以迁移；用户权益和已承诺余额不能迁移。</td></tr>
+        <tr><td>只能迁移未承诺 HI</td><td>未售、未注册、未发布 batch 的合约余额可以迁移；用户权益和已承诺余额不能迁移。团队分配全部已承诺，因此 TeamVestingVault 只保留 allowlist/target 选择，不允许迁移 HI。</td></tr>
         <tr><td>不做 code-hash check</td><td>V1 不加入 code-hash check 或 timelock governance；目标地址需要通过部署文档、多签流程和审计记录控制。</td></tr>
       </table>
       <p class="warning">这是高信任运维权限，不是用户资金提现权限。主网应使用多签或强隔离钱包作为 migration wallet，并公开每次 allowlist 与迁移动作。</p>

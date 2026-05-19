@@ -46,9 +46,6 @@ HI_MINT_TOTAL_TON_AMOUNT=0.08
 HI_ORACLE_CONFIRMATION_DELAY=86400
 ```
 
-The public repository intentionally keeps mainnet role addresses as placeholders.
-Use the private deployment environment for real role addresses.
-
 ## Metadata
 
 ```text
@@ -187,11 +184,12 @@ The active V1 model is admin-managed target allowlists:
 2. Either migration wallet 1 or migration wallet 2 can select one of those
    allowed targets with `Set*MigrationTarget`.
 3. Either migration wallet can transfer only the vault's uncommitted HI balance
-   to the selected target.
+   to the selected target. TeamVestingVault has no migratable HI because the
+   full team allocation is committed to the release schedule.
 
 Contract accounting prevents migration of committed user allocations,
 registered winner allocations, published Merkle batch totals,
-sold-but-unclaimed GrowthEngine balances, and already vested team balances.
+sold-but-unclaimed GrowthEngine balances, and any team allocation.
 
 This removes the previous arbitrary-target migration model. It still does not
 perform code-hash validation or timelock governance; those can be added in a

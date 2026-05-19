@@ -138,7 +138,8 @@ current allowlist hashes:
 - local test coverage for invalid proof, duplicate claim, over-total,
   malformed proof, and deep proof paths;
 - migration smoke for contracts with remaining uncommitted balance and
-  allowlisted targets;
+  allowlisted targets; TeamVestingVault has no migratable HI because the full
+  team allocation is committed to the team release schedule;
 - TON Verifier dry-run for all seven contracts;
 - `/Users/yudeyou/Desktop/100wan` and `/Users/yudeyou/Desktop/GrowthEngine`
   contract-facing checks.

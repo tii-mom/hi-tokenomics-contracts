@@ -1,12 +1,134 @@
 # Final GrowthEngine Testnet Evidence
 
+## Final Fresh Testnet Evidence After TeamVesting Fix: 2026-05-19
+
+Status: **complete for current hashes**. This section supersedes every older
+testnet section in this file.
+
+### Final Contract Addresses
+
+| Contract / wallet | Testnet address |
+|---|---|
+| `JettonMinter` | `kQBM883L3UZ0aZ24i7DMh6kYWdnOpIiMFYkO_bQTMmmFvjYt` |
+| `PriceOracle` | `kQBOywbOQMoIpHMrVJugvcSSfX3w0CwrQ1nrmT_RX_mgjM1O` |
+| `GrowthEngine` | `kQDC0JlxvpU_Shj3w0o4xX-JVSarPi7aPEeC-wnR0VWQ9cVy` |
+| `TeamVestingVault` | `kQCd5-Fc_gvpM5pRrFbPmkg2KMZrL-4KPTfw5r4spqSiw7z0` |
+| `MerkleRewardVault` | `kQA1xMAaCPZgb0DPBNdrNfbp0aSOzD4KrUu8-tcNXojMdswO` |
+| `CampaignWinnerVault` | `kQCcuOduTZPXS6GLcYb99qpg7SMSpJ78-X0XfhUNYrKPqNSi` |
+| GrowthEngine jetton wallet | `kQDCPhiUJsKIw6w_tOd1LGo6tmr3ZH-Z_6vDuFRb67H2pbQH` |
+| TeamVesting jetton wallet | `kQCd_xmlkRpB64CTGMpHYVhrrkylXfh-wAtF1RdeIuJiiJVL` |
+| MerkleReward jetton wallet | `kQA1vHJAZ1AWSTkkZaJQd5iibMrESJ4WpOR-sB2CyqAHqtAA` |
+| CampaignWinner jetton wallet | `kQCcThTHUO6O1DhU4Eu0vAqqz1jenqIySqpiOapsUXAxwCni` |
+
+### Final Deployment Evidence
+
+```text
+HI_ORACLE_CONFIRMATION_DELAY=30
+HI_GROWTH_ENGINE PRE_DROP_BALANCE=5000000000000000000
+HI_MERKLE_REWARD PRE_DROP_BALANCE=1600000000000000000
+HI_CAMPAIGN_WINNER PRE_DROP_BALANCE=400000000000000000
+HI_TEAM_VESTING PRE_DROP_BALANCE=1200000000000000000
+HI_PROJECT_FUND PRE_DROP_BALANCE=1000000000000000000
+HI_LIQUIDITY PRE_DROP_BALANCE=500000000000000000
+HI_INVESTOR PRE_DROP_BALANCE=300000000000000000
+HI_POST_MINT_TOTAL_SUPPLY=10000000000000000000
+HI MINTABLE=false
+HI ADMIN_ADDRESS=null
+```
+
+Deployment transaction hashes:
+
+```text
+cf2027e51d177cecc706e6e2fed66852ce9306020162fc97743a6160554e7e0c
+c80169fefeab169389e13821ba880c00927228c6cc6bdf199abbda88797e03d3
+e9eb306e272404eaa6213c32741950bee065ef606c3bd5e2a9ea5549508aea07
+a98707e2eba82349446fd8890490509744ba2fb5ae6f9cdde44b87cded0caa45
+c6d84d037103179e71cb67382b410caaadfa173add5b18b85981eb4a001de31c
+adae8939ee73d66c0d5a315d8eeb48ddc6a4ab938baeb48c15d5ec95367f9ff0
+7d65f033a93dfecfe9fd9f831960014becc061ace00c19d7dca2d3fd9f2963ea
+435dc8a0104d3ee27004ed829a095d3dc67e7f762c655575af3462e7beecb4b5
+4dac189e514389eee906412c7f20297b69ec5172c464c1f0ae5cb4a24d142ab2
+34062f79bbdb03587aa4b8668dbba0a16f86f6983e38c44cecdbd03767c189e0
+c41b63ef4dfb99ab12951f50287a7e1bdc097cc8041228e2afbf61d9573ac80e
+fc061fe19e1ee7b0c146be0e860ded7edea24626b97fa03b6db679c562d01185
+drop admin: 8d2b6582b4d8aa99c676022c9b3ea9efbf23216d5e5411c5a3c536eed8793c52
+```
+
+### Final Business Flow Evidence
+
+GrowthEngine level 0 buy and final level 10 claim:
+
+```text
+HI_GROWTH_BUYER_STATE=(100000000, 1010000000000, 0, 50500000000, 0)
+HI_GROWTH_STATE=(0, 1010000000000, 50500000000, 0, 0, 4999998990000000000)
+
+HI_ORACLE_GROWTH_CONFIRMED_LEVEL=10
+
+HI_GROWTH_BUYER_STATE=(100000000, 1010000000000, 0, 1010000000000, 0)
+HI_GROWTH_STATE=(10, 1010000000000, 1010000000000, 0, 0, 4999998990000000000)
+```
+
+TeamVesting level 1-4 and final claim:
+
+```text
+HI_ORACLE_TEAM_CONFIRMED_LEVEL=4
+HI_TEAM_VESTING_STATE=(4, 1200000000000000000, 1200000000000000000)
+```
+
+CampaignWinner late registration at level 10:
+
+```text
+HI_CAMPAIGN_WINNER_STATE=(true, 10, 0, 0)
+HI_CAMPAIGN_VAULT_STATE=(10, 1, 0, 0)
+```
+
+MerkleReward three pool types with `requiredGrowthLevel=10`:
+
+```text
+batch 201 poolType=1 claimedHi=100000000000
+batch 202 poolType=2 claimedHi=100000000000
+batch 203 poolType=3 claimedHi=100000000000
+HI_REWARD_HAS_CLAIMED=true
+```
+
+Migration smoke:
+
+```text
+GrowthEngine: HI_GROWTH_STATE=(10, 1010000000000, 1010000000000, 0, 1000000000, 4999998989000000000)
+MerkleRewardVault: HI_REWARD_POOL_STATE=(100000000000, 100000000000, 100000000000, 1000000000, 10)
+CampaignWinnerVault: HI_CAMPAIGN_VAULT_STATE=(10, 1, 0, 1000000000)
+TeamVestingVault: HI_TEAM_VESTING_STATE=(4, 1200000000000000000, 1200000000000000000)
+```
+
+TeamVesting migration target allowlist and target selection were exercised, but
+no HI can be migrated because all `1,200,000,000 HI` team allocation is
+committed to the team release schedule.
+
+### Final TON Verifier Dry-Run
+
+All 7 contracts returned backend verification success with `--dry-run`.
+
+| Contract | Code hash |
+|---|---|
+| `JettonMinter` | `6BF8F48CA97D3FD9C8E553344EFE7AF030C322459E2EE2197A052162F1961BFB` |
+| `JettonWallet` | `7BFA53BCE90CE26CD368EC2989EBA2BD15D286104742F0E04659F485A03012BA` |
+| `GrowthEngine` | `79C79B4E7806452227074B7156F811EFCD7AEDF6216A25D1DDA32848B4B4801E` |
+| `PriceOracle` | `94E36D148B9C453D9EFA7D421194B75ECA68CA6921AF5C25E951BCB685296D96` |
+| `TeamVestingVault` | `920DC60AB8EB9A5E736D6857CA5F36E6B1CC7501058A15CE5FBD0391F482B28A` |
+| `CampaignWinnerVault` | `3DE9ABF1DA62896CB870BAC0C426ED949EF1B83E08D1E1B480DE6B57931DDDF3` |
+| `MerkleRewardVault` | `10EA78A51B8A092AF00B4B13DB8B0CC88F7DD71870393303FBF28EC1448D3238` |
+
+## Older Evidence Archive
+
+> The sections below are retained as historical audit trail only. The final
+> evidence above is the current pre-mainnet evidence set.
+
 ## Latest Fresh Testnet Evidence: 2026-05-19
 
-Status: **fresh deployment and core growth/campaign smoke passed** after the
-latest TON-chain USDT growth-threshold and CampaignWinner unlock-rule changes.
+Status: **fresh deployment and full pre-mainnet smoke passed** after the latest
+TON-chain USDT growth-threshold and CampaignWinner unlock-rule changes.
 
-This latest deployment supersedes older addresses below. Full replay of all
-Merkle/team/migration flows is still required before mainnet go/no-go.
+This latest deployment supersedes older addresses below.
 
 ### Latest Local Gates
 
@@ -135,6 +257,97 @@ HI_CAMPAIGN_VAULT_STATE=(2, 1, 500000000000000, 0)
 
 This proves the late winner receives only the next confirmed growth level
 `10%` tranche: `500,000 HI` out of `5,000,000 HI`.
+
+### Latest TeamVesting Smoke
+
+Team level 1 report / confirm:
+
+```text
+HI_ORACLE_PRICE=100000000
+HI_ORACLE_TEAM_CANDIDATE_STATE=(1, 1779204806, 100000000)
+HI_ORACLE_TEAM_CONFIRMED_LEVEL=1
+```
+
+Team claim after level 1:
+
+```text
+HI_TEAM_VESTING_STATE=(1, 300000000000000000, 300000000000000000)
+```
+
+This proves each team level releases `300,000,000 HI`.
+
+### Latest MerkleReward Smoke
+
+Three single-leaf batches were created with `requiredGrowthLevel=2` and then
+claimed by the test claimant:
+
+| Batch | poolType | Root | Claim result |
+|---:|---:|---|---|
+| `101` | `1` ecosystem | `115373066188067235388989028091632853253044767671901633568543569609848581717369` | `claimedHi=100000000000` |
+| `102` | `2` universal lottery | `11560358561291012462194274292714911309996987545035114294319007155404006385914` | `claimedHi=100000000000` |
+| `103` | `3` red packet | `36856781234388074268090814215653014293027362826128270010976900700109882827619` | `claimedHi=100000000000` |
+
+Each claim returned:
+
+```text
+HI_REWARD_HAS_CLAIMED=true
+```
+
+### Latest Migration Smoke
+
+All four HI-holding business vaults were tested with:
+
+1. admin allowlists target contract;
+2. migration wallet selects the allowlisted target;
+3. migration wallet transfers only a small uncommitted HI amount.
+
+Results:
+
+```text
+GrowthEngine: HI_GROWTH_STATE=(2, 1010000000000, 151500000000, 0, 1000000000, 4999998989000000000)
+TeamVestingVault: HI_TEAM_VESTING_STATE=(1, 300000000000000000, 300000000000000000)
+MerkleRewardVault: HI_REWARD_POOL_STATE=(100000000000, 100000000000, 100000000000, 1000000000, 2)
+CampaignWinnerVault: HI_CAMPAIGN_VAULT_STATE=(2, 1, 500000000000000, 1000000000)
+```
+
+The state changes show `migratedHi=1000000000` for GrowthEngine,
+MerkleRewardVault, and CampaignWinnerVault. For TeamVestingVault, uncommitted
+migration was executed after `300,000,000 HI` had already been claimed; the
+vesting state remains capped at the claimed amount.
+
+### Latest TON Verifier Dry-Run
+
+Dry-run verification was executed for all 7 contracts with `--net testnet
+--wallet hi-funded --dry-run`. Every contract returned backend verification
+success and prepared the verification transaction without sending it.
+
+| Contract | Address | Code hash | Dry-run result |
+|---|---|---|---|
+| `JettonMinter` | `kQBsDQHfFhLvwVx__x2T2uZNZ8g7fTwO_CyR23qt2W-evG5c` | `6BF8F48CA97D3FD9C8E553344EFE7AF030C322459E2EE2197A052162F1961BFB` | backend verification successful |
+| `JettonWallet` | `kQBEG1qHTtW8En36R3faZHgfXqviVypgcxGzIp9ZCd43j5aH` | `7BFA53BCE90CE26CD368EC2989EBA2BD15D286104742F0E04659F485A03012BA` | backend verification successful |
+| `GrowthEngine` | `kQBEV7_L8Y1JMQvTybtBNDPLoMjtJxUIPNzvBdXC8MJ3i2qz` | `79C79B4E7806452227074B7156F811EFCD7AEDF6216A25D1DDA32848B4B4801E` | backend verification successful |
+| `PriceOracle` | `kQB_jSQjkGMh80XfgDQn4ptuc-UCIoGq3gMcLEgEwjCT8whA` | `94E36D148B9C453D9EFA7D421194B75ECA68CA6921AF5C25E951BCB685296D96` | backend verification successful |
+| `TeamVestingVault` | `kQBKApneh-Fg5eqmuh_XDFiHUF3ASZplrmhqiFK3bzlDcxyl` | `42F22F31779C8CED8CD0CFA61C2E50A56B3E5D8899D07D25C608166721A17FEE` | backend verification successful |
+| `CampaignWinnerVault` | `kQAbVqX2RZPU6leJTh2CPiLBQm7bSjS7-eK4k7yAUZnT5ZaX` | `3DE9ABF1DA62896CB870BAC0C426ED949EF1B83E08D1E1B480DE6B57931DDDF3` | backend verification successful |
+| `MerkleRewardVault` | `kQCYIoWJW2Eel1u0rF7Zv2rs1NV3NSM3KuCJ3vi_69j6fUpi` | `10EA78A51B8A092AF00B4B13DB8B0CC88F7DD71870393303FBF28EC1448D3238` | backend verification successful |
+
+### App-Side Contract Integration Gates
+
+```text
+/Users/yudeyou/Desktop/100wan:
+npm run lint
+npm run test:agent-flow
+npm run build
+
+/Users/yudeyou/Desktop/GrowthEngine:
+npm run lint
+npm run test:growth-supporters
+npm run test:growth-ton
+npm run build
+```
+
+All commands above completed successfully. The GrowthEngine build still emits a
+large chunk warning only; it does not fail the build.
 
 ## Older Evidence Archive
 

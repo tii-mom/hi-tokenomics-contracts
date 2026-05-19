@@ -25,8 +25,10 @@ Mainnet remains no-go because the final GrowthEngine version still needs:
 
 The owner has accepted the `O-01` migration permission model for V1:
 admin-managed migration target allowlists, two migration wallets, and migration
-limited to uncommitted HI only. The owner has also confirmed the final token
-metadata description wording:
+limited to uncommitted HI only. TeamVestingVault is stricter: the full team
+allocation is committed to the price-release schedule, so migration target
+selection is available but migratable HI is `0`. The owner has also confirmed
+the final token metadata description wording:
 
 ```text
 Human Intention (HI) helps users better command Agents. Its innovative token release mechanism rewards true crypto believers.
