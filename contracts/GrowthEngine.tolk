@@ -212,7 +212,7 @@ fun onInternalMessage(in: InMessage) {
 }
 
 fun buyGrowth(buyer: address, tonAmount: coins, attached: coins) {
-    assert (attached >= tonAmount + ton("0.25")) throw Errors.InsufficientAttachedTon;
+    assert (attached >= tonAmount + ton("0.15")) throw Errors.InsufficientAttachedTon;
 
     var storage = lazy GrowthEngineStorage.load();
     var counters = storage.counters.load();

@@ -17,7 +17,7 @@ fun main() {
     val value = promptJettonCoins(
         "HI_PURCHASE_MSG_VALUE",
         "Enter attached nanotons",
-        "350000000",
+        "250000000",
     );
     val res = growth.sendBuyGrowth(buyer.address, tonAmount, { value });
     println(res.waitForTrace());

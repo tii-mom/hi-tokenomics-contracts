@@ -87,7 +87,7 @@ get fun `test growth engine: buy uses 10100 HI per TON and releases immediate 5 
 
     val buyerWallet = userWallet(minter, buyer.address);
     expect(
-        growth.sendBuyGrowth(buyer.address, ton("1"), { value: ton("1.3") }),
+        growth.sendBuyGrowth(buyer.address, ton("1"), { value: ton("1.15") }),
     ).toHaveSuccessfulTx<BuyGrowth>({
         from: buyer.address,
         to: growth.address,
@@ -95,6 +95,14 @@ get fun `test growth engine: buy uses 10100 HI per TON and releases immediate 5 
     expect(buyerWallet.getJettonBalance()).toEqual(505 * HI);
     expect(growth.buyerState(buyer.address).1).toEqual(10100 * HI);
     expect(growth.buyerState(buyer.address).3).toEqual(505 * HI);
+
+    expect(
+        growth.sendBuyGrowth(buyer.address, ton("1"), { value: ton("1.149") }),
+    ).toHaveFailedTx<BuyGrowth>({
+        from: buyer.address,
+        to: growth.address,
+        exitCode: Errors.InsufficientAttachedTon,
+    });
 }
 
 get fun `test growth engine: late buy does not catch up historical levels and level 10 final is 5 percent`() {
@@ -110,7 +118,7 @@ get fun `test growth engine: late buy does not catch up historical levels and le
         to: growth.address,
     });
     expect(
-        growth.sendBuyGrowth(buyer.address, ton("1"), { value: ton("1.3") }),
+        growth.sendBuyGrowth(buyer.address, ton("1"), { value: ton("1.15") }),
     ).toHaveSuccessfulTx<BuyGrowth>({
         from: buyer.address,
         to: growth.address,
@@ -140,7 +148,7 @@ get fun `test growth engine: project fund sweep bounce restores uncommitted and 
     val growthWallet = mintTo(minter, minterAdmin, growth.address, GROWTH_POOL);
     growth.sendSetGrowthJettonWallet(admin.address, growthWallet.address, { value: ton("0.05") });
     growth.sendSetGrowthConfirmedLevel(oracle.address, 3, { value: ton("0.05") });
-    growth.sendBuyGrowth(buyer.address, ton("1"), { value: ton("1.3") });
+    growth.sendBuyGrowth(buyer.address, ton("1"), { value: ton("1.15") });
     val before = growth.growthState();
 
     growth.sendCloseGrowthEngine(admin.address, { value: ton("0.05") });
