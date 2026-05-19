@@ -1,3 +1,5 @@
+import "@acton/env"
+import "@acton/fmt"
 import "@acton/io"
 import "@acton/emulation/network"
 import "@acton/emulation/scripts"
@@ -13,7 +15,10 @@ fun main() {
         ),
     );
     val batchId = promptJettonCoins("HI_REWARD_BATCH_ID", "Enter reward batch id", "1");
-    val root = promptJettonCoins("HI_REWARD_ROOT", "Enter reward Merkle root", "0");
+    val rootFromEnv = env<string>("HI_REWARD_ROOT");
+    val root = rootFromEnv != null
+        ? parseInt(rootFromEnv!) as uint256
+        : promptJettonCoins("HI_REWARD_ROOT", "Enter reward Merkle root", "0") as uint256;
     val totalHi = promptJettonCoins(
         "HI_REWARD_TOTAL_HI",
         "Enter reward batch total",
@@ -38,7 +43,7 @@ fun main() {
     val res = vault.sendCreateRewardBatch(
         admin.address,
         batchId as uint64,
-        root as uint256,
+        root,
         totalHi,
         metadataHash as uint256,
         poolType as uint8,

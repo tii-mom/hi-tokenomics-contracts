@@ -16,6 +16,12 @@ confirmed by the owner on 2026-05-19.
 | telegram | `https://t.me/HumanIntention` |
 | x | `https://x.com/72hour_s` |
 
+Source logo file:
+
+```text
+/Users/yudeyou/Desktop/100wan/a54daaea-3245-4bfc-a1c0-174dbdf0316f_副本.png
+```
+
 Logo properties checked locally:
 
 ```text

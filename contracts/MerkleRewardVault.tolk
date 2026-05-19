@@ -136,6 +136,9 @@ fun onInternalMessage(in: InMessage) {
             assert (in.valueCoins >= ton("0.25")) throw Errors.InsufficientAttachedTon;
             val target = storage.migrationTarget;
             assert (target != null) throw Errors.InvalidMessage;
+            assert (
+                isMigrationTargetAllowed(storage, target!)
+            ) throw Errors.MigrationTargetNotAllowed;
             assert (msg.amount > 0) throw Errors.NoClaimableAmount;
             assert (msg.amount <= rewardUncommitted(storage)) throw Errors.InsufficientInventory;
             var counters = storage.counters.load();
@@ -265,6 +268,9 @@ fun setMigrationTargetAllowed(
         maps.migrationAllowlist.set(target, true);
     } else {
         maps.migrationAllowlist.delete(target);
+        if (storage.migrationTarget != null && storage.migrationTarget! == target) {
+            storage.migrationTarget = null;
+        }
     }
     storage.maps = maps.toCell();
 }
@@ -278,6 +284,7 @@ fun reserveMerkleRewardPool(mutate storage: MerkleRewardStorage, poolType: uint8
     var counters = storage.counters.load();
     assert (
         counters.ecosystemTotalHi + counters.universalTotalHi + counters.redPacketTotalHi +
+        counters.migratedHi +
         amount <=
         ECOSYSTEM_POOL_CAP_HI
     ) throw Errors.InsufficientInventory;

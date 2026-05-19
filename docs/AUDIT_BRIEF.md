@@ -1,10 +1,9 @@
 # HI GrowthEngine Audit Brief
 
-Status: post-audit fixes, migration allowlist changes, fresh testnet rehearsal,
-app contract-facing checks, and TON Verifier dry-run are complete for the
-current allowlist code hashes. Mainnet remains blocked pending final owner
-sign-off on the migration permission model, final metadata wording
-confirmation, and explicit deployment authorization.
+Status: latest audit-fix changes, fresh testnet rehearsal, app contract-facing
+checks, and TON Verifier dry-run are complete for the current code hashes.
+Mainnet remains blocked pending independent audit-thread re-review of these
+latest fixes and explicit deployment authorization.
 
 ## Scope
 
@@ -34,8 +33,10 @@ Deployment and operation scripts under `scripts/` are support material.
 Business vault migration is now constrained by admin-managed target allowlists.
 The admin must add a target address to the relevant vault's allowlist before
 either configured migration wallet can select it. Migration wallets can transfer
-only uncommitted HI to the selected allowlisted target. The model does not use
-code-hash checks or timelock governance.
+only uncommitted HI to the selected allowlisted target. Every migration transfer
+re-checks that the selected target is still allowlisted, and removing the
+currently selected target clears it. The model does not use code-hash checks or
+timelock governance.
 
 ## GrowthEngine
 
@@ -119,21 +120,21 @@ acton fmt --check
 acton build
 acton wrapper --all
 acton wrapper --all --ts
-acton test        # 58 passed in 7 files
+acton test        # 64 passed in 7 files
 acton check
 ```
 
 ## Testnet Evidence
 
-`docs/TESTNET_EVIDENCE.md` records the fresh `hi2` testnet rehearsal for the
-current allowlist hashes:
+`docs/TESTNET_EVIDENCE.md` records the fresh `hi2` audit-fix testnet rehearsal
+for the current hashes:
 
 - allocation and minter admin drop;
 - GrowthEngine buy and level 10 full claim;
 - local test coverage for level 0 initial `5%`, late-buyer no-catch-up, and level 10 final `5%`;
 - PriceOracle growth levels 1-10 and team levels 1-4 with 30-second delay;
 - TeamVestingVault all four price releases;
-- CampaignWinnerVault registration and claim;
+- CampaignWinnerVault late registration with no historical catch-up;
 - MerkleRewardVault ecosystem, universal lottery, and red packet batches;
 - local test coverage for invalid proof, duplicate claim, over-total,
   malformed proof, and deep proof paths;
@@ -146,8 +147,7 @@ current allowlist hashes:
 
 ## Open Before Mainnet
 
-- Final owner sign-off on `O-01` migration permission model.
-- Final metadata wording confirmation.
+- Independent audit-thread re-review of the latest Medium/Low fixes.
 - Explicit mainnet deployment approval.
 
 ## Independent Audit Task Plan

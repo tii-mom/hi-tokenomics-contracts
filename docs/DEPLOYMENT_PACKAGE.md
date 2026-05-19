@@ -31,18 +31,18 @@ HI_ORACLE_CONFIRMATION_DELAY=86400 acton script scripts/deploy-hi-tokenomics.tol
 
 ```text
 HI_DEPLOYER=mainnet-admin
-HI_ADMIN_ADDRESS=<mainnet-admin-address>
-HI_ORACLE_ADMIN_ADDRESS=<mainnet-oracle-admin-address>
-HI_ECOSYSTEM_ADMIN_ADDRESS=<mainnet-reward-admin-address>
-HI_MIGRATION_WALLET_1=<mainnet-migration-wallet-1>
-HI_MIGRATION_WALLET_2=<mainnet-migration-wallet-2>
-HI_TEAM_WALLET=<mainnet-team-wallet>
-HI_PROJECT_FUND_WALLET=<mainnet-project-fund-wallet>
-HI_LIQUIDITY_WALLET=<mainnet-liquidity-wallet>
-HI_INVESTOR_WALLET=<mainnet-investor-wallet>
+HI_ADMIN_ADDRESS=<MAINNET_ADMIN_MULTISIG>
+HI_ORACLE_ADMIN_ADDRESS=<MAINNET_ORACLE_ADMIN>
+HI_ECOSYSTEM_ADMIN_ADDRESS=<MAINNET_ADMIN_MULTISIG>
+HI_MIGRATION_WALLET_1=<MAINNET_MIGRATION_WALLET_1>
+HI_MIGRATION_WALLET_2=<MAINNET_MIGRATION_WALLET_2>
+HI_TEAM_WALLET=<MAINNET_TEAM_WALLET>
+HI_PROJECT_FUND_WALLET=<MAINNET_PROJECT_FUND_WALLET>
+HI_LIQUIDITY_WALLET=<MAINNET_LIQUIDITY_WALLET>
+HI_INVESTOR_WALLET=<MAINNET_INVESTOR_WALLET>
 HI_DEPLOY_MSG_VALUE=0.05
-HI_MINT_FORWARD_TON_AMOUNT=0.01
-HI_MINT_TOTAL_TON_AMOUNT=0.08
+HI_MINT_FORWARD_TON_AMOUNT=0
+HI_MINT_TOTAL_TON_AMOUNT=250000000
 HI_ORACLE_CONFIRMATION_DELAY=86400
 ```
 
@@ -184,8 +184,10 @@ The active V1 model is admin-managed target allowlists:
 2. Either migration wallet 1 or migration wallet 2 can select one of those
    allowed targets with `Set*MigrationTarget`.
 3. Either migration wallet can transfer only the vault's uncommitted HI balance
-   to the selected target. TeamVestingVault has no migratable HI because the
-   full team allocation is committed to the release schedule.
+   to the selected target. Each transfer re-checks that the selected target is
+   still allowlisted. Removing a selected target clears the selected target.
+   TeamVestingVault has no migratable HI because the full team allocation is
+   committed to the release schedule.
 
 Contract accounting prevents migration of committed user allocations,
 registered winner allocations, published Merkle batch totals,

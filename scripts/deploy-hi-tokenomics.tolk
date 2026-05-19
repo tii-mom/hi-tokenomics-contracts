@@ -3,6 +3,7 @@ import "@acton/io"
 import "@acton/emulation/network"
 import "@acton/emulation/scripts"
 import "@contracts/errors"
+import "@contracts/messages"
 import "@contracts/tokenomics-storage"
 import "@wrappers/CampaignWinnerVault.gen"
 import "@wrappers/GrowthEngine.gen"
@@ -139,6 +140,13 @@ fun main() {
     println("HI_POST_MINT_MINTABLE={}", minterData.mintable);
     println("HI_POST_MINT_ADMIN_ADDRESS={}", minterData.adminAddress);
     minter.sendDropMinterAdmin(admin, 1, { value: deployMsgValue() }).waitForFirstTransaction();
+    val postDropData = minter.getJettonData();
+    assert (postDropData.totalSupply == 10000000000 * HI_UNIT) throw Errors.InvalidMessage;
+    assert (!postDropData.mintable) throw Errors.InvalidMessage;
+    assert (postDropData.adminAddress == null) throw Errors.InvalidMessage;
+    println("HI_POST_DROP_TOTAL_SUPPLY={}", postDropData.totalSupply);
+    println("HI_POST_DROP_MINTABLE={}", postDropData.mintable);
+    println("HI_POST_DROP_ADMIN_ADDRESS={}", postDropData.adminAddress);
 
     println("HI_MINTER_ADDRESS={}", minter.address);
     println("HI_PRICE_ORACLE_ADDRESS={}", oracle.address);
@@ -308,9 +316,27 @@ fun deployRewards(
 }
 
 fun mintHi(minter: JettonMinter, admin: address, recipient: address, amount: coins) {
-    minter
-        .sendMint(admin, recipient, amount, mintForwardTonAmount(), mintTotalTonAmount())
-        .waitForTrace(false, 30, 3000);
+    println("HI_MINT_RECIPIENT={}", recipient);
+    val forwardPayload = beginCell().storeUint(0, 1).toSlice();
+    println(
+        minter
+            .sendMintNewJettons(
+                admin,
+                0,
+                recipient,
+                mintTotalTonAmount(),
+                InternalTransferStep {
+                    queryId: 0,
+                    jettonAmount: amount,
+                    transferInitiator: null,
+                    sendExcessesTo: null,
+                    forwardTonAmount: mintForwardTonAmount(),
+                    forwardPayload,
+                },
+                { value: mintTotalTonAmount() + ton("0.015") },
+            )
+            .waitForTrace(),
+    );
 }
 
 fun assertPreDropAllocation(minter: JettonMinter, owner: address, expected: coins, label: string) {
@@ -325,7 +351,7 @@ fun deployMsgValue(): coins {
 }
 
 fun mintForwardTonAmount(): coins {
-    return env<coins>("HI_MINT_FORWARD_TON_AMOUNT") ?? ton("0.01");
+    return env<coins>("HI_MINT_FORWARD_TON_AMOUNT") ?? 0;
 }
 
 fun mintTotalTonAmount(): coins {

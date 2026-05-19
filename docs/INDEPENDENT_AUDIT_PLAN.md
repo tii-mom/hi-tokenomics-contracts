@@ -82,7 +82,7 @@ Auditor tasks:
    acton check
    ```
 
-3. Confirm tests report `58 passed in 7 files`, or document any difference.
+3. Confirm tests report `64 passed in 7 files`, or document any difference.
 4. Independently compute code hashes from `build/*.json`.
 5. Compare computed hashes against `docs/CODE_HASHES.md`.
 6. Confirm `Acton.toml` registers exactly the intended 7 contracts.

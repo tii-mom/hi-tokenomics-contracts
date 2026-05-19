@@ -877,3 +877,516 @@ get fun `test migration: target must be allowlisted before selection`() {
         to: reward.address,
     });
 }
+
+get fun `test migration: revoked allowlist blocks selected target`() {
+    val target = testing.treasury("migration-revoked-target");
+    val (growth, growthAdmin, _, _, _) = setupGrowth();
+    growth.sendSetGrowthMigrationTargetAllowed(
+        growthAdmin.address,
+        target.address,
+        true,
+        { value: ton("0.05") },
+    );
+    growth.sendSetGrowthMigrationTarget(
+        growthAdmin.address,
+        target.address,
+        { value: ton("0.05") },
+    );
+    expect(
+        growth.sendSetGrowthMigrationTargetAllowed(
+            growthAdmin.address,
+            target.address,
+            false,
+            { value: ton("0.05") },
+        ),
+    ).toHaveSuccessfulTx<SetGrowthMigrationTargetAllowed>({
+        from: growthAdmin.address,
+        to: growth.address,
+    });
+    expect(
+        growth.sendTransferGrowthUncommittedHiToContract(
+            growthAdmin.address,
+            1 * HI,
+            { value: ton("0.3") },
+        ),
+    ).toHaveFailedTx({
+        from: growthAdmin.address,
+        to: growth.address,
+        exitCode: Errors.InvalidMessage,
+    });
+    growth.sendSetGrowthMigrationTargetAllowed(
+        growthAdmin.address,
+        target.address,
+        true,
+        { value: ton("0.05") },
+    );
+    growth.sendSetGrowthMigrationTarget(
+        growthAdmin.address,
+        target.address,
+        { value: ton("0.05") },
+    );
+    expect(
+        growth.sendTransferGrowthUncommittedHiToContract(
+            growthAdmin.address,
+            1 * HI,
+            { value: ton("0.3") },
+        ),
+    ).toHaveSuccessfulTx<TransferGrowthUncommittedHiToContract>({
+        from: growthAdmin.address,
+        to: growth.address,
+    });
+}
+
+get fun `test reward batch cap accounts for migrated inventory`() {
+    val admin = testing.treasury("reward-cap-admin");
+    val oracle = testing.treasury("reward-cap-oracle");
+    val migration2 = testing.treasury("reward-cap-migration-2");
+    val jettonWallet = testing.treasury("reward-cap-jetton-wallet");
+    val vault = MerkleRewardVault.fromStorage({
+        config: MerkleRewardConfig {
+            admin: admin.address,
+            migration: migrationConfig(admin.address, migration2.address),
+        }.toCell(),
+        counters: MerkleRewardCounters {
+            ecosystemTotalHi: 0,
+            universalTotalHi: 0,
+            redPacketTotalHi: 0,
+            migratedHi: REWARD_POOL - 1000 * HI,
+        }.toCell(),
+        maps: MerkleRewardMaps {
+            batches: [],
+            claimed: [],
+            pendingTransfers: [],
+            migrationAllowlist: [],
+        }.toCell(),
+        oracle: oracle.address,
+        rewardJettonWallet: jettonWallet.address,
+        migrationTarget: null,
+        growthConfirmedLevel: 0,
+        nextQueryId: 1,
+    });
+    expect(vault.deploy(admin.address, { value: ton("0.1") })).toHaveSuccessfulDeploy({
+        to: vault.address,
+    });
+    expect(
+        vault.sendCreateRewardBatch(
+            admin.address,
+            90,
+            beginCell().storeUint(90, 256).hash(),
+            1001 * HI,
+            0,
+            1,
+            0,
+            { value: ton("0.05") },
+        ),
+    ).toHaveFailedTx<CreateRewardBatch>({
+        from: admin.address,
+        to: vault.address,
+        exitCode: Errors.InsufficientInventory,
+    });
+}
+
+get fun `test campaign registration cap accounts for migrated inventory`() {
+    val admin = testing.treasury("campaign-cap-admin");
+    val oracle = testing.treasury("campaign-cap-oracle");
+    val migration2 = testing.treasury("campaign-cap-migration-2");
+    val jettonWallet = testing.treasury("campaign-cap-jetton-wallet");
+    val winner = testing.treasury("campaign-cap-winner");
+    val vault = CampaignWinnerVault.fromStorage({
+        config: CampaignWinnerConfig {
+            admin: admin.address,
+            migration: migrationConfig(admin.address, migration2.address),
+        }.toCell(),
+        counters: CampaignWinnerCounters {
+            winnerCount: 79,
+            totalClaimedHi: 0,
+            migratedHi: WINNER_ALLOCATION,
+        }.toCell(),
+        maps: CampaignWinnerMaps {
+            winners: [],
+            pendingTransfers: [],
+            migrationAllowlist: [],
+        }.toCell(),
+        oracle: oracle.address,
+        winnerJettonWallet: jettonWallet.address,
+        migrationTarget: null,
+        growthConfirmedLevel: 0,
+        nextQueryId: 1,
+    });
+    expect(vault.deploy(admin.address, { value: ton("0.1") })).toHaveSuccessfulDeploy({
+        to: vault.address,
+    });
+    expect(
+        vault.sendRegisterCampaignWinner(admin.address, winner.address, { value: ton("0.05") }),
+    ).toHaveFailedTx<RegisterCampaignWinner>({
+        from: admin.address,
+        to: vault.address,
+        exitCode: Errors.InsufficientInventory,
+    });
+}
+
+get fun `test growth buy and claim bounces restore user accounting`() {
+    val (growth, _, oracle, buyer, _) = setupGrowth();
+    val buyRes = testing.processSingleTraceStep(
+        buyer.address,
+        createMessage({
+            bounce: true,
+            value: ton("1.15"),
+            dest: growth.address,
+            body: BuyGrowth { tonAmount: ton("1") },
+        }),
+    );
+    expect(growth.buyerState(buyer.address).0).toEqual(ton("1"));
+    expect(growth.buyerState(buyer.address).1).toEqual(10100 * HI);
+    expect(growth.buyerState(buyer.address).3).toEqual(505 * HI);
+    val buyOutBody = buyRes.outMessages.at<AskToTransfer>(0).loadBody();
+    testing.processSingleTraceStep(
+        testing.treasury("growth-jetton-wallet").address,
+        createMessage({
+            bounce: false,
+            value: ton("0.95"),
+            dest: growth.address,
+            body: beginCell()
+                .storeUint(0xffffffff, 32)
+                .storeSlice(buyOutBody.toCell().beginParse())
+                .endCell(),
+        }).bounced(),
+    );
+    expect(growth.buyerState(buyer.address).0).toEqual(0);
+    expect(growth.buyerState(buyer.address).1).toEqual(0);
+    expect(growth.buyerState(buyer.address).3).toEqual(0);
+
+    growth.sendBuyGrowth(buyer.address, ton("1"), { value: ton("1.15") });
+    growth.sendSetGrowthConfirmedLevel(oracle.address, 1, { value: ton("0.05") });
+    val claimRes = testing.processSingleTraceStep(
+        buyer.address,
+        createMessage({
+            bounce: true,
+            value: ton("0.3"),
+            dest: growth.address,
+            body: ClaimGrowth {},
+        }),
+    );
+    expect(growth.buyerState(buyer.address).3).toEqual(1515 * HI);
+    val claimOutBody = claimRes.outMessages.at<AskToTransfer>(0).loadBody();
+    testing.processSingleTraceStep(
+        testing.treasury("growth-jetton-wallet").address,
+        createMessage({
+            bounce: false,
+            value: ton("0.95"),
+            dest: growth.address,
+            body: beginCell()
+                .storeUint(0xffffffff, 32)
+                .storeSlice(claimOutBody.toCell().beginParse())
+                .endCell(),
+        }).bounced(),
+    );
+    expect(growth.buyerState(buyer.address).3).toEqual(505 * HI);
+}
+
+get fun `test campaign and reward claim bounces restore accounting`() {
+    val campaignAdmin = testing.treasury("campaign-bounce-admin");
+    val campaignOracle = testing.treasury("campaign-bounce-oracle");
+    val winner = testing.treasury("campaign-bounce-winner");
+    val campaignMigration2 = testing.treasury("campaign-bounce-migration-2");
+    val campaignJettonWallet = testing.treasury("campaign-bounce-jetton-wallet");
+    val campaign = CampaignWinnerVault.fromStorage({
+        config: CampaignWinnerConfig {
+            admin: campaignAdmin.address,
+            migration: migrationConfig(campaignAdmin.address, campaignMigration2.address),
+        }.toCell(),
+        counters: CampaignWinnerCounters {
+            winnerCount: 0,
+            totalClaimedHi: 0,
+            migratedHi: 0,
+        }.toCell(),
+        maps: CampaignWinnerMaps {
+            winners: [],
+            pendingTransfers: [],
+            migrationAllowlist: [],
+        }.toCell(),
+        oracle: campaignOracle.address,
+        winnerJettonWallet: campaignJettonWallet.address,
+        migrationTarget: null,
+        growthConfirmedLevel: 0,
+        nextQueryId: 1,
+    });
+    campaign.deploy(campaignAdmin.address, { value: ton("0.1") });
+    campaign.sendRegisterCampaignWinner(
+        campaignAdmin.address,
+        winner.address,
+        { value: ton("0.05") },
+    );
+    val campaignRes = testing.processSingleTraceStep(
+        winner.address,
+        createMessage({
+            bounce: true,
+            value: ton("0.3"),
+            dest: campaign.address,
+            body: ClaimCampaignWinner {},
+        }),
+    );
+    expect(campaign.winnerState(winner.address).2).toEqual(WINNER_ALLOCATION * 5 / 100);
+    expect(campaign.vaultState().2).toEqual(WINNER_ALLOCATION * 5 / 100);
+    val campaignOutBody = campaignRes.outMessages.at<AskToTransfer>(0).loadBody();
+    testing.processSingleTraceStep(
+        campaignJettonWallet.address,
+        createMessage({
+            bounce: false,
+            value: ton("0.95"),
+            dest: campaign.address,
+            body: beginCell()
+                .storeUint(0xffffffff, 32)
+                .storeSlice(campaignOutBody.toCell().beginParse())
+                .endCell(),
+        }).bounced(),
+    );
+    expect(campaign.winnerState(winner.address).2).toEqual(0);
+    expect(campaign.vaultState().2).toEqual(0);
+
+    val rewardAdmin = testing.treasury("reward-bounce-admin");
+    val rewardOracle = testing.treasury("reward-bounce-oracle");
+    val claimant = testing.treasury("reward-bounce-claimant");
+    val rewardMigration2 = testing.treasury("reward-bounce-migration-2");
+    val rewardJettonWallet = testing.treasury("reward-bounce-jetton-wallet");
+    val reward = MerkleRewardVault.fromStorage({
+        config: MerkleRewardConfig {
+            admin: rewardAdmin.address,
+            migration: migrationConfig(rewardAdmin.address, rewardMigration2.address),
+        }.toCell(),
+        counters: MerkleRewardCounters {
+            ecosystemTotalHi: 0,
+            universalTotalHi: 0,
+            redPacketTotalHi: 0,
+            migratedHi: 0,
+        }.toCell(),
+        maps: MerkleRewardMaps {
+            batches: [],
+            claimed: [],
+            pendingTransfers: [],
+            migrationAllowlist: [],
+        }.toCell(),
+        oracle: rewardOracle.address,
+        rewardJettonWallet: rewardJettonWallet.address,
+        migrationTarget: null,
+        growthConfirmedLevel: 0,
+        nextQueryId: 1,
+    });
+    reward.deploy(rewardAdmin.address, { value: ton("0.1") });
+    val batchId = 91;
+    val amount = 1000 * HI;
+    val root = beginCell()
+        .storeUint(batchId, 64)
+        .storeAddress(claimant.address)
+        .storeCoins(amount)
+        .hash();
+    val proof = beginCell().storeBool(false).storeBool(false).endCell();
+    reward.sendCreateRewardBatch(
+        rewardAdmin.address,
+        batchId,
+        root,
+        amount,
+        0,
+        1,
+        0,
+        { value: ton("0.05") },
+    );
+    val rewardRes = testing.processSingleTraceStep(
+        claimant.address,
+        createMessage({
+            bounce: true,
+            value: ton("0.3"),
+            dest: reward.address,
+            body: ClaimReward { batchId, amount, proof },
+        }),
+    );
+    expect(reward.hasClaimed(batchId, claimant.address)).toEqual(true);
+    expect(reward.batchState(batchId).2).toEqual(amount);
+    val rewardOutBody = rewardRes.outMessages.at<AskToTransfer>(0).loadBody();
+    testing.processSingleTraceStep(
+        rewardJettonWallet.address,
+        createMessage({
+            bounce: false,
+            value: ton("0.95"),
+            dest: reward.address,
+            body: beginCell()
+                .storeUint(0xffffffff, 32)
+                .storeSlice(rewardOutBody.toCell().beginParse())
+                .endCell(),
+        }).bounced(),
+    );
+    expect(reward.hasClaimed(batchId, claimant.address)).toEqual(false);
+    expect(reward.batchState(batchId).2).toEqual(0);
+}
+
+get fun `test migration transfer bounces restore migrated accounting`() {
+    val target = testing.treasury("migration-bounce-target");
+    val (growth, growthAdmin, _, _, _) = setupGrowth();
+    val growthWallet = testing.treasury("migration-bounce-growth-wallet");
+    growth.sendSetGrowthJettonWallet(
+        growthAdmin.address,
+        growthWallet.address,
+        { value: ton("0.05") },
+    );
+    growth.sendSetGrowthMigrationTargetAllowed(
+        growthAdmin.address,
+        target.address,
+        true,
+        { value: ton("0.05") },
+    );
+    growth.sendSetGrowthMigrationTarget(
+        growthAdmin.address,
+        target.address,
+        { value: ton("0.05") },
+    );
+    val growthRes = testing.processSingleTraceStep(
+        growthAdmin.address,
+        createMessage({
+            bounce: true,
+            value: ton("0.3"),
+            dest: growth.address,
+            body: TransferGrowthUncommittedHiToContract { amount: 1000 * HI },
+        }),
+    );
+    expect(growth.growthState().4).toEqual(1000 * HI);
+    val growthOutBody = growthRes.outMessages.at<AskToTransfer>(0).loadBody();
+    testing.processSingleTraceStep(
+        growthWallet.address,
+        createMessage({
+            bounce: false,
+            value: ton("0.95"),
+            dest: growth.address,
+            body: beginCell()
+                .storeUint(0xffffffff, 32)
+                .storeSlice(growthOutBody.toCell().beginParse())
+                .endCell(),
+        }).bounced(),
+    );
+    expect(growth.growthState().4).toEqual(0);
+
+    val campaignAdmin = testing.treasury("campaign-migration-bounce-admin");
+    val campaignOracle = testing.treasury("campaign-migration-bounce-oracle");
+    val campaignMigration2 = testing.treasury("campaign-migration-bounce-migration-2");
+    val campaignWallet = testing.treasury("campaign-migration-bounce-wallet");
+    val campaign = CampaignWinnerVault.fromStorage({
+        config: CampaignWinnerConfig {
+            admin: campaignAdmin.address,
+            migration: migrationConfig(campaignAdmin.address, campaignMigration2.address),
+        }.toCell(),
+        counters: CampaignWinnerCounters {
+            winnerCount: 0,
+            totalClaimedHi: 0,
+            migratedHi: 0,
+        }.toCell(),
+        maps: CampaignWinnerMaps {
+            winners: [],
+            pendingTransfers: [],
+            migrationAllowlist: [],
+        }.toCell(),
+        oracle: campaignOracle.address,
+        winnerJettonWallet: campaignWallet.address,
+        migrationTarget: null,
+        growthConfirmedLevel: 0,
+        nextQueryId: 1,
+    });
+    campaign.deploy(campaignAdmin.address, { value: ton("0.1") });
+    campaign.sendSetCampaignMigrationTargetAllowed(
+        campaignAdmin.address,
+        target.address,
+        true,
+        { value: ton("0.05") },
+    );
+    campaign.sendSetCampaignMigrationTarget(
+        campaignAdmin.address,
+        target.address,
+        { value: ton("0.05") },
+    );
+    val campaignRes = testing.processSingleTraceStep(
+        campaignAdmin.address,
+        createMessage({
+            bounce: true,
+            value: ton("0.3"),
+            dest: campaign.address,
+            body: TransferCampaignUncommittedHiToContract { amount: 1000 * HI },
+        }),
+    );
+    expect(campaign.vaultState().3).toEqual(1000 * HI);
+    val campaignOutBody = campaignRes.outMessages.at<AskToTransfer>(0).loadBody();
+    testing.processSingleTraceStep(
+        campaignWallet.address,
+        createMessage({
+            bounce: false,
+            value: ton("0.95"),
+            dest: campaign.address,
+            body: beginCell()
+                .storeUint(0xffffffff, 32)
+                .storeSlice(campaignOutBody.toCell().beginParse())
+                .endCell(),
+        }).bounced(),
+    );
+    expect(campaign.vaultState().3).toEqual(0);
+
+    val rewardAdmin = testing.treasury("reward-migration-bounce-admin");
+    val rewardOracle = testing.treasury("reward-migration-bounce-oracle");
+    val rewardMigration2 = testing.treasury("reward-migration-bounce-migration-2");
+    val rewardWallet = testing.treasury("reward-migration-bounce-wallet");
+    val reward = MerkleRewardVault.fromStorage({
+        config: MerkleRewardConfig {
+            admin: rewardAdmin.address,
+            migration: migrationConfig(rewardAdmin.address, rewardMigration2.address),
+        }.toCell(),
+        counters: MerkleRewardCounters {
+            ecosystemTotalHi: 0,
+            universalTotalHi: 0,
+            redPacketTotalHi: 0,
+            migratedHi: 0,
+        }.toCell(),
+        maps: MerkleRewardMaps {
+            batches: [],
+            claimed: [],
+            pendingTransfers: [],
+            migrationAllowlist: [],
+        }.toCell(),
+        oracle: rewardOracle.address,
+        rewardJettonWallet: rewardWallet.address,
+        migrationTarget: null,
+        growthConfirmedLevel: 0,
+        nextQueryId: 1,
+    });
+    reward.deploy(rewardAdmin.address, { value: ton("0.1") });
+    reward.sendSetRewardMigrationTargetAllowed(
+        rewardAdmin.address,
+        target.address,
+        true,
+        { value: ton("0.05") },
+    );
+    reward.sendSetRewardMigrationTarget(
+        rewardAdmin.address,
+        target.address,
+        { value: ton("0.05") },
+    );
+    val rewardRes = testing.processSingleTraceStep(
+        rewardAdmin.address,
+        createMessage({
+            bounce: true,
+            value: ton("0.3"),
+            dest: reward.address,
+            body: TransferRewardUncommittedHiToContract { amount: 1000 * HI },
+        }),
+    );
+    expect(reward.poolState().3).toEqual(1000 * HI);
+    val rewardOutBody = rewardRes.outMessages.at<AskToTransfer>(0).loadBody();
+    testing.processSingleTraceStep(
+        rewardWallet.address,
+        createMessage({
+            bounce: false,
+            value: ton("0.95"),
+            dest: reward.address,
+            body: beginCell()
+                .storeUint(0xffffffff, 32)
+                .storeSlice(rewardOutBody.toCell().beginParse())
+                .endCell(),
+        }).bounced(),
+    );
+    expect(reward.poolState().3).toEqual(0);
+}

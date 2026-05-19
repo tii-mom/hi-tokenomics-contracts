@@ -1,10 +1,9 @@
 # Readiness Checklist
 
-Status: local GrowthEngine 7-contract implementation is green after migration
-allowlist changes. Fresh testnet deployment, business rehearsal, app contract
-integration checks, and TON Verifier dry-run are complete for the current
-allowlist hashes. Mainnet remains blocked pending explicit deployment
-authorization.
+Status: local GrowthEngine 7-contract implementation is green after audit-fix
+changes. Fresh testnet deployment, business rehearsal, app contract integration
+checks, and TON Verifier dry-run are complete for the current hashes. Mainnet
+remains blocked pending explicit deployment authorization.
 
 ## Local Build Readiness
 
@@ -12,7 +11,7 @@ authorization.
 - [x] `acton build`
 - [x] `acton wrapper --all`
 - [x] `acton wrapper --all --ts`
-- [x] `acton test` (`58 passed in 7 files`)
+- [x] `acton test` (`64 passed in 7 files`)
 - [x] `acton check`
 - [x] `CODE_HASHES.md` updated for current 7 contracts
 
@@ -38,6 +37,8 @@ authorization.
 - [x] `MerkleRewardVault` supports `requiredGrowthLevel` per batch.
 - [x] Business vault migration/rescue transfers are restricted to two
   migration wallets, admin-managed target allowlists, and one selected target.
+- [x] Migration transfer re-checks the selected target is currently allowlisted.
+- [x] Removing an allowlisted selected target clears/blocks the selected target.
 
 ## Fresh Testnet Readiness
 
@@ -52,6 +53,8 @@ authorization.
 - [x] CampaignWinner registration and claim evidence.
 - [x] MerkleReward ecosystem / universal lottery / red packet batch evidence.
 - [x] Migration/rescue smoke evidence with allowlisted targets.
+- [x] Local regression tests for allowlist revoke, migrated inventory caps, and
+  Growth/Campaign/Merkle/migration bounce rollback.
 - [x] TON Verifier dry-run for all seven fresh testnet addresses.
 - [x] `/Users/yudeyou/Desktop/100wan` contract-facing checks.
 - [x] `/Users/yudeyou/Desktop/GrowthEngine` contract-facing checks.
@@ -69,7 +72,7 @@ authorization.
 - [x] Final metadata/IPFS URI confirmation.
 - [x] Final metadata wording confirmation.
 - [x] Migration target allowlist model implemented locally.
-- [x] Independent review found no new high/medium code issue after remediation.
+- [ ] Independent review confirms the latest Medium/Low audit-fix remediation.
 - [x] Final owner sign-off on `O-01` migration permission model.
 - [ ] Explicit mainnet deployment approval.
 

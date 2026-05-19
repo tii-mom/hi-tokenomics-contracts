@@ -144,6 +144,9 @@ fun onInternalMessage(in: InMessage) {
             assert (in.valueCoins >= ton("0.25")) throw Errors.InsufficientAttachedTon;
             val target = storage.migrationTarget;
             assert (target != null) throw Errors.InvalidMessage;
+            assert (
+                isMigrationTargetAllowed(storage, target!)
+            ) throw Errors.MigrationTargetNotAllowed;
             var counters = storage.counters.load();
             assert (msg.amount > 0) throw Errors.NoClaimableAmount;
             assert (msg.amount <= growthUncommitted(counters)) throw Errors.InsufficientInventory;
@@ -382,6 +385,9 @@ fun setMigrationTargetAllowed(
         maps.migrationAllowlist.set(target, true);
     } else {
         maps.migrationAllowlist.delete(target);
+        if (storage.migrationTarget != null && storage.migrationTarget! == target) {
+            storage.migrationTarget = null;
+        }
     }
     storage.maps = maps.toCell();
 }
