@@ -1,8 +1,145 @@
 # Final GrowthEngine Testnet Evidence
 
-> Stale after the latest CampaignWinner and growth-threshold rule changes.
-> A new fresh testnet rehearsal is required before this file can be used as
-> pre-mainnet evidence.
+## Latest Fresh Testnet Evidence: 2026-05-19
+
+Status: **fresh deployment and core growth/campaign smoke passed** after the
+latest TON-chain USDT growth-threshold and CampaignWinner unlock-rule changes.
+
+This latest deployment supersedes older addresses below. Full replay of all
+Merkle/team/migration flows is still required before mainnet go/no-go.
+
+### Latest Local Gates
+
+```text
+acton fmt --check
+acton build
+acton wrapper --all
+acton wrapper --all --ts
+acton test        # 58 passed in 7 files
+acton check
+```
+
+The public GitHub repository was also synced and passed the same gate set.
+
+### Latest Fresh Deployment Configuration
+
+```text
+HI_DEPLOYMENT_SALT=fresh-usdt-campaign-20260519151301
+HI_ORACLE_CONFIRMATION_DELAY=30
+HI_GROWTH_PRICE_LEVEL_1=396000
+HI_GROWTH_PRICE_LEVEL_2=792000
+```
+
+### Latest Fresh Contract Addresses
+
+| Contract / wallet | Testnet address |
+|---|---|
+| `JettonMinter` | `kQBsDQHfFhLvwVx__x2T2uZNZ8g7fTwO_CyR23qt2W-evG5c` |
+| `PriceOracle` | `kQB_jSQjkGMh80XfgDQn4ptuc-UCIoGq3gMcLEgEwjCT8whA` |
+| `GrowthEngine` | `kQBEV7_L8Y1JMQvTybtBNDPLoMjtJxUIPNzvBdXC8MJ3i2qz` |
+| `TeamVestingVault` | `kQBKApneh-Fg5eqmuh_XDFiHUF3ASZplrmhqiFK3bzlDcxyl` |
+| `MerkleRewardVault` | `kQCYIoWJW2Eel1u0rF7Zv2rs1NV3KuCJ3vi_69j6fUpi` |
+| `CampaignWinnerVault` | `kQAbVqX2RZPU6leJTh2CPiLBQm7bSjS7-eK4k7yAUZnT5ZaX` |
+| GrowthEngine jetton wallet | `kQBEG1qHTtW8En36R3faZHgfXqviVypgcxGzIp9ZCd43j5aH` |
+| TeamVesting jetton wallet | `kQBKfWsbRec3RGpTVr95ykALBQ7Kaz8AMH4y0jvK3qTAXLFQ` |
+| MerkleReward jetton wallet | `kQCYuTYAM8VNm7VQyBCSISD_BMqLOGTReeTMV4A_lTlGfKm6` |
+| CampaignWinner jetton wallet | `kQAbVKPrvIUXmh6uwN_u2p8M55tc_QLVkEk2J4mGhEcUQvUi` |
+
+### Latest Allocation / Admin Evidence
+
+```text
+HI_GROWTH_ENGINE PRE_DROP_BALANCE=5000000000000000000
+HI_MERKLE_REWARD PRE_DROP_BALANCE=1600000000000000000
+HI_CAMPAIGN_WINNER PRE_DROP_BALANCE=400000000000000000
+HI_TEAM_VESTING PRE_DROP_BALANCE=1200000000000000000
+HI_PROJECT_FUND PRE_DROP_BALANCE=1000000000000000000
+HI_LIQUIDITY PRE_DROP_BALANCE=500000000000000000
+HI_INVESTOR PRE_DROP_BALANCE=300000000000000000
+HI_POST_MINT_TOTAL_SUPPLY=10000000000000000000
+HI MINTABLE=false
+HI ADMIN_ADDRESS=null
+```
+
+### Latest Key Transactions
+
+| Action | Testnet tx hash |
+|---|---|
+| deploy tx 1 | `1efb6f50b393c48371f5c4dced0c063977b95bfebc0350032f0853edb664c1d2` |
+| deploy tx 2 | `06f366c078d3732a238f0f7fcd0875c21d29f9ef9cabd074367594fbfe52b63e` |
+| deploy tx 3 | `32c0ddecc3699ff9daca4bab9487137664ebce21362ea7750c418e55977bc915` |
+| deploy tx 4 | `3ded31322453b02e7a6731ec6e417d38eb9548bcb6ac1e3e22fe3c8ef3d9049f` |
+| deploy tx 5 | `a6ab51631e6be526ff23ac991706a485fb90ef965ccb7e9a43398168031d358f` |
+| deploy tx 6 | `c4947df50be4c1956bde5b3931148daceb229dfcbfe4fb0840c7b58df30108b5` |
+| deploy tx 7 | `1549bb972c4581d600aed321822593c408fdfcdee319dfd4a84694729d2d38ed` |
+| deploy tx 8 | `a6430fa5953cea70620ae7ecd051ea9d806e5a6e59fba57e7a4ad96028b065b3` |
+| deploy tx 9 | `1b66445540f676090080496b2b6bf76574480251fa26c0c2406f0434be79e77c` |
+| deploy tx 10 | `d0ff56005ed0a067c9476409d38cedcd28c6f6b86fc876f3f3c7f147c7c1401a` |
+| deploy tx 11 | `1999c697c8133783c93af64c983a48927571709db9125bb0a8835f25a0a8fbbd` |
+| deploy tx 12 | `72a7dbce399821dca91f06d9248d619427899c1faca4ddf0871e94a9aeb47748` |
+| drop minter admin | `72ae3abe1f0d2f8e906ffe17bd72b27921373db412a2d35f5300a81289341b84` |
+
+### Latest GrowthEngine Smoke
+
+Level 0 buy:
+
+```text
+Buy 0.1 TON with 0.25 TON attached
+HI_GROWTH_BUYER_STATE=(100000000, 1010000000000, 0, 50500000000, 0)
+HI_GROWTH_STATE=(0, 1010000000000, 50500000000, 0, 0, 4999998990000000000)
+```
+
+This proves `10100 HI / TON` and immediate level 0 `5%`.
+
+Growth level 1 report / confirm:
+
+```text
+HI_ORACLE_PRICE=396000
+HI_ORACLE_GROWTH_CANDIDATE_STATE=(1, 1779203807, 396000)
+HI_ORACLE_GROWTH_CONFIRMED_LEVEL=1
+```
+
+Growth claim after level 1:
+
+```text
+HI_GROWTH_BUYER_STATE=(100000000, 1010000000000, 0, 151500000000, 0)
+HI_GROWTH_STATE=(1, 1010000000000, 151500000000, 0, 0, 4999998990000000000)
+```
+
+This proves level 1 adds another `10%`.
+
+### Latest CampaignWinner Smoke
+
+Winner registered after level 1:
+
+```text
+HI_CAMPAIGN_WINNER_STATE=(true, 1, 0, 0)
+HI_CAMPAIGN_VAULT_STATE=(1, 1, 0, 0)
+```
+
+This proves a late winner does not receive level 0 or already confirmed level 1.
+
+Growth level 2 report / confirm:
+
+```text
+HI_ORACLE_PRICE=792000
+HI_ORACLE_GROWTH_CANDIDATE_STATE=(2, 1779203926, 792000)
+HI_ORACLE_GROWTH_CONFIRMED_LEVEL=2
+```
+
+Winner claim after level 2:
+
+```text
+HI_CAMPAIGN_WINNER_STATE=(true, 1, 500000000000000, 0)
+HI_CAMPAIGN_VAULT_STATE=(2, 1, 500000000000000, 0)
+```
+
+This proves the late winner receives only the next confirmed growth level
+`10%` tranche: `500,000 HI` out of `5,000,000 HI`.
+
+## Older Evidence Archive
+
+> The evidence below predates the latest CampaignWinner and growth-threshold
+> rule changes. Keep it only as an audit trail, not as pre-mainnet evidence.
 
 Status: **fresh allowlist testnet rehearsal complete** for the current local
 7-contract hashes in `docs/CODE_HASHES.md`.
