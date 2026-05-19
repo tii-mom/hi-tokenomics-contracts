@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-05-19T03:03:41.244Z",
+  "minimumTon": 500,
+  "tiers": [
+    {
+      "name": "Legend",
+      "minTon": 10000
+    },
+    {
+      "name": "Diamond",
+      "minTon": 5000
+    },
+    {
+      "name": "Platinum",
+      "minTon": 2000
+    },
+    {
+      "name": "Gold",
+      "minTon": 1000
+    },
+    {
+      "name": "Silver",
+      "minTon": 500
+    }
+  ],
+  "supporters": []
+}

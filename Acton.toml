@@ -1,0 +1,105 @@
+[package]
+name = "HI Tokenomics"
+description = "HI V1 tokenomics contracts"
+version = "0.1.0"
+license = "MIT"
+
+[toolchain]
+acton = "1.0.0"
+
+[contracts.JettonMinter]
+display-name = "JettonMinter"
+src = "contracts/JettonMinter.tolk"
+depends = [{ name = "JettonWallet", path = "contracts/generated/JettonWallet.code.tolk" }]
+
+[contracts.JettonWallet]
+display-name = "JettonWallet"
+src = "contracts/JettonWallet.tolk"
+depends = []
+
+[contracts.GrowthEngine]
+display-name = "GrowthEngine"
+src = "contracts/GrowthEngine.tolk"
+depends = []
+
+[contracts.PriceOracle]
+display-name = "PriceOracle"
+src = "contracts/PriceOracle.tolk"
+depends = []
+
+[contracts.TeamVestingVault]
+display-name = "TeamVestingVault"
+src = "contracts/TeamVestingVault.tolk"
+depends = []
+
+[contracts.MerkleRewardVault]
+display-name = "MerkleRewardVault"
+src = "contracts/MerkleRewardVault.tolk"
+depends = []
+
+[contracts.CampaignWinnerVault]
+display-name = "CampaignWinnerVault"
+src = "contracts/CampaignWinnerVault.tolk"
+depends = []
+
+[test]
+
+[fmt]
+width = 100
+ignore = []
+
+[scripts]
+deploy-emulation = "acton script scripts/deploy.tolk"
+deploy-testnet = "acton script scripts/deploy.tolk --net testnet"
+deploy-hi-tokenomics-emulation = "acton script scripts/deploy-hi-tokenomics.tolk"
+deploy-hi-tokenomics-testnet = "HI_ORACLE_CONFIRMATION_DELAY=30 acton script scripts/deploy-hi-tokenomics.tolk --net testnet"
+hi-oracle-report = "acton script scripts/oracle-report.tolk"
+hi-oracle-report-testnet = "acton script scripts/oracle-report.tolk --net testnet"
+hi-oracle-confirm = "acton script scripts/oracle-confirm.tolk"
+hi-oracle-confirm-testnet = "acton script scripts/oracle-confirm.tolk --net testnet"
+hi-oracle-set-campaign-winner = "acton script scripts/oracle-set-campaign-winner.tolk"
+hi-oracle-set-campaign-winner-testnet = "acton script scripts/oracle-set-campaign-winner.tolk --net testnet"
+hi-growth-buy = "acton script scripts/growth-buy.tolk"
+hi-growth-buy-testnet = "acton script scripts/growth-buy.tolk --net testnet"
+hi-growth-claim = "acton script scripts/growth-claim.tolk"
+hi-growth-claim-testnet = "acton script scripts/growth-claim.tolk --net testnet"
+hi-team-claim = "acton script scripts/team-claim.tolk"
+hi-team-claim-testnet = "acton script scripts/team-claim.tolk --net testnet"
+hi-growth-close = "acton script scripts/growth-close.tolk"
+hi-growth-close-testnet = "acton script scripts/growth-close.tolk --net testnet"
+hi-growth-sweep-project-fund = "acton script scripts/growth-sweep-project-fund.tolk"
+hi-growth-sweep-project-fund-testnet = "acton script scripts/growth-sweep-project-fund.tolk --net testnet"
+hi-growth-migration-smoke = "acton script scripts/growth-migration-smoke.tolk"
+hi-growth-migration-smoke-testnet = "acton script scripts/growth-migration-smoke.tolk --net testnet"
+hi-reward-single-leaf-root = "acton script scripts/reward-single-leaf-root.tolk"
+hi-reward-create-batch = "acton script scripts/reward-create-batch.tolk"
+hi-reward-create-batch-testnet = "acton script scripts/reward-create-batch.tolk --net testnet"
+hi-reward-claim-empty-proof = "acton script scripts/reward-claim-empty-proof.tolk"
+hi-reward-claim-empty-proof-testnet = "acton script scripts/reward-claim-empty-proof.tolk --net testnet"
+hi-reward-migration-smoke = "acton script scripts/reward-migration-smoke.tolk"
+hi-reward-migration-smoke-testnet = "acton script scripts/reward-migration-smoke.tolk --net testnet"
+hi-campaign-winner-register = "acton script scripts/campaign-winner-register.tolk"
+hi-campaign-winner-register-testnet = "acton script scripts/campaign-winner-register.tolk --net testnet"
+hi-campaign-winner-claim = "acton script scripts/campaign-winner-claim.tolk"
+hi-campaign-winner-claim-testnet = "acton script scripts/campaign-winner-claim.tolk --net testnet"
+hi-campaign-winner-info = "acton script scripts/campaign-winner-info.tolk"
+hi-campaign-winner-info-testnet = "acton script scripts/campaign-winner-info.tolk --net testnet"
+hi-campaign-winner-migration-smoke = "acton script scripts/campaign-winner-migration-smoke.tolk"
+hi-campaign-winner-migration-smoke-testnet = "acton script scripts/campaign-winner-migration-smoke.tolk --net testnet"
+hi-top-up-ton-testnet = "acton script scripts/top-up-ton.tolk --net testnet"
+jetton-change-admin = "acton script scripts/change-admin.tolk"
+jetton-change-metadata = "acton script scripts/change-metadata.tolk"
+jetton-claim-admin = "acton script scripts/claim-admin.tolk"
+jetton-info = "acton script scripts/info.tolk"
+jetton-mint = "acton script scripts/mint.tolk"
+jetton-transfer = "acton script scripts/transfer.tolk"
+
+[import-mappings]
+acton = ".acton"
+contracts = "contracts"
+gen = "gen"
+tests = "tests"
+wrappers = "wrappers"
+
+# Check full Acton.toml reference and all available keys:
+# https://ton-blockchain.github.io/acton/docs/acton-toml

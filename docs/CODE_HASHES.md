@@ -1,0 +1,23 @@
+# HI Current Local Code Hashes
+
+Generated from current local `build/*.json` artifacts after:
+
+```bash
+acton build
+acton wrapper --all
+acton wrapper --all --ts
+acton test
+acton check
+```
+
+| Contract | Code Hash |
+|---|---|
+| `CampaignWinnerVault` | `33EF4F88E24F1EFD220A3DDC8E691A1FB1747F2EBBE95FEEC459250D9559EB53` |
+| `GrowthEngine` | `C12D4584F087474D2DCE3B7F4D42E219B2CEC73B8AE55700CD13260DCC8E1E74` |
+| `JettonMinter` | `6BF8F48CA97D3FD9C8E553344EFE7AF030C322459E2EE2197A052162F1961BFB` |
+| `JettonWallet` | `7BFA53BCE90CE26CD368EC2989EBA2BD15D286104742F0E04659F485A03012BA` |
+| `MerkleRewardVault` | `10EA78A51B8A092AF00B4B13DB8B0CC88F7DD71870393303FBF28EC1448D3238` |
+| `PriceOracle` | `2B7E5D58147CBCC57DE9A8E134867C9F676E8AB842CAB137921C6B4513061A7B` |
+| `TeamVestingVault` | `42F22F31779C8CED8CD0CFA61C2E50A56B3E5D8899D07D25C608166721A17FEE` |
+
+These are local build hashes, not testnet or mainnet verifier records.

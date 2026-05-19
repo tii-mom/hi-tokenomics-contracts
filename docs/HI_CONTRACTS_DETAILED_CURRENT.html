@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HI 当前合约系统详细说明</title>
+  <style>
+    :root {
+      --bg: #07101a;
+      --surface: #0f1a28;
+      --surface-2: #142235;
+      --surface-3: #18283d;
+      --text: #eef5ff;
+      --muted: #aab8ca;
+      --line: #2a3d56;
+      --blue: #5cc8ff;
+      --green: #77e0a3;
+      --yellow: #ffd166;
+      --red: #ff8a8a;
+      --code: #06101c;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 0%, rgba(92, 200, 255, 0.14), transparent 30%),
+        radial-gradient(circle at 90% 12%, rgba(119, 224, 163, 0.10), transparent 28%),
+        linear-gradient(180deg, #07101a 0%, #09111c 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.58;
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 34px 20px 72px;
+    }
+
+    .hero, .card {
+      border: 1px solid var(--line);
+      background: rgba(15, 26, 40, 0.94);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.22);
+    }
+
+    .hero {
+      border-radius: 18px;
+      padding: 26px;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, rgba(92, 200, 255, 0.16), rgba(119, 224, 163, 0.08));
+    }
+
+    .card {
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 34px;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-top: 4px;
+    }
+
+    h3 {
+      font-size: 17px;
+      margin-top: 18px;
+    }
+
+    p, li, td {
+      color: var(--muted);
+    }
+
+    a { color: var(--blue); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .grid3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .full { grid-column: 1 / -1; }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 10px;
+      margin: 0 8px 8px 0;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .ok { color: var(--green); }
+    .warn { color: var(--yellow); }
+    .bad { color: var(--red); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 0;
+      font-size: 14px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: #e4eefc;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Consolas, Menlo, monospace;
+      background: var(--code);
+      color: #dcecff;
+      border: 1px solid #233753;
+      border-radius: 10px;
+    }
+
+    code {
+      padding: 2px 6px;
+      white-space: nowrap;
+    }
+
+    pre {
+      padding: 14px;
+      overflow: auto;
+      white-space: pre;
+    }
+
+    ul {
+      margin: 8px 0 0 20px;
+      padding: 0;
+    }
+
+    .note, .warning {
+      border-radius: 10px;
+      padding: 11px 13px;
+      margin-top: 10px;
+    }
+
+    .note {
+      border-left: 3px solid var(--blue);
+      background: rgba(92, 200, 255, 0.07);
+    }
+
+    .warning {
+      border-left: 3px solid var(--yellow);
+      background: rgba(255, 209, 102, 0.08);
+    }
+
+    .kpi {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface-2);
+      padding: 14px;
+      min-height: 118px;
+    }
+
+    .kpi strong {
+      display: block;
+      color: var(--text);
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .kpi span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface-2);
+      padding: 12px;
+      min-height: 104px;
+    }
+
+    .step strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .small { font-size: 13px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Consolas, Menlo, monospace; }
+
+    @media (max-width: 920px) {
+      .grid, .grid3, .flow { grid-template-columns: 1fr; }
+      h1 { font-size: 28px; }
+      .wrap { padding: 22px 14px 48px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>HI 当前合约系统详细说明</h1>
+      <p>本文档说明当前 HI V1 合约系统：发行后代币如何分配、7 个合约分别负责什么、价格解锁如何推进、500万 HI 活动如何上链承载，以及合约之间如何关联。当前状态是主网前审批完成，等待明确主网部署授权；本文不代表已经主网部署。</p>
+      <span class="badge ok">总量 10,000,000,000 HI</span>
+      <span class="badge ok">当前架构：7 个合约</span>
+      <span class="badge ok">GrowthEngine 替代 PublicSale</span>
+      <span class="badge warn">主网部署尚未授权</span>
+    </section>
+
+    <section class="grid3">
+      <div class="kpi">
+        <strong>50%</strong>
+        <span>增长引擎：5,000,000,000 HI。用户用 TON 购买，按 USDT 价格达标分批释放。</span>
+      </div>
+      <div class="kpi">
+        <strong>20%</strong>
+        <span>生态与活动奖励：2,000,000,000 HI。其中 16% 在 MerkleRewardVault，4% 在 CampaignWinnerVault。</span>
+      </div>
+      <div class="kpi">
+        <strong>12%</strong>
+        <span>团队持有：1,200,000,000 HI。按 0.1 / 0.5 / 1 / 5 USDT 四个价格档释放。</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>核心发行原则</h2>
+        <ul>
+          <li>HI 总量固定：<code>10,000,000,000 HI</code>，精度 <code>9 decimals</code>。</li>
+          <li>部署时一次性 mint 全部供应并完成分配。</li>
+          <li>分配完成后 <code>JettonMinter</code> admin 被 drop，后续不能增发。</li>
+          <li>不设计税费、黑名单、冻结、暂停转账、强制转账、强制燃烧。</li>
+          <li>增长、团队、活动奖励的解锁条件都来自 <code>PriceOracle</code> 确认后的价格 level。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>时间锁与价格确认</h2>
+        <ul>
+          <li>当前只有 <code>PriceOracle.confirmationDelay</code> 这一类时间锁。</li>
+          <li>测试网复演使用 <code>30</code> 秒，方便跑完整流程。</li>
+          <li>主网部署必须使用 <code>86400</code> 秒，即价格达到门槛后保持 24 小时才可确认。</li>
+          <li><code>GrowthEngine</code>、<code>CampaignWinnerVault</code>、<code>MerkleRewardVault</code>、<code>TeamVestingVault</code> 自身没有额外时间锁。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>发行后代币分配</h2>
+      <table>
+        <tr>
+          <th>模块</th>
+          <th>占比</th>
+          <th>数量</th>
+          <th>接收方</th>
+          <th>释放/使用逻辑</th>
+        </tr>
+        <tr>
+          <td>增长引擎</td>
+          <td><code>50%</code></td>
+          <td><code>5,000,000,000 HI</code></td>
+          <td><code>GrowthEngine</code></td>
+          <td>用户用 TON 购买，价格固定 <code>1 TON = 10,100 HI</code>。购买后立即释放 5%，growth level 1-9 每轮释放 10%，level 10 释放最后 5%。晚买不补历史轮次。</td>
+        </tr>
+        <tr>
+          <td>生态 Merkle 奖励</td>
+          <td><code>16%</code></td>
+          <td><code>1,600,000,000 HI</code></td>
+          <td><code>MerkleRewardVault</code></td>
+          <td>管理员创建 Merkle batch，用户凭 proof 领取。batch 可以设置 <code>requiredGrowthLevel</code>，只有达到对应 growth level 后才可领取。</td>
+        </tr>
+        <tr>
+          <td>活动大奖池</td>
+          <td><code>4%</code></td>
+          <td><code>400,000,000 HI</code></td>
+          <td><code>CampaignWinnerVault</code></td>
+          <td>最多 80 个 winner，每人固定 <code>5,000,000 HI</code>。注册时记录 entry level，按增长引擎同样的 5/10/.../5 规则释放，晚注册不补历史轮次。</td>
+        </tr>
+        <tr>
+          <td>团队持有</td>
+          <td><code>12%</code></td>
+          <td><code>1,200,000,000 HI</code></td>
+          <td><code>TeamVestingVault</code></td>
+          <td>价格达到 0.1 / 0.5 / 1 / 5 USDT 后，每档释放 <code>300,000,000 HI</code> 到固定团队钱包。</td>
+        </tr>
+        <tr>
+          <td>项目基金</td>
+          <td><code>10%</code></td>
+          <td><code>1,000,000,000 HI</code></td>
+          <td>固定项目基金钱包</td>
+          <td>用于投资、回购、运营和保障项目可持续发展。GrowthEngine 永久关闭后的未售与 missed HI 也只能 sweep 到该钱包。</td>
+        </tr>
+        <tr>
+          <td>流动性池子</td>
+          <td><code>5%</code></td>
+          <td><code>500,000,000 HI</code></td>
+          <td>固定流动性钱包</td>
+          <td>用于流动性部署和市场支持。</td>
+        </tr>
+        <tr>
+          <td>投资及早期</td>
+          <td><code>3%</code></td>
+          <td><code>300,000,000 HI</code></td>
+          <td>固定投资及早期钱包</td>
+          <td>用于投资人和早期支持者分配。</td>
+        </tr>
+      </table>
+      <p class="note">生态奖励总口径是 <code>20%</code>。链上拆成 <code>MerkleRewardVault 16%</code> 与 <code>CampaignWinnerVault 4%</code>，这样 500万 HI 达成大奖池可以独立按价格 level 解锁，抽奖/红包/生态批次则统一走 Merkle claim。</p>
+    </section>
+
+    <section class="card">
+      <h2>合约关系总览</h2>
+      <pre>
+JettonMinter
+  ├─ 5,000,000,000 HI → GrowthEngine
+  ├─ 1,600,000,000 HI → MerkleRewardVault
+  ├─   400,000,000 HI → CampaignWinnerVault
+  ├─ 1,200,000,000 HI → TeamVestingVault
+  ├─ 1,000,000,000 HI → Project Fund Wallet
+  ├─   500,000,000 HI → Liquidity Wallet
+  └─   300,000,000 HI → Investor / Early Wallet
+
+PriceOracle
+  ├─ growthConfirmedLevel 0-10 → GrowthEngine
+  ├─ growthConfirmedLevel 0-10 → CampaignWinnerVault
+  ├─ growthConfirmedLevel 0-10 → MerkleRewardVault
+  └─ teamConfirmedLevel   0-4  → TeamVestingVault
+
+Users
+  ├─ buy / claim GrowthEngine
+  ├─ claim CampaignWinnerVault if registered as winner
+  └─ claim MerkleRewardVault if included in Merkle batch
+      </pre>
+    </section>
+
+    <section class="card">
+      <h2>部署与发行流程</h2>
+      <div class="flow">
+        <div class="step"><strong>1. 部署 JettonMinter</strong><span>设置 HI metadata，部署时 admin 临时保留 mint 权限。</span></div>
+        <div class="step"><strong>2. 部署业务合约</strong><span>部署 GrowthEngine、PriceOracle、TeamVestingVault、CampaignWinnerVault、MerkleRewardVault。</span></div>
+        <div class="step"><strong>3. 配置 Jetton Wallet</strong><span>给四个持币业务合约注入各自的 HI Jetton Wallet 地址。</span></div>
+        <div class="step"><strong>4. 完成分配</strong><span>按 50/16/4/12/10/5/3 把全部 HI 分配到合约和固定钱包。</span></div>
+        <div class="step"><strong>5. 配置 Oracle 目标</strong><span>PriceOracle 绑定 GrowthEngine、TeamVestingVault、CampaignWinnerVault、MerkleRewardVault。</span></div>
+        <div class="step"><strong>6. Drop Minter Admin</strong><span>断言各分配钱包余额和总供应后，弃权 minter admin。</span></div>
+        <div class="step"><strong>7. 运营阶段</strong><span>oracle admin 上报价格，用户购买和 claim，reward admin 创建 Merkle batch。</span></div>
+        <div class="step"><strong>8. 主网证据</strong><span>记录地址、交易 hash、code hash、余额、verifier 结果。</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>1. JettonMinter</h2>
+      <table>
+        <tr><th>项目</th><th>说明</th></tr>
+        <tr><td>核心职责</td><td>HI 主合约，负责 total supply、metadata、mint、JettonWallet 地址发现。</td></tr>
+        <tr><td>发行方式</td><td>部署阶段一次性 mint 并完成全部分配。</td></tr>
+        <tr><td>权限终局</td><td>分配完成后 drop admin；主网最终状态应为 <code>mintable=false</code>、<code>admin=null</code>。</td></tr>
+        <tr><td>metadata</td><td><code>name=Human Intention</code>，<code>symbol=HI</code>，<code>decimals=9</code>，图片与 JSON 已上传 IPFS。</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>2. JettonWallet</h2>
+      <table>
+        <tr><th>项目</th><th>说明</th></tr>
+        <tr><td>核心职责</td><td>标准 HI 持仓钱包。每个用户、业务合约、固定分配钱包都有自己的 JettonWallet。</td></tr>
+        <tr><td>安全边界</td><td>owner 才能发起转账或 burn；minter 不能强制转走用户余额。</td></tr>
+        <tr><td>bounce 处理</td><td>内部转账失败时恢复余额，避免失败转账污染账本。</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>3. GrowthEngine</h2>
+      <p>GrowthEngine 是当前的公开增长销售合约，已替代旧 PublicSale。它没有即时池，全部按锁仓释放规则处理。</p>
+      <table>
+        <tr><th>项目</th><th>说明</th></tr>
+        <tr><td>资金规模</td><td><code>5,000,000,000 HI</code></td></tr>
+        <tr><td>购买价格</td><td><code>1 TON = 10,100 HI</code></td></tr>
+        <tr><td>购买限制</td><td>最小单笔 <code>0.1 TON</code>；单钱包累计最多 <code>5000 TON</code>。</td></tr>
+        <tr><td>释放规则</td><td>购买后立即释放 <code>5%</code>；growth level 1-9 每轮释放 <code>10%</code>；level 10 释放最后 <code>5%</code>。</td></tr>
+        <tr><td>晚买不补</td><td>购买时记录 <code>entryLevel</code>。历史已确认轮次不补发，记录为 missed HI。</td></tr>
+        <tr><td>失败处理</td><td>Jetton 转账 bounce 后回滚 claimed/sold/missed 等状态，避免半成功。</td></tr>
+        <tr><td>销售关闭</td><td>永久关闭后，未售 HI 与 missed HI 只能 sweep 到固定项目基金钱包；已售未领取部分不能被 sweep。</td></tr>
+      </table>
+
+      <h3>GrowthEngine 释放示例</h3>
+      <table>
+        <tr><th>用户进入时 level</th><th>进入后立即得到</th><th>后续可领取</th><th>说明</th></tr>
+        <tr><td><code>0</code></td><td><code>5%</code></td><td>level 1-9 各 10%，level 10 为 5%</td><td>完整可拿 100%。</td></tr>
+        <tr><td><code>3</code></td><td><code>5%</code></td><td>level 4-9 各 10%，level 10 为 5%</td><td>level 1-3 的 30% 不补，计入 missed。</td></tr>
+        <tr><td><code>10</code></td><td><code>5%</code></td><td>无后续轮次</td><td>只获得进入时立即释放部分。</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>4. PriceOracle</h2>
+      <p>PriceOracle 是价格达标确认合约。它不负责交易定价，也不持有 HI；它只把价格达标和保持时间转换成链上的 confirmed level。</p>
+      <table>
+        <tr><th>项目</th><th>说明</th></tr>
+        <tr><td>权限</td><td>oracle admin 上报价格；confirm 可以由 keeper 触发，但必须满足候选 level 与时间锁。</td></tr>
+        <tr><td>时间锁</td><td>主网 <code>86400</code> 秒；测试网复演 <code>30</code> 秒。</td></tr>
+        <tr><td>增长 level</td><td><code>growthConfirmedLevel</code> 范围 <code>0-10</code>，同步给 GrowthEngine、CampaignWinnerVault、MerkleRewardVault。</td></tr>
+        <tr><td>团队 level</td><td><code>teamConfirmedLevel</code> 范围 <code>0-4</code>，同步给 TeamVestingVault。</td></tr>
+        <tr><td>不可变性</td><td>confirmed level 只能递增，不能回退、不能跳级、不能超过上限。</td></tr>
+      </table>
+
+      <h3>Growth level 门槛</h3>
+      <table>
+        <tr><th>level</th><th>USDT/HI 门槛</th><th>影响范围</th></tr>
+        <tr><td>1</td><td><code>0.0008</code></td><td>GrowthEngine / CampaignWinner / Merkle requiredGrowthLevel</td></tr>
+        <tr><td>2</td><td><code>0.0016</code></td><td>同上</td></tr>
+        <tr><td>3</td><td><code>0.0032</code></td><td>同上</td></tr>
+        <tr><td>4</td><td><code>0.0064</code></td><td>同上</td></tr>
+        <tr><td>5</td><td><code>0.0128</code></td><td>同上</td></tr>
+        <tr><td>6</td><td><code>0.0256</code></td><td>同上</td></tr>
+        <tr><td>7</td><td><code>0.0512</code></td><td>同上</td></tr>
+        <tr><td>8</td><td><code>0.1024</code></td><td>同上</td></tr>
+        <tr><td>9</td><td><code>0.2048</code></td><td>同上</td></tr>
+        <tr><td>10</td><td><code>0.4096</code></td><td>同上，GrowthEngine 与 CampaignWinner 最后一轮 5%</td></tr>
+      </table>
+
+      <h3>Team level 门槛</h3>
+      <table>
+        <tr><th>team level</th><th>USDT/HI 门槛</th><th>团队释放</th></tr>
+        <tr><td>1</td><td><code>0.1</code></td><td><code>300,000,000 HI</code></td></tr>
+        <tr><td>2</td><td><code>0.5</code></td><td><code>300,000,000 HI</code></td></tr>
+        <tr><td>3</td><td><code>1</code></td><td><code>300,000,000 HI</code></td></tr>
+        <tr><td>4</td><td><code>5</code></td><td><code>300,000,000 HI</code></td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>5. TeamVestingVault</h2>
+      <table>
+        <tr><th>项目</th><th>说明</th></tr>
+        <tr><td>资金规模</td><td><code>1,200,000,000 HI</code></td></tr>
+        <tr><td>释放方式</td><td>价格释放，不再使用 30 天时间释放。</td></tr>
+        <tr><td>释放门槛</td><td>team level 1-4，对应 <code>0.1 / 0.5 / 1 / 5 USDT</code>。</td></tr>
+        <tr><td>领取目的地</td><td>固定团队钱包，不能临时指定任意地址。</td></tr>
+        <tr><td>累计领取</td><td>如果之前未领取，团队可以一次领取历史已释放但未领取部分。</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>6. CampaignWinnerVault</h2>
+      <p>CampaignWinnerVault 承载 500万 HI 达成大奖池，用于最多 80 个 winner 的链上锁仓奖励。</p>
+      <table>
+        <tr><th>项目</th><th>说明</th></tr>
+        <tr><td>资金规模</td><td><code>400,000,000 HI</code></td></tr>
+        <tr><td>winner 数量</td><td>最多 <code>80</code> 个。</td></tr>
+        <tr><td>单个 winner</td><td>固定 <code>5,000,000 HI</code>。</td></tr>
+        <tr><td>注册权限</td><td>只能由 admin 注册，合约不处理 Telegram、邀请关系、风控判断。</td></tr>
+        <tr><td>entry level</td><td>注册 winner 时记录当前 <code>growthConfirmedLevel</code>。</td></tr>
+        <tr><td>释放规则</td><td>与 GrowthEngine 对齐：注册后立即可领 5%，之后只从下一轮开始释放，level 10 最后 5%。历史轮次不补。</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>7. MerkleRewardVault</h2>
+      <p>MerkleRewardVault 统一承载 ecosystem、universal lottery、red packet 三类 Merkle batch。链下系统负责计算资格、金额和风控；合约只验证 Merkle proof、防重复领取并发 HI。</p>
+      <table>
+        <tr><th>poolType</th><th>用途</th><th>池子上限</th><th>说明</th></tr>
+        <tr><td><code>1</code></td><td>生态奖励 ecosystem</td><td><code>1,600,000,000 HI</code></td><td>生态激励、运营奖励、项目活动批次。</td></tr>
+        <tr><td><code>2</code></td><td>普惠抽奖 universal lottery</td><td><code>80,000,000 HI</code></td><td>500万 HI 活动中的普惠抽奖结果，由后端离线计算。</td></tr>
+        <tr><td><code>3</code></td><td>红包传播 red packet</td><td><code>20,000,000 HI</code></td><td>2000 个 10,000 HI 红包，后端生成 batch。</td></tr>
+      </table>
+      <table>
+        <tr><th>机制</th><th>说明</th></tr>
+        <tr><td>batch 创建</td><td>admin 创建 <code>batchId</code>、<code>root</code>、<code>totalHi</code>、<code>metadataHash</code>、<code>poolType</code>、<code>requiredGrowthLevel</code>。</td></tr>
+        <tr><td>领取</td><td>用户提交 <code>batchId</code>、<code>amount</code>、<code>proof</code>，合约验证 leaf 和 proof。</td></tr>
+        <tr><td>防重复</td><td>同一 <code>batchId + address</code> 只能领取一次。</td></tr>
+        <tr><td>价格门槛</td><td>如果 batch 设置 <code>requiredGrowthLevel</code>，必须等 PriceOracle 同步到对应 growth level 后才能 claim。</td></tr>
+        <tr><td>proof 编码</td><td>使用 chained/ref proof，避免单 cell proof 过浅导致大 batch 无法领取。</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>合约权限矩阵</h2>
+      <table>
+        <tr><th>角色</th><th>权限</th><th>不能做什么</th></tr>
+        <tr><td>admin / deployer / reward admin</td><td>部署、设置业务合约 Jetton Wallet、开关 GrowthEngine、创建 Merkle batch、注册 Campaign winner、设置 migration allowlist。</td><td>不能增发已 drop admin 后的 HI，不能转走用户已承诺权益，不能冻结用户钱包。</td></tr>
+        <tr><td>oracle admin</td><td>上报 growth/team 价格，启动候选 level 计时。</td><td>不能修改门槛，不能跳过 24 小时，不能回退 confirmed level。</td></tr>
+        <tr><td>keeper / anyone</td><td>在价格候选 level 满足时间锁后调用 confirm。</td><td>不能凭空确认，不能跳级。</td></tr>
+        <tr><td>migration wallet 1 / 2</td><td>选择 admin allowlist 中的迁移目标，并迁移未承诺 HI。</td><td>不能迁移用户已购、winner 已注册、Merkle 已发布、团队已解锁额度。</td></tr>
+        <tr><td>用户</td><td>购买 GrowthEngine、领取 GrowthEngine、领取 CampaignWinner、领取 Merkle batch。</td><td>不能修改合约参数或替他人领取。</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>受限迁移机制</h2>
+      <p>四个持币业务合约都预留迁移/救援路径：<code>GrowthEngine</code>、<code>TeamVestingVault</code>、<code>CampaignWinnerVault</code>、<code>MerkleRewardVault</code>。当前 V1 已确认接受以下模型：</p>
+      <table>
+        <tr><th>规则</th><th>说明</th></tr>
+        <tr><td>目标 allowlist</td><td>管理员先通过 <code>Set*MigrationTargetAllowed</code> 把目标地址加入 allowlist。</td></tr>
+        <tr><td>双迁移钱包</td><td>两个指定 migration wallet 任意一个都可以选择 allowlist 中的目标并发起迁移。</td></tr>
+        <tr><td>只能迁移未承诺 HI</td><td>未售、未注册、未发布 batch、未解锁的合约余额可以迁移；用户权益和已承诺余额不能迁移。</td></tr>
+        <tr><td>不做 code-hash check</td><td>V1 不加入 code-hash check 或 timelock governance；目标地址需要通过部署文档、多签流程和审计记录控制。</td></tr>
+      </table>
+      <p class="warning">这是高信任运维权限，不是用户资金提现权限。主网应使用多签或强隔离钱包作为 migration wallet，并公开每次 allowlist 与迁移动作。</p>
+    </section>
+
+    <section class="card">
+      <h2>主要消息接口</h2>
+      <div class="grid">
+        <div>
+          <h3>GrowthEngine</h3>
+          <pre>BuyGrowth
+ClaimGrowth
+SetGrowthEnabled
+SetGrowthConfirmedLevel
+CloseGrowthEngine
+SweepGrowthProjectFund
+WithdrawGrowthTons
+SetGrowthJettonWallet
+SetGrowthMigrationTargetAllowed
+SetGrowthMigrationTarget
+TransferGrowthUncommittedHiToContract</pre>
+        </div>
+        <div>
+          <h3>PriceOracle</h3>
+          <pre>ReportGrowthPrice
+ConfirmGrowthLevel
+ReportTeamPrice
+ConfirmTeamLevel
+SetOracleTargets
+SetCampaignWinnerTarget</pre>
+        </div>
+        <div>
+          <h3>TeamVestingVault</h3>
+          <pre>SyncTeamPriceLevel
+ClaimTeam
+SetTeamJettonWallet
+SetTeamMigrationTargetAllowed
+SetTeamMigrationTarget
+TransferTeamUncommittedHiToContract</pre>
+        </div>
+        <div>
+          <h3>CampaignWinnerVault</h3>
+          <pre>RegisterCampaignWinner
+ClaimCampaignWinner
+SetCampaignWinnerJettonWallet
+SetGrowthConfirmedLevel
+SetCampaignMigrationTargetAllowed
+SetCampaignMigrationTarget
+TransferCampaignUncommittedHiToContract</pre>
+        </div>
+        <div class="full">
+          <h3>MerkleRewardVault</h3>
+          <pre>CreateRewardBatch
+ClaimReward
+SetRewardJettonWallet
+SetRewardGrowthLevel
+SetRewardMigrationTargetAllowed
+SetRewardMigrationTarget
+TransferRewardUncommittedHiToContract</pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>当前主网前状态</h2>
+      <table>
+        <tr><th>检查项</th><th>状态</th></tr>
+        <tr><td>本地合约门禁</td><td><span class="ok">通过</span>：<code>acton fmt --check</code>、<code>acton build</code>、<code>acton wrapper --all</code>、<code>acton wrapper --all --ts</code>、<code>acton test</code>、<code>acton check</code>。</td></tr>
+        <tr><td>测试结果</td><td><span class="ok">通过</span>：<code>58 passed in 7 files</code>。</td></tr>
+        <tr><td>测试网复演</td><td><span class="ok">完成</span>：30 秒 oracle delay，覆盖购买、claim、growth level、team level、CampaignWinner、MerkleReward、migration smoke、verifier dry-run。</td></tr>
+        <tr><td>两个项目合约相关检查</td><td><span class="ok">通过</span>：<code><local-100wan-workspace></code> 与 <code><local-growthengine-workspace></code> 的 lint/test/build 已通过。</td></tr>
+        <tr><td>metadata</td><td><span class="ok">确认</span>：metadata JSON 与 logo 已上传 IPFS，gateway 返回 200。</td></tr>
+        <tr><td>主网状态</td><td><span class="warn">未部署</span>：当前只等待明确授权执行主网部署。</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>metadata</h2>
+      <table>
+        <tr><th>字段</th><th>值</th></tr>
+        <tr><td>name</td><td><code>Human Intention</code></td></tr>
+        <tr><td>symbol</td><td><code>HI</code></td></tr>
+        <tr><td>decimals</td><td><code>9</code></td></tr>
+        <tr><td>description</td><td><code>Human Intention (HI) helps users better command Agents. Its innovative token release mechanism rewards true crypto believers.</code></td></tr>
+        <tr><td>image</td><td><code>ipfs://bafybeiccmlxpjecldfui2heolxevwmkcwa4oxklhbdjy2jca56ttodetom</code></td></tr>
+        <tr><td>metadata JSON</td><td><code>ipfs://bafkreiboziv7sd4dyfh4zn5iuwchxisldchidopfhns5gc36mbmo2atadq</code></td></tr>
+        <tr><td>website</td><td><code>https://smt.it.com</code></td></tr>
+        <tr><td>telegram</td><td><code>https://t.me/HumanIntention</code></td></tr>
+        <tr><td>X / Twitter</td><td><code>https://x.com/72hour_s</code></td></tr>
+      </table>
+    </section>
+  </div>
+</body>
+</html>
