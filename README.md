@@ -19,8 +19,9 @@ HI currently uses 7 deployable contracts:
 - `CampaignWinnerVault.tolk`: 500万 HI campaign winner vault. Admin registers up
   to 80 winners; each winner receives `5,000,000 HI` following the same
   GrowthEngine release schedule.
-- `MerkleRewardVault.tolk`: unified immutable Merkle claim vault for ecosystem,
-  universal lottery, and red-packet batches, with `requiredGrowthLevel` gating.
+- `MerkleRewardVault.tolk`: unified immutable Merkle claim vault for ecosystem
+  and red-packet batches, with `requiredGrowthLevel` gating. `poolType=2`
+  universal lottery is encoded but disabled in V1 with a `0 HI` cap.
 
 Old `PublicSale` source, wrappers, and scripts are removed from the active
 workspace.

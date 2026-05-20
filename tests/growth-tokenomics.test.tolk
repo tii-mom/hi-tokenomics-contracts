@@ -986,6 +986,215 @@ get fun `test reward batch cap accounts for migrated inventory`() {
     });
 }
 
+get fun `test merkle reward: universal lottery cap is 80M HI`() {
+    val admin = testing.treasury("reward-lottery-cap-admin");
+    val oracle = testing.treasury("reward-lottery-cap-oracle");
+    val migration2 = testing.treasury("reward-lottery-cap-migration-2");
+    val jettonWallet = testing.treasury("reward-lottery-cap-jetton-wallet");
+    val vault = MerkleRewardVault.fromStorage({
+        config: MerkleRewardConfig {
+            admin: admin.address,
+            migration: migrationConfig(admin.address, migration2.address),
+        }.toCell(),
+        counters: MerkleRewardCounters {
+            ecosystemTotalHi: 0,
+            universalTotalHi: 0,
+            redPacketTotalHi: 0,
+            migratedHi: 0,
+        }.toCell(),
+        maps: MerkleRewardMaps {
+            batches: [],
+            claimed: [],
+            pendingTransfers: [],
+            migrationAllowlist: [],
+        }.toCell(),
+        oracle: oracle.address,
+        rewardJettonWallet: jettonWallet.address,
+        migrationTarget: null,
+        growthConfirmedLevel: 0,
+        nextQueryId: 1,
+    });
+    expect(vault.deploy(admin.address, { value: ton("0.1") })).toHaveSuccessfulDeploy({
+        to: vault.address,
+    });
+    val lotteryCap = 1 * HI;
+    expect(
+        vault.sendCreateRewardBatch(
+            admin.address,
+            91,
+            beginCell().storeUint(91, 256).hash(),
+            lotteryCap,
+            0,
+            2,
+            0,
+            { value: ton("0.05") },
+        ),
+    ).toHaveFailedTx<CreateRewardBatch>({
+        from: admin.address,
+        to: vault.address,
+        exitCode: Errors.InsufficientInventory,
+    });
+    expect(
+        vault.sendCreateRewardBatch(
+            admin.address,
+            92,
+            beginCell().storeUint(92, 256).hash(),
+            0,
+            0,
+            2,
+            0,
+            { value: ton("0.05") },
+        ),
+    ).toHaveSuccessfulTx<CreateRewardBatch>({
+        from: admin.address,
+        to: vault.address,
+    });
+}
+
+get fun `test merkle reward: red packet cap is 100M HI`() {
+    val admin = testing.treasury("reward-red-packet-cap-admin");
+    val oracle = testing.treasury("reward-red-packet-cap-oracle");
+    val migration2 = testing.treasury("reward-red-packet-cap-migration-2");
+    val jettonWallet = testing.treasury("reward-red-packet-cap-jetton-wallet");
+    val vault = MerkleRewardVault.fromStorage({
+        config: MerkleRewardConfig {
+            admin: admin.address,
+            migration: migrationConfig(admin.address, migration2.address),
+        }.toCell(),
+        counters: MerkleRewardCounters {
+            ecosystemTotalHi: 0,
+            universalTotalHi: 0,
+            redPacketTotalHi: 0,
+            migratedHi: 0,
+        }.toCell(),
+        maps: MerkleRewardMaps {
+            batches: [],
+            claimed: [],
+            pendingTransfers: [],
+            migrationAllowlist: [],
+        }.toCell(),
+        oracle: oracle.address,
+        rewardJettonWallet: jettonWallet.address,
+        migrationTarget: null,
+        growthConfirmedLevel: 0,
+        nextQueryId: 1,
+    });
+    expect(vault.deploy(admin.address, { value: ton("0.1") })).toHaveSuccessfulDeploy({
+        to: vault.address,
+    });
+    val redPacketCap = 100000000 * HI;
+    expect(
+        vault.sendCreateRewardBatch(
+            admin.address,
+            93,
+            beginCell().storeUint(93, 256).hash(),
+            redPacketCap,
+            0,
+            3,
+            0,
+            { value: ton("0.05") },
+        ),
+    ).toHaveSuccessfulTx<CreateRewardBatch>({
+        from: admin.address,
+        to: vault.address,
+    });
+    expect(
+        vault.sendCreateRewardBatch(
+            admin.address,
+            94,
+            beginCell().storeUint(94, 256).hash(),
+            1 * HI,
+            0,
+            3,
+            0,
+            { value: ton("0.05") },
+        ),
+    ).toHaveFailedTx<CreateRewardBatch>({
+        from: admin.address,
+        to: vault.address,
+        exitCode: Errors.InsufficientInventory,
+    });
+}
+
+get fun `test merkle reward: ecosystem uses remaining 1_6B global cap after red packets`() {
+    val admin = testing.treasury("reward-global-subcap-admin");
+    val oracle = testing.treasury("reward-global-subcap-oracle");
+    val migration2 = testing.treasury("reward-global-subcap-migration-2");
+    val jettonWallet = testing.treasury("reward-global-subcap-jetton-wallet");
+    val vault = MerkleRewardVault.fromStorage({
+        config: MerkleRewardConfig {
+            admin: admin.address,
+            migration: migrationConfig(admin.address, migration2.address),
+        }.toCell(),
+        counters: MerkleRewardCounters {
+            ecosystemTotalHi: 0,
+            universalTotalHi: 0,
+            redPacketTotalHi: 0,
+            migratedHi: 0,
+        }.toCell(),
+        maps: MerkleRewardMaps {
+            batches: [],
+            claimed: [],
+            pendingTransfers: [],
+            migrationAllowlist: [],
+        }.toCell(),
+        oracle: oracle.address,
+        rewardJettonWallet: jettonWallet.address,
+        migrationTarget: null,
+        growthConfirmedLevel: 0,
+        nextQueryId: 1,
+    });
+    expect(vault.deploy(admin.address, { value: ton("0.1") })).toHaveSuccessfulDeploy({
+        to: vault.address,
+    });
+    expect(
+        vault.sendCreateRewardBatch(
+            admin.address,
+            96,
+            beginCell().storeUint(96, 256).hash(),
+            100000000 * HI,
+            0,
+            3,
+            0,
+            { value: ton("0.05") },
+        ),
+    ).toHaveSuccessfulTx<CreateRewardBatch>({
+        from: admin.address,
+        to: vault.address,
+    });
+    expect(
+        vault.sendCreateRewardBatch(
+            admin.address,
+            97,
+            beginCell().storeUint(97, 256).hash(),
+            1500000000 * HI,
+            0,
+            1,
+            0,
+            { value: ton("0.05") },
+        ),
+    ).toHaveSuccessfulTx<CreateRewardBatch>({
+        from: admin.address,
+        to: vault.address,
+    });
+    expect(
+        vault.sendCreateRewardBatch(
+            admin.address,
+            98,
+            beginCell().storeUint(98, 256).hash(),
+            1 * HI,
+            0,
+            1,
+            0,
+            { value: ton("0.05") },
+        ),
+    ).toHaveFailedTx<CreateRewardBatch>({
+        from: admin.address,
+        to: vault.address,
+        exitCode: Errors.InsufficientInventory,
+    });
+}
+
 get fun `test campaign registration cap accounts for migrated inventory`() {
     val admin = testing.treasury("campaign-cap-admin");
     val oracle = testing.treasury("campaign-cap-oracle");
@@ -1022,6 +1231,164 @@ get fun `test campaign registration cap accounts for migrated inventory`() {
         from: admin.address,
         to: vault.address,
         exitCode: Errors.InsufficientInventory,
+    });
+}
+
+get fun `test campaign winner: exactly 80 five million HI rewards are allowed`() {
+    val admin = testing.treasury("campaign-80-admin");
+    val oracle = testing.treasury("campaign-80-oracle");
+    val migration2 = testing.treasury("campaign-80-migration-2");
+    val jettonWallet = testing.treasury("campaign-80-jetton-wallet");
+    val winner80 = testing.treasury("campaign-80-winner");
+    val winner81 = testing.treasury("campaign-81-winner");
+    val vault = CampaignWinnerVault.fromStorage({
+        config: CampaignWinnerConfig {
+            admin: admin.address,
+            migration: migrationConfig(admin.address, migration2.address),
+        }.toCell(),
+        counters: CampaignWinnerCounters {
+            winnerCount: 79,
+            totalClaimedHi: 0,
+            migratedHi: 0,
+        }.toCell(),
+        maps: CampaignWinnerMaps {
+            winners: [],
+            pendingTransfers: [],
+            migrationAllowlist: [],
+        }.toCell(),
+        oracle: oracle.address,
+        winnerJettonWallet: jettonWallet.address,
+        migrationTarget: null,
+        growthConfirmedLevel: 0,
+        nextQueryId: 1,
+    });
+    expect(vault.deploy(admin.address, { value: ton("0.1") })).toHaveSuccessfulDeploy({
+        to: vault.address,
+    });
+    expect(
+        vault.sendRegisterCampaignWinner(admin.address, winner80.address, { value: ton("0.05") }),
+    ).toHaveSuccessfulTx<RegisterCampaignWinner>({
+        from: admin.address,
+        to: vault.address,
+    });
+    expect(vault.vaultState().1).toEqual(80);
+    expect(vault.claimable(winner80.address)).toEqual(WINNER_ALLOCATION * 5 / 100);
+    expect(
+        vault.sendRegisterCampaignWinner(admin.address, winner81.address, { value: ton("0.05") }),
+    ).toHaveFailedTx<RegisterCampaignWinner>({
+        from: admin.address,
+        to: vault.address,
+        exitCode: Errors.WinnerLimitExceeded,
+    });
+}
+
+get fun `test merkle reward: red packet batches can be claimed once and lottery is disabled`() {
+    val admin = testing.treasury("reward-lottery-red-packet-admin");
+    val oracle = testing.treasury("reward-lottery-red-packet-oracle");
+    val claimant = testing.treasury("reward-lottery-red-packet-claimant");
+    val migration2 = testing.treasury("reward-lottery-red-packet-migration-2");
+    val jettonWallet = testing.treasury("reward-lottery-red-packet-jetton-wallet");
+    val vault = MerkleRewardVault.fromStorage({
+        config: MerkleRewardConfig {
+            admin: admin.address,
+            migration: migrationConfig(admin.address, migration2.address),
+        }.toCell(),
+        counters: MerkleRewardCounters {
+            ecosystemTotalHi: 0,
+            universalTotalHi: 0,
+            redPacketTotalHi: 0,
+            migratedHi: 0,
+        }.toCell(),
+        maps: MerkleRewardMaps {
+            batches: [],
+            claimed: [],
+            pendingTransfers: [],
+            migrationAllowlist: [],
+        }.toCell(),
+        oracle: oracle.address,
+        rewardJettonWallet: jettonWallet.address,
+        migrationTarget: null,
+        growthConfirmedLevel: 0,
+        nextQueryId: 1,
+    });
+    expect(vault.deploy(admin.address, { value: ton("0.1") })).toHaveSuccessfulDeploy({
+        to: vault.address,
+    });
+
+    val lotteryBatchId = 101 as uint64;
+    val lotteryAmount = 1 * HI;
+    val lotteryRoot = beginCell()
+        .storeUint(lotteryBatchId, 64)
+        .storeAddress(claimant.address)
+        .storeCoins(lotteryAmount)
+        .hash();
+    val redPacketBatchId = 102 as uint64;
+    val redPacketAmount = 500 * HI;
+    val redPacketRoot = beginCell()
+        .storeUint(redPacketBatchId, 64)
+        .storeAddress(claimant.address)
+        .storeCoins(redPacketAmount)
+        .hash();
+    val emptyProof = beginCell().storeBool(false).storeBool(false).endCell();
+
+    expect(
+        vault.sendCreateRewardBatch(
+            admin.address,
+            lotteryBatchId,
+            lotteryRoot,
+            lotteryAmount,
+            0,
+            2,
+            0,
+            { value: ton("0.05") },
+        ),
+    ).toHaveFailedTx<CreateRewardBatch>({
+        from: admin.address,
+        to: vault.address,
+        exitCode: Errors.InsufficientInventory,
+    });
+    expect(
+        vault.sendCreateRewardBatch(
+            admin.address,
+            redPacketBatchId,
+            redPacketRoot,
+            redPacketAmount,
+            0,
+            3,
+            0,
+            { value: ton("0.05") },
+        ),
+    ).toHaveSuccessfulTx<CreateRewardBatch>({
+        from: admin.address,
+        to: vault.address,
+    });
+    expect(
+        vault.sendClaimReward(
+            claimant.address,
+            redPacketBatchId,
+            redPacketAmount,
+            emptyProof,
+            { value: ton("0.3") },
+        ),
+    ).toHaveSuccessfulTx<ClaimReward>({
+        from: claimant.address,
+        to: vault.address,
+    });
+    expect(vault.batchState(redPacketBatchId).2).toEqual(redPacketAmount);
+    expect(vault.poolState().1).toEqual(0);
+    expect(vault.poolState().2).toEqual(redPacketAmount);
+    expect(
+        vault.sendClaimReward(
+            claimant.address,
+            redPacketBatchId,
+            redPacketAmount,
+            emptyProof,
+            { value: ton("0.3") },
+        ),
+    ).toHaveFailedTx({
+        from: claimant.address,
+        to: vault.address,
+        exitCode: Errors.AlreadyClaimed,
     });
 }
 

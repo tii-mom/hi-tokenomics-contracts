@@ -97,13 +97,18 @@ timelock governance.
 ## MerkleRewardVault
 
 - Holds `1,600,000,000 HI` of the ecosystem allocation.
-- Unified Merkle vault for ecosystem, universal lottery, and red packet batches.
+- Unified Merkle vault for ecosystem and red packet batches. `poolType=2`
+  remains encoded for compatibility, but V1 sets its cap to `0 HI`.
+- Current 500万 HI red packets need a `100,000,000 HI` cap inside the shared
+  MerkleRewardVault pool.
+- Ecosystem and operations batches use the remaining shared pool capacity; the
+  red-packet cap is not additional budget above `1,600,000,000 HI`.
 - Admin-created batches are immutable and include:
   `batchId`, `root`, `totalHi`, `metadataHash`, `poolType`,
   `requiredGrowthLevel`.
 - `poolType`:
   - `1 = ecosystem`
-  - `2 = universal_lottery`
+  - `2 = universal_lottery`, V1 disabled with `0 HI` cap
   - `3 = red_packet`
 - `requiredGrowthLevel` blocks claim until PriceOracle confirms the required
   growth level.
@@ -135,7 +140,8 @@ for the current hashes:
 - PriceOracle growth levels 1-10 and team levels 1-4 with 30-second delay;
 - TeamVestingVault all four price releases;
 - CampaignWinnerVault late registration with no historical catch-up;
-- MerkleRewardVault ecosystem, universal lottery, and red packet batches;
+- MerkleRewardVault ecosystem and red packet batches; universal lottery
+  `poolType=2` is disabled with a `0 HI` cap;
 - local test coverage for invalid proof, duplicate claim, over-total,
   malformed proof, and deep proof paths;
 - migration smoke for contracts with remaining uncommitted balance and

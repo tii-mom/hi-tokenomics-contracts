@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HI 代币与合约简单说明</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --ink: #17202f;
+      --muted: #647084;
+      --line: #dfe5ee;
+      --blue: #2563eb;
+      --green: #0f9f6e;
+      --orange: #d97706;
+      --red: #dc2626;
+      --soft-blue: #edf4ff;
+      --soft-green: #ecfdf5;
+      --soft-orange: #fff7ed;
+      --soft-gray: #f3f6fa;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.65;
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 18px 72px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #123b7a 0%, #0f766e 100%);
+      color: white;
+      border-radius: 18px;
+      padding: 30px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: 34px;
+      line-height: 1.18;
+    }
+
+    .hero p {
+      max-width: 820px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 17px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px;
+      margin: 16px 0;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    h3 {
+      margin: 20px 0 10px;
+      font-size: 18px;
+    }
+
+    p { margin: 8px 0; }
+
+    .muted { color: var(--muted); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .mini {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      background: var(--soft-gray);
+    }
+
+    .mini strong {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 13px;
+      font-weight: 700;
+      background: var(--soft-blue);
+      color: var(--blue);
+      margin: 2px 6px 2px 0;
+    }
+
+    .pill.green {
+      background: var(--soft-green);
+      color: var(--green);
+    }
+
+    .pill.orange {
+      background: var(--soft-orange);
+      color: var(--orange);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: white;
+    }
+
+    th, td {
+      padding: 12px 13px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef3f9;
+      font-size: 14px;
+      color: #334155;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .num {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .note {
+      border-left: 4px solid var(--blue);
+      background: var(--soft-blue);
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-top: 12px;
+    }
+
+    .warn {
+      border-left: 4px solid var(--orange);
+      background: var(--soft-orange);
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-top: 12px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .step {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      min-height: 116px;
+    }
+
+    .step b {
+      display: inline-flex;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      background: var(--blue);
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    ul { margin: 8px 0 0 20px; padding: 0; }
+    li { margin: 6px 0; }
+
+    .small { font-size: 13px; }
+
+    @media (max-width: 860px) {
+      .grid, .flow { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 28px; }
+      table { font-size: 14px; }
+      th, td { padding: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>HI 代币与合约简单说明</h1>
+      <p>
+        这份说明不讲代码，只讲普通用户需要知道的事情：
+        HI 一共发行多少、发行后流向哪里、增长引擎怎么卖、什么时候解锁、每个合约分别负责什么。
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>一句话理解 HI</h2>
+      <p>
+        <strong>Human Intention (HI)</strong> 是围绕 Agent 时代的人类意图协作而设计的代币。
+        它的释放机制不是一次性全部放出来，而是跟随价格达标逐步释放，用来奖励长期参与者和真正相信项目的人。
+      </p>
+      <div>
+        <span class="pill">总量固定 100 亿 HI</span>
+        <span class="pill green">无增发</span>
+        <span class="pill green">无税费</span>
+        <span class="pill green">无黑名单</span>
+        <span class="pill orange">主网部署后仍需按价格条件解锁</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>100 亿 HI 发行后怎么分配</h2>
+      <p class="muted">总供应量固定为 <strong>10,000,000,000 HI</strong>。部署时一次性铸造并分配，之后放弃增发权限。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>去向</th>
+            <th>比例</th>
+            <th>数量</th>
+            <th>处理方式</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>增长引擎</strong></td>
+            <td class="num">50%</td>
+            <td class="num">5,000,000,000 HI</td>
+            <td>进入 GrowthEngine 合约，用于用户购买。用户买入后按价格轮次逐步解锁。</td>
+          </tr>
+          <tr>
+            <td><strong>生态奖励</strong></td>
+            <td class="num">20%</td>
+            <td class="num">2,000,000,000 HI</td>
+            <td>其中 1,600,000,000 HI 进入 MerkleRewardVault，400,000,000 HI 进入 CampaignWinnerVault。</td>
+          </tr>
+          <tr>
+            <td><strong>团队持有</strong></td>
+            <td class="num">12%</td>
+            <td class="num">1,200,000,000 HI</td>
+            <td>进入 TeamVestingVault，按团队价格条件分 4 次释放。</td>
+          </tr>
+          <tr>
+            <td><strong>项目基金</strong></td>
+            <td class="num">10%</td>
+            <td class="num">1,000,000,000 HI</td>
+            <td>直接进入固定项目基金钱包，用于投资、回购和项目可持续发展。</td>
+          </tr>
+          <tr>
+            <td><strong>流动性</strong></td>
+            <td class="num">5%</td>
+            <td class="num">500,000,000 HI</td>
+            <td>直接进入固定流动性钱包。</td>
+          </tr>
+          <tr>
+            <td><strong>投资及早期</strong></td>
+            <td class="num">3%</td>
+            <td class="num">300,000,000 HI</td>
+            <td>直接进入固定投资及早期钱包。</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        核心点：部署完成后，HI 主合约会放弃管理员增发权限。也就是说，总量固定，不再保留继续 mint 的入口。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>增长引擎：用户购买和解锁规则</h2>
+      <p>
+        增长引擎就是原来的公开销售合约。现在不再有“即时价”和“锁仓价”两套价格，
+        只有一套增长引擎价格。
+      </p>
+      <div class="grid">
+        <div class="mini">
+          <strong>10100 HI / TON</strong>
+          <span class="muted">用户购买价格</span>
+        </div>
+        <div class="mini">
+          <strong>0.1 TON</strong>
+          <span class="muted">最低单笔购买</span>
+        </div>
+        <div class="mini">
+          <strong>5000 TON</strong>
+          <span class="muted">单钱包累计购买上限</span>
+        </div>
+      </div>
+      <h3>增长引擎解锁百分比</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>阶段</th>
+            <th>触发条件</th>
+            <th>本阶段释放</th>
+            <th>累计释放</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>第 0 轮</td>
+            <td>用户在价格未进入第 1 轮前买入</td>
+            <td class="num">5%</td>
+            <td class="num">5%</td>
+          </tr>
+          <tr>
+            <td>第 1 轮</td>
+            <td>HI 价格达到第 1 轮门槛，并保持确认时间</td>
+            <td class="num">10%</td>
+            <td class="num">15%</td>
+          </tr>
+          <tr>
+            <td>第 2 轮</td>
+            <td>HI 价格达到第 2 轮门槛，并保持确认时间</td>
+            <td class="num">10%</td>
+            <td class="num">25%</td>
+          </tr>
+          <tr>
+            <td>第 3 轮</td>
+            <td>HI 价格达到第 3 轮门槛，并保持确认时间</td>
+            <td class="num">10%</td>
+            <td class="num">35%</td>
+          </tr>
+          <tr>
+            <td>第 4 轮</td>
+            <td>HI 价格达到第 4 轮门槛，并保持确认时间</td>
+            <td class="num">10%</td>
+            <td class="num">45%</td>
+          </tr>
+          <tr>
+            <td>第 5 轮</td>
+            <td>HI 价格达到第 5 轮门槛，并保持确认时间</td>
+            <td class="num">10%</td>
+            <td class="num">55%</td>
+          </tr>
+          <tr>
+            <td>第 6 轮</td>
+            <td>HI 价格达到第 6 轮门槛，并保持确认时间</td>
+            <td class="num">10%</td>
+            <td class="num">65%</td>
+          </tr>
+          <tr>
+            <td>第 7 轮</td>
+            <td>HI 价格达到第 7 轮门槛，并保持确认时间</td>
+            <td class="num">10%</td>
+            <td class="num">75%</td>
+          </tr>
+          <tr>
+            <td>第 8 轮</td>
+            <td>HI 价格达到第 8 轮门槛，并保持确认时间</td>
+            <td class="num">10%</td>
+            <td class="num">85%</td>
+          </tr>
+          <tr>
+            <td>第 9 轮</td>
+            <td>HI 价格达到第 9 轮门槛，并保持确认时间</td>
+            <td class="num">10%</td>
+            <td class="num">95%</td>
+          </tr>
+          <tr>
+            <td>第 10 轮</td>
+            <td>HI 价格达到第 10 轮门槛，并保持确认时间</td>
+            <td class="num">5%</td>
+            <td class="num">100%</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="warn">
+        重要规则：晚买不补历史。比如用户在第 2 轮已经确认后才买入，就不会拿第 0、1、2 轮，
+        只能从未来第 3 轮开始继续解锁，直到第 10 轮。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>增长引擎价格解锁门槛</h2>
+      <p class="muted">这里的价格单位是 TON 链上的 USDT / HI。价格达到门槛并保持确认时间后，才会进入下一轮。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>轮次</th>
+            <th>USDT / HI 门槛</th>
+            <th>较初始价格涨幅</th>
+            <th>本轮释放</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>初始</td><td class="num">$0.000198</td><td class="num">1×</td><td class="num">第 0 轮买入立即释放 5%</td></tr>
+          <tr><td>第 1 轮</td><td class="num">$0.000396</td><td class="num">2×</td><td class="num">10%</td></tr>
+          <tr><td>第 2 轮</td><td class="num">$0.000792</td><td class="num">4×</td><td class="num">10%</td></tr>
+          <tr><td>第 3 轮</td><td class="num">$0.001584</td><td class="num">8×</td><td class="num">10%</td></tr>
+          <tr><td>第 4 轮</td><td class="num">$0.003168</td><td class="num">16×</td><td class="num">10%</td></tr>
+          <tr><td>第 5 轮</td><td class="num">$0.006337</td><td class="num">32×</td><td class="num">10%</td></tr>
+          <tr><td>第 6 轮</td><td class="num">$0.012673</td><td class="num">64×</td><td class="num">10%</td></tr>
+          <tr><td>第 7 轮</td><td class="num">$0.025347</td><td class="num">128×</td><td class="num">10%</td></tr>
+          <tr><td>第 8 轮</td><td class="num">$0.050693</td><td class="num">256×</td><td class="num">10%</td></tr>
+          <tr><td>第 9 轮</td><td class="num">$0.101386</td><td class="num">512×</td><td class="num">10%</td></tr>
+          <tr><td>第 10 轮</td><td class="num">$0.202772</td><td class="num">1024×</td><td class="num">5%</td></tr>
+        </tbody>
+      </table>
+      <div class="note">
+        主网确认时间为 24 小时。也就是价格不是碰一下就解锁，而是达到门槛并保持足够时间后，由确认交易推进轮次。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>团队代币解锁规则</h2>
+      <p>
+        团队持有 12%，共 <strong>1,200,000,000 HI</strong>。团队没有按月份释放，改为按价格释放。
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>团队轮次</th>
+            <th>价格条件</th>
+            <th>释放比例</th>
+            <th>释放数量</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>团队第 1 轮</td>
+            <td class="num">达到 0.1 USDT / HI</td>
+            <td class="num">3%</td>
+            <td class="num">300,000,000 HI</td>
+          </tr>
+          <tr>
+            <td>团队第 2 轮</td>
+            <td class="num">达到 0.5 USDT / HI</td>
+            <td class="num">3%</td>
+            <td class="num">300,000,000 HI</td>
+          </tr>
+          <tr>
+            <td>团队第 3 轮</td>
+            <td class="num">达到 1 USDT / HI</td>
+            <td class="num">3%</td>
+            <td class="num">300,000,000 HI</td>
+          </tr>
+          <tr>
+            <td>团队第 4 轮</td>
+            <td class="num">达到 5 USDT / HI</td>
+            <td class="num">3%</td>
+            <td class="num">300,000,000 HI</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        团队领取目的地是固定团队钱包，不能临时改成任意地址。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>500万 HI 大奖池怎么释放</h2>
+      <p>
+        CampaignWinnerVault 用于 500 万 HI 达成大奖池。
+        最多 80 个中奖者，每个中奖者固定分配 <strong>5,000,000 HI</strong>，
+        总池子是 <strong>400,000,000 HI</strong>。
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>规则</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>谁能成为 winner</td>
+            <td>由管理员登记。链上不判断 Telegram、邀请关系或风控，这些由链下系统处理。</td>
+          </tr>
+          <tr>
+            <td>释放方式</td>
+            <td>和增长引擎一致：第 0 轮 5%，第 1-9 轮每轮 10%，第 10 轮 5%。</td>
+          </tr>
+          <tr>
+            <td>晚中奖是否补历史</td>
+            <td>不补。在哪一轮登记，就从未来下一轮开始释放。</td>
+          </tr>
+          <tr>
+            <td>最多领取</td>
+            <td>每个 winner 最多累计领取 5,000,000 HI。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>生态、红包奖励怎么发</h2>
+      <p>
+        MerkleRewardVault 是统一奖励池，用来发生态奖励和红包奖励。
+        它不在链上抽奖，也不判断用户资格；后端先计算结果，再把结果放到链上让用户领取。
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>奖励类型</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>生态奖励</td>
+            <td>用于项目长期生态、活动、贡献者激励等。</td>
+          </tr>
+          <tr>
+            <td>普惠抽奖</td>
+            <td>当前 500万 HI 活动停用独立普惠抽奖，链上额度为 0；原预算并入红包奖励。</td>
+          </tr>
+          <tr>
+            <td>红包奖励</td>
+            <td>后端生成阶段达成和助力传播红包资格，用户自己付 gas 领取。</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">
+        每个奖励批次可以设置需要达到的增长轮次。比如设置为第 10 轮，则必须增长引擎价格解锁到第 10 轮后才能领取。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>7 个合约分别做什么</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>合约</th>
+            <th>普通理解</th>
+            <th>负责什么</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>JettonMinter</strong></td>
+            <td>HI 主合约</td>
+            <td>部署时一次性发行 100 亿 HI。分配完成后放弃管理员权限，不再增发。</td>
+          </tr>
+          <tr>
+            <td><strong>JettonWallet</strong></td>
+            <td>HI 钱包合约</td>
+            <td>每个用户或合约持有 HI 时，对应一个 JettonWallet，用来记录余额和转账。</td>
+          </tr>
+          <tr>
+            <td><strong>GrowthEngine</strong></td>
+            <td>增长引擎</td>
+            <td>承载 50% 的销售池。用户用 TON 买 HI，按价格轮次逐步解锁。</td>
+          </tr>
+          <tr>
+            <td><strong>PriceOracle</strong></td>
+            <td>价格确认器</td>
+            <td>管理员上报 TON 链 USDT / HI 价格，达到门槛并保持 24 小时后确认解锁轮次。</td>
+          </tr>
+          <tr>
+            <td><strong>TeamVestingVault</strong></td>
+            <td>团队释放合约</td>
+            <td>锁住团队 12% 代币，按 0.1、0.5、1、5 USDT 四个价格条件释放。</td>
+          </tr>
+          <tr>
+            <td><strong>CampaignWinnerVault</strong></td>
+            <td>500 万 HI 大奖池</td>
+            <td>最多 80 个 winner，每个 5,000,000 HI，按增长引擎同样规则释放。</td>
+          </tr>
+          <tr>
+            <td><strong>MerkleRewardVault</strong></td>
+            <td>生态和抽奖奖励池</td>
+            <td>统一发放生态奖励和红包奖励。用户凭证明领取，防止重复领取。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>这些合约之间怎么关联</h2>
+      <div class="flow">
+        <div class="step">
+          <b>1</b>
+          <p><strong>JettonMinter</strong></p>
+          <p class="muted">一次性发行 100 亿 HI，并分配到各合约和固定钱包。</p>
+        </div>
+        <div class="step">
+          <b>2</b>
+          <p><strong>GrowthEngine / Vaults</strong></p>
+          <p class="muted">增长引擎、团队、大奖池、奖励池分别保管自己的 HI。</p>
+        </div>
+        <div class="step">
+          <b>3</b>
+          <p><strong>PriceOracle</strong></p>
+          <p class="muted">确认价格达到门槛后，把解锁轮次同步给相关合约。</p>
+        </div>
+        <div class="step">
+          <b>4</b>
+          <p><strong>用户领取</strong></p>
+          <p class="muted">用户或团队在满足条件后自己发起领取，自己支付 gas。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>安全和权限的简单说明</h2>
+      <ul>
+        <li><strong>不能增发：</strong>100 亿 HI 分配完成后，主合约管理员权限会被放弃。</li>
+        <li><strong>不能冻结用户余额：</strong>当前设计没有黑名单、冻结、税费、强制转走用户余额的功能。</li>
+        <li><strong>价格由 Oracle 管理员上报：</strong>这是中心化信任点，但合约限制它不能跳过轮次、不能回退轮次、不能修改门槛。</li>
+        <li><strong>迁移功能只用于未承诺 HI：</strong>如果某个奖励合约未来需要迁移，只能迁移未承诺、未分配给用户的余额，并且目标地址需要在 allowlist 中。</li>
+        <li><strong>主网时间锁：</strong>价格达到门槛后需要保持 24 小时才可确认解锁。</li>
+      </ul>
+      <div class="warn">
+        这份文档是普通说明版，不替代审计报告。最终主网部署仍以代码、审计复核、部署包和链上交易为准。
+      </div>
+    </section>
+
+    <section class="card small">
+      <h2>当前状态</h2>
+      <p>
+        合约本地测试、测试网演练、TON Verifier dry-run、审计复核均已完成。
+        当前主网状态是：<strong>待最终授权，不自动部署</strong>。
+      </p>
+      <p class="muted">
+        本文件路径：/Users/yudeyou/Desktop/100wan/contracts/hi-tokenomics/docs/HI_SIMPLE_CONTRACT_EXPLAINER.html
+      </p>
+    </section>
+  </main>
+</body>
+</html>

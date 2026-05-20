@@ -120,14 +120,14 @@
       <table>
         <tr><th>模块</th><th>占比</th><th>数量</th><th>承载方式</th><th>用途</th></tr>
         <tr><td>增长引擎 <code>GrowthEngine</code></td><td><code>50%</code></td><td><code>5,000,000,000 HI</code></td><td>合约锁仓销售</td><td>用户通过 TON 购买，按 USDT 价格达标分 10 轮释放</td></tr>
-        <tr><td>生态 Merkle 奖励 <code>MerkleRewardVault</code></td><td><code>16%</code></td><td><code>1,600,000,000 HI</code></td><td>Merkle claim</td><td>生态奖励、普惠奖励、红包等</td></tr>
+        <tr><td>生态 Merkle 奖励 <code>MerkleRewardVault</code></td><td><code>16%</code></td><td><code>1,600,000,000 HI</code></td><td>Merkle claim</td><td>生态奖励、红包奖励等；普惠抽奖 V1 停用</td></tr>
         <tr><td>活动大奖池 <code>CampaignWinnerVault</code></td><td><code>4%</code></td><td><code>400,000,000 HI</code></td><td>价格解锁 vault</td><td>500万 HI 达成大奖池，最多 80 个 winner</td></tr>
         <tr><td>团队持有 <code>TeamVestingVault</code></td><td><code>12%</code></td><td><code>1,200,000,000 HI</code></td><td>价格解锁 vault</td><td>价格达到指定 USDT 门槛后释放到固定团队钱包</td></tr>
         <tr><td>项目基金</td><td><code>10%</code></td><td><code>1,000,000,000 HI</code></td><td>固定钱包</td><td>投资、回购、运营与项目可持续发展</td></tr>
         <tr><td>流动性池子</td><td><code>5%</code></td><td><code>500,000,000 HI</code></td><td>固定钱包</td><td>流动性部署和市场支持</td></tr>
         <tr><td>投资及早期</td><td><code>3%</code></td><td><code>300,000,000 HI</code></td><td>固定钱包</td><td>投资人和早期支持者分配</td></tr>
       </table>
-      <p class="note">生态奖励总额仍为 <code>20% = 2,000,000,000 HI</code>。其中 <code>400,000,000 HI</code> 进入 CampaignWinnerVault，<code>1,600,000,000 HI</code> 进入 MerkleRewardVault。当前 500万 HI 活动由 CampaignWinnerVault 的 <code>400,000,000 HI</code> 加上 MerkleRewardVault 内的抽奖/红包批次共同承载。</p>
+      <p class="note">生态奖励总额仍为 <code>20% = 2,000,000,000 HI</code>。其中 <code>400,000,000 HI</code> 进入 CampaignWinnerVault，<code>1,600,000,000 HI</code> 进入 MerkleRewardVault。当前 500万 HI 活动由 CampaignWinnerVault 的 <code>400,000,000 HI</code> 加上 MerkleRewardVault 内的红包批次共同承载；普惠抽奖 V1 链上 cap 为 <code>0 HI</code>。</p>
     </section>
 
     <section class="card">
@@ -316,11 +316,13 @@ Users
       <span class="badge ok">20% ecosystem allocation</span>
       <span class="badge ok">500,000,000 HI campaign budget</span>
       <span class="badge ok">Batch-level price gate</span>
-      <p>MerkleRewardVault 承载生态奖励、当前项目 500万 HI 活动奖励、普惠抽奖、红包传播等奖励。链下系统决定谁能领和能领多少，链上只验证 Merkle proof、防重复领取和发币。</p>
+      <p>MerkleRewardVault 承载生态奖励、当前项目 500万 HI 活动奖励、红包奖励等奖励。链下系统决定谁能领和能领多少，链上只验证 Merkle proof、防重复领取和发币。</p>
+      <p class="note">这里的统一红包奖励从 <code>1,600,000,000 HI</code> MerkleRewardVault 总池中占用额度，不是额外增发或额外预算。当前 500万 HI 活动停用独立普惠抽奖，<code>poolType=2</code> 链上 cap 为 <code>0 HI</code>；红包奖励子上限调整为 <code>100,000,000 HI</code>，生态/运营奖励使用剩余额度。</p>
       <table>
         <tr><th>项目</th><th>规则</th></tr>
         <tr><td>总资金</td><td><code>1,600,000,000 HI</code>，生态总额中的另外 <code>400,000,000 HI</code> 独立进入 CampaignWinnerVault</td></tr>
         <tr><td>当前项目 500万 HI 活动</td><td><code>500,000,000 HI</code> 从生态奖励中划拨</td></tr>
+        <tr><td>当前红包子上限</td><td>当前活动停用独立普惠抽奖；统一红包奖励最多 <code>100,000,000 HI</code>，计入 <code>1,600,000,000 HI</code> MerkleRewardVault 总池。</td></tr>
         <tr><td>批次字段</td><td><code>batchId</code>、<code>merkleRoot</code>、<code>totalHi</code>、<code>metadataHash</code>、<code>poolType</code>、<code>requiredGrowthLevel</code></td></tr>
         <tr><td>价格门槛</td><td><code>requiredGrowthLevel = 0</code> 表示无需价格门槛；<code>1-10</code> 表示必须达到对应 growth level 后才能领取</td></tr>
         <tr><td>防重复</td><td>同一 <code>batchId + address</code> 只能领取一次</td></tr>

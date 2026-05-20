@@ -17,8 +17,15 @@ All amounts use 9 decimals on chain.
 The ecosystem allocation is still `20% = 2,000,000,000 HI` in total. It is split
 between `CampaignWinnerVault` (`400,000,000 HI`) and `MerkleRewardVault`
 (`1,600,000,000 HI`). The current 500万 HI campaign uses `400,000,000 HI` in
-CampaignWinnerVault plus lottery/red-packet Merkle batches from
-MerkleRewardVault.
+CampaignWinnerVault plus a unified `100,000,000 HI` red-packet reward budget
+from MerkleRewardVault.
+
+For the current campaign, the previous `80,000,000 HI` universal lottery budget
+is merged into red packets. `poolType=3 red_packet` should support
+`100,000,000 HI` inside the shared `1,600,000,000 HI` MerkleRewardVault pool.
+`poolType=2 universal_lottery` remains encoded for compatibility, but its V1
+chain cap is `0 HI`; current frontend/backend operations must not create that
+batch type.
 
 After all allocations are minted and transferred, `JettonMinter` admin must be
 dropped. Mainnet deployment is not authorized until real destination addresses,

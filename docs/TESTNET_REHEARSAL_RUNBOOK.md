@@ -47,8 +47,7 @@ Recorded in `docs/TESTNET_EVIDENCE.md`:
 10. Register CampaignWinner and verify GrowthEngine-aligned claim schedule.
 11. Create MerkleReward batches for:
     - ecosystem
-    - universal lottery
-    - red packet
+    - red packet (`poolType=3`, current campaign unified red-packet pool)
 12. Verify `requiredGrowthLevel` blocks and then allows claims.
 13. Verify invalid proof, duplicate claim, and over-total failures.
 14. Smoke-test migration/rescue transfer:

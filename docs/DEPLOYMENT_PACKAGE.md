@@ -30,16 +30,16 @@ HI_ORACLE_CONFIRMATION_DELAY=86400 acton script scripts/deploy-hi-tokenomics.tol
 ## Required Mainnet Environment
 
 ```text
-HI_DEPLOYER=mainnet-admin
-HI_ADMIN_ADDRESS=<MAINNET_ADMIN_MULTISIG>
-HI_ORACLE_ADMIN_ADDRESS=<MAINNET_ORACLE_ADMIN>
-HI_ECOSYSTEM_ADMIN_ADDRESS=<MAINNET_ADMIN_MULTISIG>
-HI_MIGRATION_WALLET_1=<MAINNET_MIGRATION_WALLET_1>
-HI_MIGRATION_WALLET_2=<MAINNET_MIGRATION_WALLET_2>
-HI_TEAM_WALLET=<MAINNET_TEAM_WALLET>
-HI_PROJECT_FUND_WALLET=<MAINNET_PROJECT_FUND_WALLET>
-HI_LIQUIDITY_WALLET=<MAINNET_LIQUIDITY_WALLET>
-HI_INVESTOR_WALLET=<MAINNET_INVESTOR_WALLET>
+HI_DEPLOYER=<mainnet-admin-wallet-name>
+HI_ADMIN_ADDRESS=<mainnet-admin-address>
+HI_ORACLE_ADMIN_ADDRESS=<mainnet-oracle-admin-address>
+HI_ECOSYSTEM_ADMIN_ADDRESS=<mainnet-reward-admin-address>
+HI_MIGRATION_WALLET_1=<mainnet-migration-wallet-1>
+HI_MIGRATION_WALLET_2=<mainnet-migration-wallet-2>
+HI_TEAM_WALLET=<mainnet-team-wallet>
+HI_PROJECT_FUND_WALLET=<mainnet-project-fund-wallet>
+HI_LIQUIDITY_WALLET=<mainnet-liquidity-wallet>
+HI_INVESTOR_WALLET=<mainnet-investor-wallet>
 HI_DEPLOY_MSG_VALUE=0.05
 HI_MINT_FORWARD_TON_AMOUNT=0
 HI_MINT_TOTAL_TON_AMOUNT=250000000
@@ -56,7 +56,7 @@ description=Human Intention (HI) helps users better command Agents. Its innovati
 website=https://smt.it.com
 telegram=https://t.me/HumanIntention
 x_twitter=https://x.com/72hour_s
-image_uri=ipfs://bafybeiccmlxpjecldfui2heolxevwmkcwa4oxklhbdjy2jca56ttodetom
+image_uri=https://gateway.pinata.cloud/ipfs/bafybeiccmlxpjecldfui2heolxevwmkcwa4oxklhbdjy2jca56ttodetom
 metadata_uri=ipfs://bafkreiboziv7sd4dyfh4zn5iuwchxisldchidopfhns5gc36mbmo2atadq
 ```
 

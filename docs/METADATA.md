@@ -11,7 +11,7 @@ confirmed by the owner on 2026-05-19.
 | symbol | `HI` |
 | decimals | `9` |
 | description | `Human Intention (HI) helps users better command Agents. Its innovative token release mechanism rewards true crypto believers.` |
-| image | `ipfs://bafybeiccmlxpjecldfui2heolxevwmkcwa4oxklhbdjy2jca56ttodetom` |
+| image | `https://gateway.pinata.cloud/ipfs/bafybeiccmlxpjecldfui2heolxevwmkcwa4oxklhbdjy2jca56ttodetom` |
 | website | `https://smt.it.com` |
 | telegram | `https://t.me/HumanIntention` |
 | x | `https://x.com/72hour_s` |
@@ -43,7 +43,7 @@ Uploaded artifacts:
 
 | Artifact | CID | URL |
 |---|---|---|
-| Logo PNG | `bafybeiccmlxpjecldfui2heolxevwmkcwa4oxklhbdjy2jca56ttodetom` | `ipfs://bafybeiccmlxpjecldfui2heolxevwmkcwa4oxklhbdjy2jca56ttodetom` |
+| Logo PNG | `bafybeiccmlxpjecldfui2heolxevwmkcwa4oxklhbdjy2jca56ttodetom` | `https://gateway.pinata.cloud/ipfs/bafybeiccmlxpjecldfui2heolxevwmkcwa4oxklhbdjy2jca56ttodetom` |
 | Metadata JSON | `bafkreiboziv7sd4dyfh4zn5iuwchxisldchidopfhns5gc36mbmo2atadq` | `ipfs://bafkreiboziv7sd4dyfh4zn5iuwchxisldchidopfhns5gc36mbmo2atadq` |
 
 Verified gateway URLs:

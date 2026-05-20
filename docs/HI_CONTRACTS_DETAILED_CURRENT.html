@@ -485,12 +485,13 @@ Users
 
     <section class="card">
       <h2>7. MerkleRewardVault</h2>
-      <p>MerkleRewardVault 统一承载 ecosystem、universal lottery、red packet 三类 Merkle batch。链下系统负责计算资格、金额和风控；合约只验证 Merkle proof、防重复领取并发 HI。</p>
+      <p>MerkleRewardVault 统一承载 ecosystem 和 red packet Merkle batch。链下系统负责计算资格、金额和风控；合约只验证 Merkle proof、防重复领取并发 HI。</p>
+      <p class="note">MerkleRewardVault 总池为 <code>1,600,000,000 HI</code>。当前活动停用独立普惠抽奖，且链上 <code>poolType=2</code> cap 为 <code>0 HI</code>；统一红包奖励最多占用 <code>100,000,000 HI</code>，生态/运营奖励使用总池剩余额度；这些不是 1.6B 之外的额外预算。</p>
       <table>
         <tr><th>poolType</th><th>用途</th><th>池子上限</th><th>说明</th></tr>
-        <tr><td><code>1</code></td><td>生态奖励 ecosystem</td><td><code>1,600,000,000 HI</code></td><td>生态激励、运营奖励、项目活动批次。</td></tr>
-        <tr><td><code>2</code></td><td>普惠抽奖 universal lottery</td><td><code>80,000,000 HI</code></td><td>500万 HI 活动中的普惠抽奖结果，由后端离线计算。</td></tr>
-        <tr><td><code>3</code></td><td>红包传播 red packet</td><td><code>20,000,000 HI</code></td><td>2000 个 10,000 HI 红包，后端生成 batch。</td></tr>
+        <tr><td><code>1</code></td><td>生态奖励 ecosystem</td><td>使用 <code>1,600,000,000 HI</code> 总池剩余额度</td><td>生态激励、运营奖励、项目活动批次。</td></tr>
+        <tr><td><code>2</code></td><td>普惠抽奖 universal lottery</td><td><code>0 HI</code></td><td>V1 当前活动停用；正数 batch 会被合约拒绝。</td></tr>
+        <tr><td><code>3</code></td><td>红包奖励 red packet</td><td>总池内子上限 <code>100,000,000 HI</code></td><td>20,000 个 5,000 HI 红包，包含阶段达成红包和助力传播红包。</td></tr>
       </table>
       <table>
         <tr><th>机制</th><th>说明</th></tr>
@@ -606,7 +607,7 @@ TransferRewardUncommittedHiToContract</pre>
         <tr><td>symbol</td><td><code>HI</code></td></tr>
         <tr><td>decimals</td><td><code>9</code></td></tr>
         <tr><td>description</td><td><code>Human Intention (HI) helps users better command Agents. Its innovative token release mechanism rewards true crypto believers.</code></td></tr>
-        <tr><td>image</td><td><code>ipfs://bafybeiccmlxpjecldfui2heolxevwmkcwa4oxklhbdjy2jca56ttodetom</code></td></tr>
+        <tr><td>image</td><td><code>https://gateway.pinata.cloud/ipfs/bafybeiccmlxpjecldfui2heolxevwmkcwa4oxklhbdjy2jca56ttodetom</code></td></tr>
         <tr><td>metadata JSON</td><td><code>ipfs://bafkreiboziv7sd4dyfh4zn5iuwchxisldchidopfhns5gc36mbmo2atadq</code></td></tr>
         <tr><td>website</td><td><code>https://smt.it.com</code></td></tr>
         <tr><td>telegram</td><td><code>https://t.me/HumanIntention</code></td></tr>

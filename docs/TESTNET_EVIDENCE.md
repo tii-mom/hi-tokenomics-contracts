@@ -1,5 +1,72 @@
 # Final GrowthEngine Testnet Evidence
 
+## Fresh Red-Packet Adjustment Evidence: 2026-05-20
+
+Status: **partial refresh for MerkleRewardVault red-packet cap change**.
+The local code hash for `MerkleRewardVault` changed to
+`514DD0ABA3408714D085E44978F786B99148038B0F7A47066FB7D9C156870D90`.
+Older MerkleReward `poolType=2` evidence below is stale and must not be used
+for current V1 readiness.
+
+### Fresh Testnet Deployments
+
+Cap validation deployment:
+
+```text
+HI_MINTER_ADDRESS=kQCsORv8LR9UaKK7JNW4HR3tvW4_zZR_px6yL2VMtgES8BPS
+HI_MERKLE_REWARD_ADDRESS=kQCEYyfS-7gGkyLl_FvrWqiKRrRe4uji9qc5Z37mkEIEs9hR
+HI_REWARD_JETTON_WALLET=kQCEEeLmzUp6dlp2jeAqfVJjFiebPz0QDl2Q0VmexTEuv5nV
+HI_MERKLE_REWARD WALLET_BALANCE=1600000000000000000
+HI_POST_DROP_MINTABLE=false
+HI_POST_DROP_ADMIN_ADDRESS=null
+```
+
+Claim validation deployment:
+
+```text
+HI_MINTER_ADDRESS=kQDPYRXkYxhwsGtg6XUp_cAglUnHlOueWdYWwLPHCmYC93wA
+HI_MERKLE_REWARD_ADDRESS=kQDowJyQHcFXb_zhwsU5XjMLBzYV8q81GqtUJxZ4shRZin4X
+HI_REWARD_JETTON_WALLET=kQDoHl7-aoXeXuKWlcShBhbReSywPn7HpV-UDEZcI7eSprOB
+HI_MERKLE_REWARD WALLET_BALANCE=1600000000000000000
+HI_POST_DROP_MINTABLE=false
+HI_POST_DROP_ADMIN_ADDRESS=null
+```
+
+### Red-Packet Cap Evidence
+
+`poolType=3` red packet batch at exactly `100,000,000 HI` succeeded:
+
+```text
+HI_REWARD_BATCH_STATE=(12345, 100000000000000000, 0, 0, 3, 0)
+```
+
+Adding another `1 HI` red packet batch failed with `exit_code=204`
+(`Errors.InsufficientInventory`).
+
+Creating a positive `poolType=2` universal lottery batch also failed with
+`exit_code=204`, confirming the V1 chain cap is `0 HI`.
+
+### Red-Packet Claim Evidence
+
+A small `poolType=3` red packet batch for `5,000 HI` was created and claimed:
+
+```text
+HI_REWARD_BATCH_STATE=(76917304944896826186745901880439751413028552984720951283605372136604198919914, 5000000000000, 0, 0, 3, 0)
+HI_REWARD_HAS_CLAIMED=true
+HI_REWARD_BATCH_STATE=(76917304944896826186745901880439751413028552984720951283605372136604198919914, 5000000000000, 5000000000000, 0, 3, 0)
+```
+
+### TON Verifier Dry-Run
+
+`MerkleRewardVault` dry-run for the refreshed code hash succeeded:
+
+```text
+acton verify MerkleRewardVault --address kQDowJyQHcFXb_zhwsU5XjMLBzYV8q81GqtUJxZ4shRZin4X --net testnet --wallet hi-funded --dry-run
+Code hash: 0x514dd0aba3408714d085e44978f786b99148038b0f7a47066fb7d9c156870d90
+Backend verification successful
+Dry run mode: skipping transaction send
+```
+
 ## Fresh Audit-Fix Testnet Evidence: 2026-05-20
 
 Status: **complete for current hashes**. Older evidence has been archived under
@@ -82,12 +149,13 @@ HI_CAMPAIGN_WINNER_STATE=(true, 10, 0, 0)
 HI_CAMPAIGN_VAULT_STATE=(10, 1, 0, 0)
 ```
 
-MerkleReward batches with `requiredGrowthLevel=10`:
+MerkleReward batches with `requiredGrowthLevel=10` before the unified
+red-packet adjustment:
 
 ```text
 poolType=1 batch claimed successfully
-poolType=2 batch claimed successfully
-poolType=3 batch claimed successfully
+poolType=2 evidence is stale and must not be used for the current V1 cap=0
+poolType=3 batch claimed successfully before the cap changed to 100,000,000 HI
 HI_REWARD_HAS_CLAIMED=true
 ```
 
