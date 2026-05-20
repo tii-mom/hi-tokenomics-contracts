@@ -986,7 +986,7 @@ get fun `test reward batch cap accounts for migrated inventory`() {
     });
 }
 
-get fun `test merkle reward: universal lottery cap is 80M HI`() {
+get fun `test merkle reward: universal lottery is disabled with zero cap`() {
     val admin = testing.treasury("reward-lottery-cap-admin");
     val oracle = testing.treasury("reward-lottery-cap-oracle");
     val migration2 = testing.treasury("reward-lottery-cap-migration-2");
