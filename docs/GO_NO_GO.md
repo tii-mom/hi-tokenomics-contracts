@@ -21,8 +21,7 @@ TON Verifier dry-run are complete for the current hashes.
 
 Mainnet remains no-go because the final GrowthEngine version still needs:
 
-1. Independent audit-thread re-review of the latest Medium/Low remediation.
-2. Explicit user authorization for mainnet deployment.
+1. Explicit user authorization for mainnet deployment.
 
 The owner has accepted the `O-01` migration permission model for V1:
 admin-managed migration target allowlists, two migration wallets, and migration
@@ -49,10 +48,9 @@ GO can be considered only when:
 - all mainnet addresses are supplied and reviewed;
 - the owner explicitly accepts the migration permission model;
 - the owner confirms the final metadata description wording;
-- the independent audit-thread confirms the latest Medium/Low remediation;
 - the user explicitly authorizes mainnet deployment.
 
-All conditions except independent audit-thread re-review and explicit deployment
-authorization are complete for the current build and evidence set. Until both
-are complete, the correct state is: local audit-fix code green, fresh testnet
-evidence complete, verifier dry-run complete, mainnet deployment not authorized.
+All conditions except explicit deployment authorization are complete for the
+current build and evidence set. Until authorization is given, the correct state
+is: local audit-fix code green, fresh testnet evidence complete, verifier
+dry-run complete, mainnet deployment not authorized.

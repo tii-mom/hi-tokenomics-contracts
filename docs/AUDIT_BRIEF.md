@@ -1,9 +1,9 @@
 # HI GrowthEngine Audit Brief
 
-Status: latest audit-fix changes, fresh testnet rehearsal, app contract-facing
-checks, and TON Verifier dry-run are complete for the current code hashes.
-Mainnet remains blocked pending independent audit-thread re-review of these
-latest fixes and explicit deployment authorization.
+Status: latest audit-fix changes, independent audit-thread re-review, fresh
+testnet rehearsal, app contract-facing checks, and TON Verifier dry-run are
+complete for the current code hashes. Mainnet remains blocked pending explicit
+deployment authorization.
 
 ## Scope
 
@@ -147,7 +147,6 @@ for the current hashes:
 
 ## Open Before Mainnet
 
-- Independent audit-thread re-review of the latest Medium/Low fixes.
 - Explicit mainnet deployment approval.
 
 ## Independent Audit Task Plan
