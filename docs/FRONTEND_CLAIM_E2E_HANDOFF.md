@@ -9,7 +9,9 @@ Do not close, sweep, migrate, or redeploy these contracts during the frontend E2
 
 ## Testnet Contracts
 
-These addresses are from the latest red-packet claim validation deployment and match the current `MerkleRewardVault` hash:
+These addresses are from the latest red-packet claim validation deployment and match the current `MerkleRewardVault` hash.
+
+This handoff was refreshed because the frontend E2E signer is the funded Tonkeeper testnet wallet, not the previous local `hi-buyer` wallet.
 
 | Item | Testnet address |
 |---|---|
@@ -25,24 +27,26 @@ These addresses are from the latest red-packet claim validation deployment and m
 
 ## Red-Packet Claim Fixture
 
-This batch is created and not yet claimed.
+This batch is created for the actual Tonkeeper testnet signer and is not yet claimed.
 
 | Field | Value |
 |---|---|
 | MerkleRewardVault | `kQDowJyQHcFXb_zhwsU5XjMLBzYV8q81GqtUJxZ4shRZin4X` |
-| batchId | `4002` |
-| claimant wallet | `kQCDN2QgUbn4eI-lRtC_1nBXZcTqNyjxtH22Ahxibl2qGDt7` |
+| batchId | `5001` |
+| claimant wallet, bounceable testnet | `kQCxJ05yeawVWlsN5SfJ-obajgh2lFffR-O7ebH_s_wqQRIl` |
+| claimant wallet, user format | `0QCxJ05yeawVWlsN5SfJ-obajgh2lFffR-O7ebH_s_wqQU_g` |
+| claimant raw | `0:b1274e7279ac155a5b0de527c9fa86da8e08769457df47e3bb79b1ffb3fc2a41` |
 | amount | `5,000 HI` |
 | amount base units | `5000000000000` |
 | poolType | `3` |
 | requiredGrowthLevel | `0` |
 | metadataHash | `0` |
-| merkleRoot | `70396768711203518046070237430227049990645102264304570260014156581321540254748` |
+| merkleRoot | `114662029248631739694441699519084078340295858974732504872327124450795303637832` |
 
 Batch state before claim:
 
 ```text
-HI_REWARD_BATCH_STATE=(70396768711203518046070237430227049990645102264304570260014156581321540254748, 5000000000000, 0, 0, 3, 0)
+HI_REWARD_BATCH_STATE=(114662029248631739694441699519084078340295858974732504872327124450795303637832, 5000000000000, 0, 0, 3, 0)
 ```
 
 Single-leaf proof:
@@ -83,26 +87,28 @@ Recommended attached value:
 Expected before claim:
 
 ```text
-batch_state(4002) = (root, 5000000000000, 0, 0, 3, 0)
-has_claimed(4002, claimant) = false
+batch_state(5001) = (114662029248631739694441699519084078340295858974732504872327124450795303637832, 5000000000000, 0, 0, 3, 0)
+has_claimed(5001, claimant) = false
 ```
 
 Expected after claim:
 
 ```text
-batch_state(4002) = (root, 5000000000000, 5000000000000, 0, 3, 0)
-has_claimed(4002, claimant) = true
+batch_state(5001) = (114662029248631739694441699519084078340295858974732504872327124450795303637832, 5000000000000, 5000000000000, 0, 3, 0)
+has_claimed(5001, claimant) = true
 claimant HI balance increases by 5000000000000 base units
 ```
 
 ## Campaign Winner Claim Fixture
 
-This winner is registered and not yet claimed.
+This winner is registered for the actual Tonkeeper testnet signer and is not yet claimed.
 
 | Field | Value |
 |---|---|
 | CampaignWinnerVault | `kQCLsSFO8npMyxX28yUC9YZAceytRcZ8HmawzRphgsRnuuzu` |
-| winner wallet | `kQCDN2QgUbn4eI-lRtC_1nBXZcTqNyjxtH22Ahxibl2qGDt7` |
+| winner wallet, bounceable testnet | `kQCxJ05yeawVWlsN5SfJ-obajgh2lFffR-O7ebH_s_wqQRIl` |
+| winner wallet, user format | `0QCxJ05yeawVWlsN5SfJ-obajgh2lFffR-O7ebH_s_wqQU_g` |
+| winner raw | `0:b1274e7279ac155a5b0de527c9fa86da8e08769457df47e3bb79b1ffb3fc2a41` |
 | total winner allocation | `5,000,000 HI` |
 | current claimable | `250,000 HI` |
 | current claimable base units | `250000000000000` |
@@ -111,7 +117,7 @@ State before claim:
 
 ```text
 HI_CAMPAIGN_WINNER_STATE=(true, 0, 0, 250000000000000)
-HI_CAMPAIGN_VAULT_STATE=(0, 1, 0, 0)
+HI_CAMPAIGN_VAULT_STATE=(0, 2, 0, 0)
 ```
 
 Meaning:
@@ -122,7 +128,7 @@ entryLevel=0
 claimedHi=0
 claimableHi=250000000000000
 growthConfirmedLevel=0
-winnerCount=1
+winnerCount=2
 totalClaimedHi=0
 migratedHi=0
 ```
@@ -202,7 +208,7 @@ Any TonConnect UI or indexer error:
 请基于 /Users/yudeyou/Desktop/100wan/contracts/hi-tokenomics/docs/FRONTEND_CLAIM_E2E_HANDOFF.md，在 /Users/yudeyou/Desktop/GrowthEngine 执行 testnet TonConnect claim E2E。
 
 目标：
-1. 使用 handoff 中的 MerkleRewardVault red-packet batch 4002，通过 TonConnect 让用户签名 ClaimReward。
+1. 使用 handoff 中的 MerkleRewardVault red-packet batch 5001，通过 TonConnect 让用户签名 ClaimReward。
 2. claim 前后读取 batch_state / has_claimed，并返回 tx hash。
 3. 使用 handoff 中的 CampaignWinnerVault winner，通过 TonConnect 让用户签名 ClaimCampaignWinner。
 4. claim 前后读取 winner_state / claimable / vault_state，并返回 tx hash。
