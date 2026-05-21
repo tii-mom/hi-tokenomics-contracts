@@ -56,6 +56,56 @@ HI_REWARD_HAS_CLAIMED=true
 HI_REWARD_BATCH_STATE=(76917304944896826186745901880439751413028552984720951283605372136604198919914, 5000000000000, 5000000000000, 0, 3, 0)
 ```
 
+### Frontend TonConnect Claim E2E Evidence
+
+The `/Users/yudeyou/Desktop/GrowthEngine` frontend thread ran real testnet
+TonConnect claim transactions from the actual funded Tonkeeper testnet wallet:
+
+```text
+wallet user format: 0QCxJ05yeawVWlsN5SfJ-obajgh2lFffR-O7ebH_s_wqQU_g
+wallet bounceable testnet: kQCxJ05yeawVWlsN5SfJ-obajgh2lFffR-O7ebH_s_wqQRIl
+```
+
+Red-packet claim:
+
+```text
+tx hash: F7eZbVqb7+2vavipV6F9LhWHSpR09u+Fv+QbrG6oVDM=
+attached TON: 0.3 TON
+aborted=false
+compute_success=true
+exit_code=0
+action_result_code=0
+
+before batch_state(5001) =
+(114662029248631739694441699519084078340295858974732504872327124450795303637832,
+ 5000000000000, 0, 0, 3, 0)
+before has_claimed=false
+
+after batch_state(5001) =
+(114662029248631739694441699519084078340295858974732504872327124450795303637832,
+ 5000000000000, 5000000000000, 0, 3, 0)
+after has_claimed=true
+```
+
+CampaignWinner claim:
+
+```text
+tx hash: /C0WcvEzCOZeiJriPtLqR1R/pCNsxf85wH8W9umuF3A=
+attached TON: 0.3 TON
+aborted=false
+compute_success=true
+exit_code=0
+action_result_code=0
+
+before winner_state=(true, 0, 0, 250000000000000)
+before claimable=250000000000000
+before vault_state=(0, 2, 0, 0)
+
+after winner_state=(true, 0, 250000000000000, 0)
+after claimable=0
+after vault_state=(0, 2, 250000000000000, 0)
+```
+
 ### TON Verifier Dry-Run
 
 All 7 contracts were re-run with TON Verifier dry-run against the refreshed
