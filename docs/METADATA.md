@@ -111,7 +111,7 @@ Toncenter can read the on-chain HI metadata, but TonAPI/Tonkeeper may still show
 Tonkeeper listing file is:
 
 ```text
-ton-assets/jettons/HI.yaml
+ton-assets/jettons/HumanIntention.yaml
 ```
 
 Details and submission steps are in:

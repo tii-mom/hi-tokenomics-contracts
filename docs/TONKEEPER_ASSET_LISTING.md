@@ -55,14 +55,18 @@ https://raw.githubusercontent.com/tii-mom/hi-tokenomics-contracts/main/metadata/
 This repository contains a ready-to-copy file:
 
 ```text
-ton-assets/jettons/HI.yaml
+ton-assets/jettons/HumanIntention.yaml
 ```
 
 For Tonkeeper's `ton-assets` repository, copy it to:
 
 ```text
-jettons/HI.yaml
+jettons/HumanIntention.yaml
 ```
+
+Note: `jettons/HI.yaml` is already used by another token in Tonkeeper's
+repository. Use the unique filename above; the token symbol inside the file is
+still `HI`.
 
 Prepared content:
 
@@ -84,7 +88,7 @@ social:
 1. Ensure the public `tii-mom/hi-tokenomics-contracts` repository is pushed so
    the raw logo URL works.
 2. Fork `https://github.com/tonkeeper/ton-assets`.
-3. Add `jettons/HI.yaml` only. Do not edit generated JSON files.
+3. Add `jettons/HumanIntention.yaml` only. Do not edit generated JSON files.
 4. Open a pull request to Tonkeeper's `ton-assets` repository.
 5. Wait for review and cache refresh.
 
