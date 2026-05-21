@@ -31,16 +31,16 @@ HI_ORACLE_CONFIRMATION_DELAY=86400 acton script scripts/deploy-hi-tokenomics.tol
 ## Required Mainnet Environment
 
 ```text
-HI_DEPLOYER=<mainnet-admin-wallet-name>
-HI_ADMIN_ADDRESS=<mainnet-admin-address>
-HI_ORACLE_ADMIN_ADDRESS=<mainnet-oracle-admin-address>
-HI_ECOSYSTEM_ADMIN_ADDRESS=<mainnet-reward-admin-address>
-HI_MIGRATION_WALLET_1=<mainnet-migration-wallet-1>
-HI_MIGRATION_WALLET_2=<mainnet-migration-wallet-2>
-HI_TEAM_WALLET=<mainnet-team-wallet>
-HI_PROJECT_FUND_WALLET=<mainnet-project-fund-wallet>
-HI_LIQUIDITY_WALLET=<mainnet-liquidity-wallet>
-HI_INVESTOR_WALLET=<mainnet-investor-wallet>
+HI_DEPLOYER=mainnet-admin
+HI_ADMIN_ADDRESS=UQCxJ05yeawVWlsN5SfJ-obajgh2lFffR-O7ebH_s_wqQfRq
+HI_ORACLE_ADMIN_ADDRESS=UQBeOTm5tIOMs652HingkH0VPS9p3_hwp5o39Sqf40VI32MR
+HI_ECOSYSTEM_ADMIN_ADDRESS=UQCxJ05yeawVWlsN5SfJ-obajgh2lFffR-O7ebH_s_wqQfRq
+HI_MIGRATION_WALLET_1=UQCEglVIxCzQ2G8lNf3kMiC8lAO-mBm-sofE0iv9GL_iRnOM
+HI_MIGRATION_WALLET_2=UQBGY56JY9gy1V-vnnyOpGoJXLWAcm3LKNAdl9OKShuCe7QA
+HI_TEAM_WALLET=UQDggHxWQaz-Sy5MraM74CMJBy7jLvxIWSp27zNSbZgreqve
+HI_PROJECT_FUND_WALLET=UQCoEOc-cUuQqRhq9GbD8KQ0d0ck-UlCGHEIfuOzusE7JhZx
+HI_LIQUIDITY_WALLET=UQC1NvqwkOplgCc2C6Vy32y0GFh4LAUdHfOSgeKAEr2rIWV3
+HI_INVESTOR_WALLET=UQDqA19b4tBQKi7Z_0NS08eWzq-FZ-wsRU4QfzEEKwcoucjV
 HI_DEPLOY_MSG_VALUE=0.05
 HI_MINT_FORWARD_TON_AMOUNT=0
 HI_MINT_TOTAL_TON_AMOUNT=250000000
@@ -141,10 +141,9 @@ minting was then permanently disabled.
 Current result:
 
 - steps 1-8 are complete;
-- mainnet verifier dry-run is complete;
+- mainnet verifier publication is complete;
 - `JettonMinter` and `JettonWallet` are already verified by code hash;
-- five business-contract verifier transactions are prepared but not published
-  on-chain yet.
+- five business-contract verifier records are published on TON Verifier.
 
 ## Message Interfaces
 

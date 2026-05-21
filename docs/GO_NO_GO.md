@@ -50,9 +50,8 @@ Human Intention (HI) helps users better command Agents. Its innovative token rel
 
 ## Remaining Operational Items
 
-- Publish prepared TON Verifier transactions on mainnet if owner approves.
-  `JettonMinter` and `JettonWallet` are already verified by code hash; the five
-  business contracts passed verifier dry-run.
+- Monitor Tonkeeper asset-listing PR #5299 until merged and cache-refresh is
+  visible in Tonkeeper/TonAPI.
 - Update app/frontend/backend mainnet configuration with deployed addresses.
 - Run read-only production health checks after app config is updated.
 - Keep public GrowthEngine launch disabled until frontend mainnet config,

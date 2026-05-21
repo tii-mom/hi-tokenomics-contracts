@@ -93,7 +93,8 @@ Mainnet deployment has been executed. Evidence is recorded in
 
 Remaining operational items:
 
-- publish prepared TON Verifier transactions on mainnet if approved;
+- monitor Tonkeeper asset-listing PR #5299 until merged and cache-refresh is
+  visible in Tonkeeper/TonAPI;
 - update app/backend/frontend production configuration;
 - run read-only production health checks;
 - keep public GrowthEngine launch disabled until production configuration and

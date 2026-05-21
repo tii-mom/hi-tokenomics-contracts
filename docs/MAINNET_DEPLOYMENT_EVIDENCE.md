@@ -7,14 +7,12 @@ Status: mainnet deployment completed on 2026-05-21.
 The HI tokenomics package was deployed to TON mainnet after final local gates,
 fresh testnet evidence, frontend TonConnect claim E2E, and independent review.
 
-The deployer/admin TonConnect wallet used for the deployment resolved to the
-owner-approved admin/deployer address. Role wallet addresses are intentionally
-redacted from this public repository; the private deployment package keeps the
-full operational record.
+The deployer/admin TonConnect wallet used for the deployment resolves to the
+owner-approved admin/deployer address:
 
 ```text
-admin/deployer: <redacted in public repo>
-connected wallet: <redacted in public repo>
+admin/deployer: UQCxJ05yeawVWlsN5SfJ-obajgh2lFffR-O7ebH_s_wqQfRq
+connected wallet: EQCxJ05yeawVWlsN5SfJ-obajgh2lFffR-O7ebH_s_wqQamv
 ```
 
 Mainnet deployment used `HI_ORACLE_CONFIRMATION_DELAY=86400`.
@@ -138,22 +136,20 @@ The deployed contracts correspond to the local build hashes in
 | `PriceOracle` | `94E36D148B9C453D9EFA7D421194B75ECA68CA6921AF5C25E951BCB685296D96` |
 | `TeamVestingVault` | `50F2662E4E1C2B394C33196A9F030667BA66E35DA055F92A1B43D1ACC87B261E` |
 
-## Mainnet Verifier Dry-Run
+## Mainnet Verifier Publication
 
-Mainnet TON Verifier dry-run was run after deployment:
+Mainnet TON Verifier dry-run was run after deployment, then the five business
+contracts were formally published through TonConnect on 2026-05-21.
 
 | Contract | Result |
 |---|---|
 | `JettonMinter` | Already verified on verifier backend |
 | `JettonWallet` | Already verified on verifier backend |
-| `GrowthEngine` | Backend verification successful; dry-run transaction prepared |
-| `PriceOracle` | Backend verification successful; dry-run transaction prepared |
-| `TeamVestingVault` | Backend verification successful; dry-run transaction prepared |
-| `CampaignWinnerVault` | Backend verification successful; dry-run transaction prepared |
-| `MerkleRewardVault` | Backend verification successful; dry-run transaction prepared |
-
-Actual on-chain verifier publication is a separate operational transaction and
-can be sent after explicit approval.
+| `GrowthEngine` | Published: https://verifier.ton.org/UQDUd67S1AMDz5KYrVdsS8Z646csQFnCXTDr94isNJ0U01PI |
+| `PriceOracle` | Published: https://verifier.ton.org/UQBGLDiTrBuNOCL8VL-Kpq3OZtDnvmU_S92jsbjwS4LpeKLQ |
+| `TeamVestingVault` | Published: https://verifier.ton.org/UQAy1xgExpT84Cv67u0XfP-OzPQH9II1DlN_-w7pfBXohd0j |
+| `CampaignWinnerVault` | Published: https://verifier.ton.org/UQD7jkObKT56cQ-f6_fWKsYIPeZUetxSAZE1gZd7_fiLsY9D |
+| `MerkleRewardVault` | Published: https://verifier.ton.org/UQCI9f9BA2I_9WbDuFlLuzpa5uSZsPDWFcIfijWiFSFjy4hl |
 
 ## Metadata
 

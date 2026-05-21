@@ -34,7 +34,8 @@ deployment, then record post-deploy evidence and remaining operational items.
 
 ## Remaining Operational Items
 
-- Publish prepared TON Verifier transactions on mainnet if owner approves.
+- Monitor Tonkeeper asset-listing PR #5299 until merged and cache-refresh is
+  visible in Tonkeeper/TonAPI.
 - Update production frontend/backend config with mainnet addresses.
 - Run read-only production health checks after app config changes.
 - Keep public GrowthEngine launch disabled until production config, indexer
