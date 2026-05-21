@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HI 主网部署前合约审查说明</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --ink: #172033;
+      --muted: #617086;
+      --line: #dfe6ef;
+      --green: #0f9f6e;
+      --blue: #2563eb;
+      --orange: #d97706;
+      --red: #dc2626;
+      --soft-green: #eafaf3;
+      --soft-blue: #edf4ff;
+      --soft-orange: #fff7ed;
+      --soft-red: #fff1f2;
+      --soft-gray: #f3f6fa;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.64;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 18px 72px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #143c72 0%, #0f766e 100%);
+      color: white;
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.16);
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 880px;
+      margin: 0;
+      color: rgba(255,255,255,.9);
+      font-size: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px;
+      margin: 16px 0;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 23px;
+      line-height: 1.25;
+    }
+
+    h3 {
+      margin: 20px 0 8px;
+      font-size: 17px;
+      line-height: 1.3;
+    }
+
+    p { margin: 8px 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef3f9;
+      color: #263447;
+      font-weight: 700;
+    }
+
+    code {
+      background: #eef2f7;
+      border: 1px solid #d9e1ec;
+      color: #102033;
+      padding: 1px 5px;
+      border-radius: 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: .92em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .mini {
+      border: 1px solid var(--line);
+      background: var(--soft-gray);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .mini strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .ok { color: #06784f; background: var(--soft-green); }
+    .info { color: #1d4ed8; background: var(--soft-blue); }
+    .warn { color: #a04f00; background: var(--soft-orange); }
+    .danger { color: #b91c1c; background: var(--soft-red); }
+
+    .note {
+      background: var(--soft-blue);
+      border-left: 4px solid var(--blue);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #1f3350;
+    }
+
+    .warning {
+      background: var(--soft-orange);
+      border-left: 4px solid var(--orange);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #4d3413;
+    }
+
+    .success {
+      background: var(--soft-green);
+      border-left: 4px solid var(--green);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #123d2d;
+    }
+
+    ul {
+      margin: 8px 0 0 20px;
+      padding: 0;
+    }
+
+    li { margin: 5px 0; }
+
+    .small { color: var(--muted); font-size: 14px; }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 26px; }
+      table { font-size: 14px; }
+      th, td { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>HI 主网部署前合约审查说明</h1>
+      <p>本页用非技术语言说明当前 7 个合约的用途、100 亿 HI 的发行流向、代币发行后能否正常转账、各存币合约如何转出代币，以及主网前安全检查结论。</p>
+    </section>
+
+    <section class="card">
+      <h2>审查结论</h2>
+      <div class="success">
+        <strong>结论：未发现需要主网前修改合约代码的阻塞问题。</strong>
+        <p>本次复查重点覆盖代币正常转账、增发、黑白名单、冻结、暂停、税费、升级、自毁、余额异常操作、业务合约存币转出机制。当前本地门禁全部通过，测试结果为 <code>69 passed in 7 files</code>。</p>
+      </div>
+      <table>
+        <tr><th>项目</th><th>结论</th><th>说明</th></tr>
+        <tr><td>代币发行后能否正常转账</td><td><span class="badge ok">可以</span></td><td>HI 使用标准 Jetton Wallet。每个持币人的 Jetton Wallet 由持币人自己控制，只有 owner 能转出自己的 HI。</td></tr>
+        <tr><td>是否发现黑名单 / 白名单限制</td><td><span class="badge ok">未发现</span></td><td>Jetton 转账层没有黑名单、白名单、冻结账户或交易限制逻辑。</td></tr>
+        <tr><td>是否发现交易税 / 可修改税</td><td><span class="badge ok">未发现</span></td><td>Jetton 转账没有买卖税、手续费税、滑点税或管理员可修改税率。</td></tr>
+        <tr><td>是否存在强制转账 / 强制燃烧</td><td><span class="badge ok">未发现</span></td><td>Minter 不能强制转走用户 HI，不能强制燃烧用户 HI。用户可以自己 burn 自己钱包里的 HI，这是标准 Jetton 行为。</td></tr>
+        <tr><td>是否存在继续增发</td><td><span class="badge ok">部署后无增发</span></td><td>部署脚本在总量 10,000,000,000 HI 铸造分配完成后 drop minter admin。drop 后 <code>mintable=false</code>、<code>admin=null</code>，不能再 mint。</td></tr>
+        <tr><td>是否存在合约升级风险</td><td><span class="badge ok">部署后无升级入口</span></td><td>JettonMinter 在 admin drop 前有升级入口，drop 后失效。4 个业务存币合约没有代码升级入口。</td></tr>
+        <tr><td>是否存在自毁功能</td><td><span class="badge ok">未发现</span></td><td>合约源码中没有 self-destruct / destroy 类清空资产逻辑。</td></tr>
+        <tr><td>所有存币合约是否有转出机制</td><td><span class="badge ok">有</span></td><td>GrowthEngine、TeamVestingVault、CampaignWinnerVault、MerkleRewardVault 都有按规则 claim / sweep / migration 路径。已承诺给用户或团队的 HI 不能被随意迁走。</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>100 亿 HI 发行后流向</h2>
+      <table>
+        <tr><th>去向</th><th>比例</th><th>数量</th><th>接收方式</th><th>说明</th></tr>
+        <tr><td>GrowthEngine 增长引擎</td><td>50%</td><td>5,000,000,000 HI</td><td>打入 GrowthEngine 合约的 Jetton Wallet</td><td>用户用 TON 购买，按价格等级逐步解锁。</td></tr>
+        <tr><td>MerkleRewardVault 生态 / 红包</td><td>16%</td><td>1,600,000,000 HI</td><td>打入 MerkleRewardVault 合约的 Jetton Wallet</td><td>生态奖励、红包奖励等通过 Merkle proof 领取。红包子池上限 100,000,000 HI。</td></tr>
+        <tr><td>CampaignWinnerVault 500万 HI 活动大奖</td><td>4%</td><td>400,000,000 HI</td><td>打入 CampaignWinnerVault 合约的 Jetton Wallet</td><td>80 名 winner，每名 5,000,000 HI，按 GrowthEngine 同样等级释放。</td></tr>
+        <tr><td>TeamVestingVault 团队持有</td><td>12%</td><td>1,200,000,000 HI</td><td>打入 TeamVestingVault 合约的 Jetton Wallet</td><td>达到 0.1、0.5、1、5 USDT 四个团队价格等级，每级释放 300,000,000 HI。</td></tr>
+        <tr><td>项目基金钱包</td><td>10%</td><td>1,000,000,000 HI</td><td>普通钱包</td><td>用于投资、回购、保障项目可持续发展；普通 Jetton Wallet 可正常转账。</td></tr>
+        <tr><td>流动性钱包</td><td>5%</td><td>500,000,000 HI</td><td>普通钱包</td><td>用于流动性安排；普通 Jetton Wallet 可正常转账。</td></tr>
+        <tr><td>投资及早期钱包</td><td>3%</td><td>300,000,000 HI</td><td>普通钱包</td><td>投资及早期分配；普通 Jetton Wallet 可正常转账。</td></tr>
+      </table>
+      <p class="note">部署脚本会在 drop minter admin 前检查 7 个分配钱包余额和总供应。总供应固定为 10,000,000,000 HI。</p>
+    </section>
+
+    <section class="card">
+      <h2>7 个合约分别负责什么</h2>
+      <div class="grid">
+        <div class="mini"><strong>JettonMinter</strong>负责创建 HI、记录总供应、计算用户 Jetton Wallet 地址。部署完成并 drop admin 后不能再增发或升级。</div>
+        <div class="mini"><strong>JettonWallet</strong>每个持币地址对应一个钱包合约。用户转账 HI 时，实际由自己的 Jetton Wallet 执行。</div>
+        <div class="mini"><strong>GrowthEngine</strong>增长引擎，承载公开销售。用户买入后按价格等级领取 HI。</div>
+        <div class="mini"><strong>PriceOracle</strong>价格等级确认合约。管理员上报价格，等待主网 86400 秒后确认等级。</div>
+        <div class="mini"><strong>TeamVestingVault</strong>团队锁仓合约。达到团队 USDT 价格等级后，释放给团队钱包。</div>
+        <div class="mini"><strong>CampaignWinnerVault</strong>500万 HI winner 合约。80 名 winner 逐步领取奖励。</div>
+        <div class="mini"><strong>MerkleRewardVault</strong>生态和红包领取合约。后端生成 Merkle root，用户用 proof 自助领取。</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>代币转账是否正常</h2>
+      <p>HI 的普通转账由 <code>JettonWallet</code> 完成。源码检查结果：</p>
+      <table>
+        <tr><th>检查点</th><th>结果</th><th>说明</th></tr>
+        <tr><td>用户是否能转账</td><td><span class="badge ok">能</span></td><td>用户作为 Jetton Wallet 的 owner，可以发送 <code>AskToTransfer</code> 转账。</td></tr>
+        <tr><td>别人能否转走用户 HI</td><td><span class="badge ok">不能</span></td><td>JettonWallet 检查 <code>in.senderAddress == ownerAddress</code>，非 owner 不能转出。</td></tr>
+        <tr><td>转账失败是否回滚余额</td><td><span class="badge ok">会回滚</span></td><td>JettonWallet 和业务合约都有 bounce rollback 测试覆盖。</td></tr>
+        <tr><td>是否有转账税</td><td><span class="badge ok">没有</span></td><td>转账金额不会被合约扣税。</td></tr>
+        <tr><td>是否可冻结某个地址</td><td><span class="badge ok">没有冻结逻辑</span></td><td>未发现冻结账户、黑名单、白名单转账限制。</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>存有 HI 的合约如何转出</h2>
+      <table>
+        <tr><th>存币位置</th><th>正常转出方式</th><th>异常/迁移转出方式</th><th>不能被转走的部分</th></tr>
+        <tr>
+          <td>GrowthEngine</td>
+          <td>用户购买后 level 0 立即领取 5%；level 1-9 每级 10%；level 10 最后 5%。用户忘记领取也不会过期，可后续一次性领取已解锁部分。</td>
+          <td>销售永久关闭后，未售 HI 和 missed HI 可 sweep 到项目基金钱包。未承诺 HI 可由 migration wallet 迁移到 admin allowlist 目标合约。</td>
+          <td>用户已购买但未领取的 HI 不能被 sweep 或迁移。</td>
+        </tr>
+        <tr>
+          <td>TeamVestingVault</td>
+          <td>达到 0.1、0.5、1、5 USDT 团队价格等级后，每级释放 300,000,000 HI 到团队钱包。</td>
+          <td>保留 migration target 选择语义，但 <code>uncommitted=0</code>，实际没有可迁移团队 HI。</td>
+          <td>全部 1,200,000,000 HI 都承诺给团队价格释放计划，不能被迁走。</td>
+        </tr>
+        <tr>
+          <td>CampaignWinnerVault</td>
+          <td>已注册 winner 自己 claim。每名 5,000,000 HI，规则与 GrowthEngine 一致：level 0 为 5%，level 1-9 为 10%，level 10 为 5%。</td>
+          <td>未注册、未承诺的剩余额度可由 migration wallet 迁移到 admin allowlist 目标合约。</td>
+          <td>已注册 winner 的 5,000,000 HI 承诺额度不能被迁走。</td>
+        </tr>
+        <tr>
+          <td>MerkleRewardVault</td>
+          <td>用户提交 Merkle proof 自助领取。每个 batchId + wallet 只能领一次，支持 requiredGrowthLevel。</td>
+          <td>未创建 batch、未承诺的剩余额度可由 migration wallet 迁移到 admin allowlist 目标合约。</td>
+          <td>已创建 batch 的 totalHi 属于 committed，不可作为未承诺余额迁走。</td>
+        </tr>
+        <tr>
+          <td>项目基金 / 流动性 / 投资钱包</td>
+          <td>普通钱包自行转账。</td>
+          <td>不走业务合约 migration。</td>
+          <td>由钱包私钥或多签控制，合约层没有额外限制。</td>
+        </tr>
+      </table>
+      <p class="warning">注意：migration 是为“合约出现问题时把未承诺 HI 转到新合约”准备的救援路径，不是普通提款功能。它不能转走用户已购买、winner 已注册、Merkle batch 已发布、团队已承诺的 HI。</p>
+    </section>
+
+    <section class="card">
+      <h2>解锁规则</h2>
+      <h3>GrowthEngine 和 CampaignWinnerVault</h3>
+      <table>
+        <tr><th>等级</th><th>本级释放</th><th>累计释放</th><th>说明</th></tr>
+        <tr><td>level 0</td><td>5%</td><td>5%</td><td>只有在 level 0 买入或注册 winner 的地址享受这 5%。</td></tr>
+        <tr><td>level 1</td><td>10%</td><td>15%</td><td>达到第 1 个 growth 价格阈值后释放。</td></tr>
+        <tr><td>level 2</td><td>10%</td><td>25%</td><td>晚买用户不补历史 level，只从下一轮开始享受。</td></tr>
+        <tr><td>level 3</td><td>10%</td><td>35%</td><td></td></tr>
+        <tr><td>level 4</td><td>10%</td><td>45%</td><td></td></tr>
+        <tr><td>level 5</td><td>10%</td><td>55%</td><td></td></tr>
+        <tr><td>level 6</td><td>10%</td><td>65%</td><td></td></tr>
+        <tr><td>level 7</td><td>10%</td><td>75%</td><td></td></tr>
+        <tr><td>level 8</td><td>10%</td><td>85%</td><td></td></tr>
+        <tr><td>level 9</td><td>10%</td><td>95%</td><td></td></tr>
+        <tr><td>level 10</td><td>5%</td><td>100%</td><td>最后一轮释放完毕。</td></tr>
+      </table>
+      <h3>TeamVestingVault</h3>
+      <table>
+        <tr><th>团队价格等级</th><th>USDT/HI 阈值</th><th>释放数量</th><th>累计释放</th></tr>
+        <tr><td>team level 1</td><td>0.1 USDT</td><td>300,000,000 HI</td><td>300,000,000 HI</td></tr>
+        <tr><td>team level 2</td><td>0.5 USDT</td><td>300,000,000 HI</td><td>600,000,000 HI</td></tr>
+        <tr><td>team level 3</td><td>1 USDT</td><td>300,000,000 HI</td><td>900,000,000 HI</td></tr>
+        <tr><td>team level 4</td><td>5 USDT</td><td>300,000,000 HI</td><td>1,200,000,000 HI</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>价格 oracle 如何工作</h2>
+      <p>当前主网版本不是自动抓交易所价格。价格由 oracle admin 上报，合约只根据上报价格和等待时间确认等级。</p>
+      <table>
+        <tr><th>项目</th><th>规则</th></tr>
+        <tr><td>Growth level</td><td>0 到 10 级，只能一级一级递增，不能跳级、不能回退。</td></tr>
+        <tr><td>Team level</td><td>0 到 4 级，只能一级一级递增，不能跳级、不能回退。</td></tr>
+        <tr><td>主网确认延迟</td><td><code>86400</code> 秒，即 24 小时。</td></tr>
+        <tr><td>谁能上报价格</td><td>只有 oracle admin。</td></tr>
+        <tr><td>谁能确认成熟等级</td><td>候选等级成熟后，任何 keeper 都可以触发 confirm；但必须已经由 oracle admin 上报候选价格并等待满 24 小时。</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>按交易所检测项逐项说明</h2>
+      <table>
+        <tr><th>检测项</th><th>HI 当前结论</th><th>解释</th></tr>
+        <tr><td>白名单限制</td><td><span class="badge ok">未发现代币转账白名单</span></td><td>Jetton 转账不需要白名单。migration allowlist 只限制救援迁移目标，不限制用户交易。</td></tr>
+        <tr><td>黑名单限制</td><td><span class="badge ok">未发现</span></td><td>没有阻止某个地址转账 HI 的黑名单逻辑。</td></tr>
+        <tr><td>冷静期限制</td><td><span class="badge ok">未发现</span></td><td>普通 HI 转账没有交易冷却期。</td></tr>
+        <tr><td>交易暂停功能</td><td><span class="badge info">代币无暂停；销售可暂停</span></td><td>Jetton 转账不能被暂停。GrowthEngine 销售可由 admin 暂停或永久关闭，这是销售合约功能，不影响用户钱包之间转账。</td></tr>
+        <tr><td>出售限制 / 反鲸鱼</td><td><span class="badge info">代币无出售限制</span></td><td>普通 HI 转账无卖出限制。GrowthEngine 买入有最小 0.1 TON 和单钱包 5000 TON 上限，这是销售规则，不是代币卖出限制。</td></tr>
+        <tr><td>合约是否弃权</td><td><span class="badge ok">Minter 部署后弃权</span></td><td>JettonMinter admin 会被 drop，不能再增发、改 metadata 或升级。业务合约保留必要 admin/oracle/migration 权限。</td></tr>
+        <tr><td>自毁功能</td><td><span class="badge ok">未发现</span></td><td>没有销毁合约并清空资产的入口。</td></tr>
+        <tr><td>增发风险</td><td><span class="badge ok">部署后无增发</span></td><td>主网部署脚本在确认 100 亿 HI 全部分配后 drop minter admin。</td></tr>
+        <tr><td>余额异常操作</td><td><span class="badge ok">未发现用户余额强转</span></td><td>业务合约只能按 claim/sweep/migration 规则转出自身持有的 HI，不能操作普通用户 Jetton Wallet。</td></tr>
+        <tr><td>可冻结授权账户</td><td><span class="badge ok">未发现</span></td><td>没有针对用户授权账户的冻结逻辑。</td></tr>
+        <tr><td>可修改税款</td><td><span class="badge ok">未发现</span></td><td>没有交易税字段或修改税率入口。</td></tr>
+        <tr><td>升级风险</td><td><span class="badge ok">部署后低</span></td><td>Minter 升级入口在 drop admin 后失效；业务合约未发现代码升级入口。</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>仍需接受的权限边界</h2>
+      <p>下面不是本次发现的新漏洞，而是主网运行必须理解的管理边界。</p>
+      <table>
+        <tr><th>权限</th><th>谁控制</th><th>能做什么</th><th>不能做什么</th></tr>
+        <tr><td>admin / deployer / reward admin</td><td>主网 admin 多签或单签</td><td>部署、配置业务合约 Jetton Wallet、管理 GrowthEngine、注册 winner、创建 Merkle batch、管理 migration allowlist。</td><td>在 minter admin drop 后不能增发 HI，不能强制转走用户钱包里的 HI。</td></tr>
+        <tr><td>oracle admin</td><td>独立 oracle admin 地址</td><td>上报 growth/team USDT 价格候选等级。</td><td>不能直接转走 HI，不能跳级确认，不能回退等级。</td></tr>
+        <tr><td>migration wallet 1 / 2</td><td>两个迁移钱包</td><td>选择 admin allowlist 中的目标合约，并迁移未承诺 HI。</td><td>不能迁移已购买未领、已注册 winner、已发布 batch、团队已承诺的 HI。</td></tr>
+      </table>
+      <p class="warning">如果你希望进一步降低管理权限风险，可以考虑未来版本增加 timelock、code-hash 校验或把部分配置改成部署后不可修改。但这会改变合约 hash，需要重新测试、重新 testnet、重新审计。当前主网前不建议临时改动，除非你决定重新走一轮完整流程。</p>
+    </section>
+
+    <section class="card">
+      <h2>主网前验证结果</h2>
+      <table>
+        <tr><th>检查</th><th>结果</th></tr>
+        <tr><td><code>acton fmt --check</code></td><td><span class="badge ok">通过</span></td></tr>
+        <tr><td><code>acton build</code></td><td><span class="badge ok">通过</span></td></tr>
+        <tr><td><code>acton wrapper --all</code></td><td><span class="badge ok">通过</span></td></tr>
+        <tr><td><code>acton wrapper --all --ts</code></td><td><span class="badge ok">通过</span></td></tr>
+        <tr><td><code>acton test</code></td><td><span class="badge ok">69 passed in 7 files</span></td></tr>
+        <tr><td><code>acton check</code></td><td><span class="badge ok">通过</span></td></tr>
+        <tr><td><code>CODE_HASHES.md</code></td><td><span class="badge ok">与 build/*.json 一致</span></td></tr>
+        <tr><td>Fresh testnet / verifier / TonConnect E2E</td><td><span class="badge ok">已完成并记录</span></td></tr>
+      </table>
+      <p class="note">当前状态：技术 readiness 为 conditional GO；主网部署执行仍需你明确授权。</p>
+    </section>
+  </div>
+</body>
+</html>
