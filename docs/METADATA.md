@@ -22,6 +22,12 @@ Source logo file:
 /Users/yudeyou/Desktop/100wan/a54daaea-3245-4bfc-a1c0-174dbdf0316f_副本.png
 ```
 
+Stable repository logo file for wallet/listing submissions:
+
+```text
+metadata/hi-logo.png
+```
+
 Logo properties checked locally:
 
 ```text
@@ -97,3 +103,19 @@ The current deploy script writes these TEP-64 on-chain fields:
 
 Social links are documented for public/audit materials, but are not written into
 the on-chain metadata cell by `scripts/utils/common.tolk`.
+
+## Tonkeeper / TonAPI Display
+
+Toncenter can read the on-chain HI metadata, but TonAPI/Tonkeeper may still show
+`Unknown Token-azS` until their asset index accepts the token. The prepared
+Tonkeeper listing file is:
+
+```text
+ton-assets/jettons/HI.yaml
+```
+
+Details and submission steps are in:
+
+```text
+docs/TONKEEPER_ASSET_LISTING.md
+```
