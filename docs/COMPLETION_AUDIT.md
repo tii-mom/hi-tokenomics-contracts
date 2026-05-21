@@ -2,13 +2,13 @@
 
 Status: post-audit local remediation, migration allowlist changes, fresh
 testnet evidence, frontend TonConnect claim E2E, app contract-facing checks,
-and TON Verifier dry-run are complete for the current hashes. Mainnet deployment
-itself is not authorized and has not been executed.
+TON Verifier dry-run, and TON mainnet deployment are complete for the current
+hashes. Post-deploy core state and allocation balances are verified.
 
 ## Objective
 
-Proceed in order from the final GrowthEngine plan to the project mainnet
-deployment stage, stopping before actual mainnet deployment.
+Proceed in order from the final GrowthEngine plan through project mainnet
+deployment, then record post-deploy evidence and remaining operational items.
 
 ## Artifact Checklist
 
@@ -28,10 +28,14 @@ deployment stage, stopping before actual mainnet deployment.
 | Frontend TonConnect claim E2E | `TESTNET_EVIDENCE.md` records successful red-packet and CampaignWinner claim transactions | Complete |
 | Migration permission model | Admin-managed target allowlist implemented locally | Complete locally |
 | App contract-facing checks | `/Users/yudeyou/Desktop/100wan` and `/Users/yudeyou/Desktop/GrowthEngine` lint/test/build checks complete | Complete |
-| Mainnet deploy package | `DEPLOYMENT_PACKAGE.md` contains final command, env, interfaces, and blockers | Complete pending authorization |
+| Mainnet deploy package | `DEPLOYMENT_PACKAGE.md` contains final command, env, interfaces, and deployed results | Complete |
+| Mainnet deployment | `MAINNET_DEPLOYMENT_EVIDENCE.md` records mainnet addresses, balances, tx hashes, metadata, and post-drop state | Complete |
+| Mainnet post-deploy verification | `MAINNET_DEPLOYMENT_EVIDENCE.md` records allocation balances, minter admin drop, business state getters, and verifier dry-run | Complete |
 
-## Remaining Mainnet Blockers
+## Remaining Operational Items
 
-- Explicit mainnet deployment authorization.
-
-Mainnet deployment has not been executed.
+- Publish prepared TON Verifier transactions on mainnet if owner approves.
+- Update production frontend/backend config with mainnet addresses.
+- Run read-only production health checks after app config changes.
+- Keep public GrowthEngine launch disabled until production config, indexer
+  behavior, listing metadata, and operations runbooks are reviewed.

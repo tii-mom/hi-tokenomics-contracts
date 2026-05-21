@@ -132,8 +132,22 @@ Operational scripts:
 - `HI_CAMPAIGN_ADMIN`
 - `HI_CAMPAIGN_WINNER`
 
-## Mainnet Boundary
+## Mainnet Deployment
 
-This workspace is being prepared only up to the mainnet go/no-go package.
-Mainnet deployment must not run until real role addresses, final metadata,
-external review/audit decision, and explicit deployment approval are provided.
+HI mainnet deployment was completed on 2026-05-21.
+
+Primary mainnet addresses:
+
+- `JettonMinter`: `EQCBs2bpHXFOq19TOGoxyKKrsta7109dMYg7tFxejxVx-azS`
+- `PriceOracle`: `EQBGLDiTrBuNOCL8VL-Kpq3OZtDnvmU_S92jsbjwS4LpeP8V`
+- `GrowthEngine`: `EQDUd67S1AMDz5KYrVdsS8Z646csQFnCXTDr94isNJ0U0w4N`
+- `TeamVestingVault`: `EQAy1xgExpT84Cv67u0XfP-OzPQH9II1DlN_-w7pfBXohYDm`
+- `MerkleRewardVault`: `EQCI9f9BA2I_9WbDuFlLuzpa5uSZsPDWFcIfijWiFSFjy9Wg`
+- `CampaignWinnerVault`: `EQD7jkObKT56cQ-f6_fWKsYIPeZUetxSAZE1gZd7_fiLsdKG`
+
+Evidence: `docs/MAINNET_DEPLOYMENT_EVIDENCE.md`.
+
+Public repository note: contract addresses, code, hashes, and deployment
+evidence are public. Role wallet addresses, local wallet names, TonConnect
+sessions, mnemonics, private keys, API keys, and runtime secrets are not
+published here.

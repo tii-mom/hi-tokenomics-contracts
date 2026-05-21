@@ -1,6 +1,7 @@
 # HI Mainnet Deployment Package
 
-Status: pre-mainnet review package ready. Mainnet deployment is not authorized.
+Status: mainnet deployment completed on 2026-05-21. Post-deploy core state and
+allocation balances are verified.
 
 ## Fresh Testnet Deployment
 
@@ -83,6 +84,30 @@ decided before mainnet if required.
 6. `CampaignWinnerVault`
 7. `MerkleRewardVault`
 
+## Mainnet Deployment Result
+
+Evidence: `docs/MAINNET_DEPLOYMENT_EVIDENCE.md`.
+
+| Contract | Mainnet address |
+|---|---|
+| `JettonMinter` | `EQCBs2bpHXFOq19TOGoxyKKrsta7109dMYg7tFxejxVx-azS` |
+| `PriceOracle` | `EQBGLDiTrBuNOCL8VL-Kpq3OZtDnvmU_S92jsbjwS4LpeP8V` |
+| `GrowthEngine` | `EQDUd67S1AMDz5KYrVdsS8Z646csQFnCXTDr94isNJ0U0w4N` |
+| `TeamVestingVault` | `EQAy1xgExpT84Cv67u0XfP-OzPQH9II1DlN_-w7pfBXohYDm` |
+| `MerkleRewardVault` | `EQCI9f9BA2I_9WbDuFlLuzpa5uSZsPDWFcIfijWiFSFjy9Wg` |
+| `CampaignWinnerVault` | `EQD7jkObKT56cQ-f6_fWKsYIPeZUetxSAZE1gZd7_fiLsdKG` |
+
+Post-deploy minter state:
+
+```text
+totalSupply=10000000000000000000
+mintable=false
+adminAddress=null
+```
+
+This means the full `10,000,000,000 HI` supply was minted/distributed and
+minting was then permanently disabled.
+
 ## Allocation
 
 | Destination | Amount |
@@ -111,7 +136,15 @@ decided before mainnet if required.
    - CampaignWinnerVault
 8. Confirm `HI_ORACLE_CONFIRMATION_DELAY=86400` in mainnet storage.
 9. Run TON Verifier for all seven contracts.
-10. Stop unless explicit mainnet operational approval is provided.
+10. Update production app config only after post-deploy evidence is reviewed.
+
+Current result:
+
+- steps 1-8 are complete;
+- mainnet verifier dry-run is complete;
+- `JettonMinter` and `JettonWallet` are already verified by code hash;
+- five business-contract verifier transactions are prepared but not published
+  on-chain yet.
 
 ## Message Interfaces
 

@@ -1,10 +1,11 @@
 # Mainnet Go / No-Go
 
-Decision: **CONDITIONAL GO for mainnet readiness; NO-AUTH for mainnet deployment execution**.
+Decision: **MAINNET DEPLOYED; post-deploy verification complete for core state**.
 
 ## Current State
 
-The current local GrowthEngine 7-contract implementation is green:
+The current local GrowthEngine 7-contract implementation was deployed to TON
+mainnet after these gates were green:
 
 - `acton fmt --check`
 - `acton build`
@@ -13,17 +14,27 @@ The current local GrowthEngine 7-contract implementation is green:
 - `acton test` with `69 passed in 7 files`
 - `acton check`
 
-Post-audit Medium/Low fixes and migration allowlist revoke semantics are complete.
-Fresh testnet deployment, business rehearsal, frontend TonConnect claim E2E,
-app contract-facing checks, and TON Verifier dry-run are complete for the
-current hashes.
+Post-audit Medium/Low fixes and migration allowlist revoke semantics are
+complete. Fresh testnet deployment, business rehearsal, frontend TonConnect
+claim E2E, app contract-facing checks, and TON Verifier dry-run are complete
+for the deployed hashes.
 
-## Mainnet Blockers
+## Mainnet Deployment Result
 
-Mainnet execution remains blocked because the final GrowthEngine version still
-needs:
+Mainnet deployment was explicitly authorized by the owner and executed on
+2026-05-21.
 
-1. Explicit user authorization for mainnet deployment.
+Evidence: `docs/MAINNET_DEPLOYMENT_EVIDENCE.md`.
+
+Post-deploy state:
+
+- total supply is `10,000,000,000 HI`;
+- minter admin is dropped: `mintable=false`, `admin=null`;
+- all seven allocation balances match the final 50% / 16% / 4% / 12% / 10% /
+  5% / 3% distribution;
+- GrowthEngine starts at level `0` with the full `5,000,000,000 HI` pool;
+- oracle growth/team confirmed levels start at `0`;
+- Team, CampaignWinner, and MerkleReward claim states start clean at `0`.
 
 The owner has accepted the `O-01` migration permission model for V1:
 admin-managed migration target allowlists, two migration wallets, and migration
@@ -37,23 +48,12 @@ has also confirmed the final token metadata description wording:
 Human Intention (HI) helps users better command Agents. Its innovative token release mechanism rewards true crypto believers.
 ```
 
-## Conditions For Mainnet Execution
+## Remaining Operational Items
 
-Mainnet deployment can be executed only when:
-
-- fresh testnet evidence covers every critical flow;
-- `/Users/yudeyou/Desktop/100wan` and `/Users/yudeyou/Desktop/GrowthEngine`
-  contract-facing checks pass;
-- `CODE_HASHES.md` matches final build artifacts after all changes;
-- verifier dry-run succeeds for all seven contracts;
-- deployment package uses `HI_ORACLE_CONFIRMATION_DELAY=86400` for mainnet;
-- all mainnet addresses are supplied and reviewed;
-- the owner explicitly accepts the migration permission model;
-- the owner confirms the final metadata description wording;
-- the user explicitly authorizes mainnet deployment.
-
-All readiness conditions except explicit deployment authorization are complete
-for the current build and evidence set. Until authorization is given, the
-correct state is: local code green, fresh testnet evidence complete, frontend
-TonConnect claim E2E complete, verifier dry-run complete, mainnet deployment
-not authorized.
+- Publish prepared TON Verifier transactions on mainnet if owner approves.
+  `JettonMinter` and `JettonWallet` are already verified by code hash; the five
+  business contracts passed verifier dry-run.
+- Update app/frontend/backend mainnet configuration with deployed addresses.
+- Run read-only production health checks after app config is updated.
+- Keep public GrowthEngine launch disabled until frontend mainnet config,
+  indexer config, listing metadata, and operations runbooks are reviewed.

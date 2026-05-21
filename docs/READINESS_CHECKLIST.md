@@ -1,10 +1,9 @@
 # Readiness Checklist
 
-Status: local GrowthEngine 7-contract implementation is green after audit-fix
-changes. Fresh testnet deployment, business rehearsal, frontend TonConnect claim
-E2E, app contract integration checks, and TON Verifier dry-run are complete for
-the current hashes. Mainnet remains blocked pending explicit deployment
-authorization.
+Status: mainnet deployment completed on 2026-05-21. Local gates, fresh testnet
+deployment, business rehearsal, frontend TonConnect claim E2E, app contract
+integration checks, and TON Verifier dry-run were complete before deployment.
+Post-deploy core state and allocation balances have been verified.
 
 ## Local Build Readiness
 
@@ -80,10 +79,22 @@ authorization.
 - [x] Migration target allowlist model implemented locally.
 - [x] Independent review confirms the latest Medium/Low audit-fix remediation.
 - [x] Final owner sign-off on `O-01` migration permission model.
-- [ ] Explicit mainnet deployment approval.
+- [x] Explicit mainnet deployment approval.
+- [x] Mainnet deployment executed.
+- [x] Minter admin dropped after deployment.
+- [x] Mainnet allocation balances verified.
+- [x] Mainnet initial business states verified.
+- [x] Mainnet TON Verifier dry-run completed.
 
 ## Mainnet Status
 
-Mainnet readiness is conditional GO. Mainnet deployment execution remains
-blocked until explicit deployment authorization is given. No mainnet deployment
-has been executed.
+Mainnet deployment has been executed. Evidence is recorded in
+`docs/MAINNET_DEPLOYMENT_EVIDENCE.md`.
+
+Remaining operational items:
+
+- publish prepared TON Verifier transactions on mainnet if approved;
+- update app/backend/frontend production configuration;
+- run read-only production health checks;
+- keep public GrowthEngine launch disabled until production configuration and
+  listing/indexer behavior are reviewed.
