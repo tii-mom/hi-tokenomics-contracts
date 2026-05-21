@@ -1,9 +1,10 @@
 # Readiness Checklist
 
 Status: local GrowthEngine 7-contract implementation is green after audit-fix
-changes. Fresh testnet deployment, business rehearsal, app contract integration
-checks, and TON Verifier dry-run are complete for the current hashes. Mainnet
-remains blocked pending explicit deployment authorization.
+changes. Fresh testnet deployment, business rehearsal, frontend TonConnect claim
+E2E, app contract integration checks, and TON Verifier dry-run are complete for
+the current hashes. Mainnet remains blocked pending explicit deployment
+authorization.
 
 ## Local Build Readiness
 
@@ -61,6 +62,8 @@ remains blocked pending explicit deployment authorization.
 - [x] TON Verifier dry-run for all seven fresh testnet addresses.
 - [x] `/Users/yudeyou/Desktop/100wan` contract-facing checks.
 - [x] `/Users/yudeyou/Desktop/GrowthEngine` contract-facing checks.
+- [x] Frontend TonConnect claim E2E for `MerkleRewardVault` red-packet claim.
+- [x] Frontend TonConnect claim E2E for `CampaignWinnerVault` winner claim.
 
 ## Mainnet Inputs
 
@@ -81,4 +84,6 @@ remains blocked pending explicit deployment authorization.
 
 ## Mainnet Status
 
-Mainnet deployment is blocked. No mainnet deployment has been executed.
+Mainnet readiness is conditional GO. Mainnet deployment execution remains
+blocked until explicit deployment authorization is given. No mainnet deployment
+has been executed.

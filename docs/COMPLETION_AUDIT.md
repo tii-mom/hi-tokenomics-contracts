@@ -1,9 +1,9 @@
 # Completion Audit
 
 Status: post-audit local remediation, migration allowlist changes, fresh
-testnet evidence, app contract-facing checks, and TON Verifier dry-run are
-complete for the current hashes. Mainnet deployment itself is not authorized
-and has not been executed.
+testnet evidence, frontend TonConnect claim E2E, app contract-facing checks,
+and TON Verifier dry-run are complete for the current hashes. Mainnet deployment
+itself is not authorized and has not been executed.
 
 ## Objective
 
@@ -25,14 +25,13 @@ deployment stage, stopping before actual mainnet deployment.
 | Local gates | `fmt/build/wrapper/wrapper-ts/test/check` complete, `69 passed in 7 files` | Complete |
 | Fresh audit-fix testnet deployment | `TESTNET_EVIDENCE.md` records fresh `hi2` testnet deployment matching current hashes | Complete |
 | TON Verifier dry-run | `TESTNET_EVIDENCE.md` records dry-run success for all seven fresh testnet contracts | Complete |
+| Frontend TonConnect claim E2E | `TESTNET_EVIDENCE.md` records successful red-packet and CampaignWinner claim transactions | Complete |
 | Migration permission model | Admin-managed target allowlist implemented locally | Complete locally |
 | App contract-facing checks | `/Users/yudeyou/Desktop/100wan` and `/Users/yudeyou/Desktop/GrowthEngine` lint/test/build checks complete | Complete |
 | Mainnet deploy package | `DEPLOYMENT_PACKAGE.md` contains final command, env, interfaces, and blockers | Complete pending authorization |
 
 ## Remaining Mainnet Blockers
 
-- Final owner sign-off on `O-01` migration permission model.
-- Final metadata wording confirmation.
 - Explicit mainnet deployment authorization.
 
 Mainnet deployment has not been executed.
