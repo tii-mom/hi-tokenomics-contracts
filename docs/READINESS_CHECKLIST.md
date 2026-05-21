@@ -51,8 +51,10 @@ remains blocked pending explicit deployment authorization.
 - [x] Late-buyer no-catch-up behavior covered by local test.
 - [x] Team levels 1-4 evidence.
 - [x] CampaignWinner registration and claim evidence.
-- [ ] MerkleReward red packet cap and batch evidence must be refreshed after the
-  100,000,000 HI unified red-packet adjustment.
+- [x] MerkleReward red packet cap and batch evidence refreshed after the
+  100,000,000 HI unified red-packet adjustment:
+  `poolType=3` 100,000,000 HI cap succeeds, +1 HI fails, `poolType=2`
+  positive batch fails, and a 5,000 HI `poolType=3` claim succeeds.
 - [x] Migration/rescue smoke evidence with allowlisted targets.
 - [x] Local regression tests for allowlist revoke, migrated inventory caps, and
   Growth/Campaign/Merkle/migration bounce rollback.
