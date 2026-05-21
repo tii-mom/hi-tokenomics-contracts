@@ -200,7 +200,7 @@ acton fmt --check
 acton build
 acton wrapper --all
 acton wrapper --all --ts
-acton test        # 64 passed in 7 files
+acton test        # 69 passed in 7 files
 acton check
 
 /Users/yudeyou/Desktop/100wan:

@@ -11,7 +11,7 @@ remains blocked pending explicit deployment authorization.
 - [x] `acton build`
 - [x] `acton wrapper --all`
 - [x] `acton wrapper --all --ts`
-- [x] `acton test` (`64 passed in 7 files`)
+- [x] `acton test` (`69 passed in 7 files`)
 - [x] `acton check`
 - [x] `CODE_HASHES.md` updated for current 7 contracts
 

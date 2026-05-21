@@ -22,7 +22,7 @@ deployment stage, stopping before actual mainnet deployment.
 | CampaignWinner aligned to growth | `CampaignWinnerVault.tolk`; tests cover registration at growth level and future release | Complete |
 | Merkle requiredGrowthLevel | `MerkleRewardVault.tolk`; tests cover claim blocked before level and allowed after | Complete |
 | Restricted migration | Local tests cover admin allowlist gate before migration target selection | Complete locally |
-| Local gates | `fmt/build/wrapper/wrapper-ts/test/check` complete, `64 passed in 7 files` | Complete |
+| Local gates | `fmt/build/wrapper/wrapper-ts/test/check` complete, `69 passed in 7 files` | Complete |
 | Fresh audit-fix testnet deployment | `TESTNET_EVIDENCE.md` records fresh `hi2` testnet deployment matching current hashes | Complete |
 | TON Verifier dry-run | `TESTNET_EVIDENCE.md` records dry-run success for all seven fresh testnet contracts | Complete |
 | Migration permission model | Admin-managed target allowlist implemented locally | Complete locally |

@@ -10,7 +10,7 @@ The current local GrowthEngine 7-contract implementation is green:
 - `acton build`
 - `acton wrapper --all`
 - `acton wrapper --all --ts`
-- `acton test` with `64 passed in 7 files`
+- `acton test` with `69 passed in 7 files`
 - `acton check`
 
 Post-audit Medium/Low fixes and migration allowlist revoke semantics are complete.
