@@ -147,7 +147,8 @@ Primary mainnet addresses:
 
 Evidence: `docs/MAINNET_DEPLOYMENT_EVIDENCE.md`.
 
-Public repository note: contract addresses, code, hashes, and deployment
-evidence are public. Role wallet addresses, local wallet names, TonConnect
-sessions, mnemonics, private keys, API keys, and runtime secrets are not
-published here.
+The full `10,000,000,000 HI` supply was minted/distributed, then minter admin
+was dropped: `mintable=false`, `admin=null`.
+
+Five business contracts are published on TON Verifier. The remaining external
+wallet-display item is Tonkeeper asset-listing PR #5299.

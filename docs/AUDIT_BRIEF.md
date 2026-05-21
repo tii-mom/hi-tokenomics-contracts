@@ -1,9 +1,8 @@
 # HI GrowthEngine Audit Brief
 
 Status: latest audit-fix changes, independent audit-thread re-review, fresh
-testnet rehearsal, app contract-facing checks, and TON Verifier dry-run are
-complete for the current code hashes. Mainnet remains blocked pending explicit
-deployment authorization.
+testnet rehearsal, app contract-facing checks, TON mainnet deployment, and TON
+Verifier publication are complete for the current code hashes.
 
 ## Scope
 
@@ -151,9 +150,18 @@ for the current hashes:
 - `/Users/yudeyou/Desktop/100wan` and `/Users/yudeyou/Desktop/GrowthEngine`
   contract-facing checks.
 
-## Open Before Mainnet
+## Mainnet Result
 
-- Explicit mainnet deployment approval.
+- Mainnet deployment completed on 2026-05-21.
+- Full `10,000,000,000 HI` supply was minted and distributed.
+- `JettonMinter` admin was dropped: `mintable=false`, `admin=null`.
+- Mainnet allocation balances and initial business states were verified.
+- Five business contracts are published on TON Verifier.
+- Mainnet evidence is recorded in `docs/MAINNET_DEPLOYMENT_EVIDENCE.md`.
+
+Remaining non-contract item: monitor Tonkeeper asset-listing PR #5299 until it
+is merged and TonAPI/Tonkeeper cache refresh shows `Human Intention / HI` with
+the logo.
 
 ## Independent Audit Task Plan
 

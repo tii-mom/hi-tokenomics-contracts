@@ -47,7 +47,7 @@ Out of scope:
   invitation graph, and off-chain risk control;
 - oracle price source correctness, except for checking on-chain oracle
   permissioning and confirmation logic;
-- mainnet deployment execution, because mainnet is not authorized yet.
+- mainnet deployment execution, because it has already been completed and is recorded in MAINNET_DEPLOYMENT_EVIDENCE.md.
 
 ## Required Inputs For Auditor
 

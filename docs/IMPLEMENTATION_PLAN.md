@@ -1,10 +1,9 @@
 # HI GrowthEngine Implementation Plan
 
 Status: local post-audit implementation, migration target allowlist changes,
-fresh final testnet rehearsal, app contract-facing checks, and TON Verifier
-dry-run are complete for the current allowlist code hashes. Mainnet deployment
-is blocked pending final owner sign-off on the migration permission model,
-final metadata wording confirmation, and explicit deployment authorization.
+fresh final testnet rehearsal, app contract-facing checks, TON mainnet
+deployment, and TON Verifier publication are complete for the current allowlist
+code hashes.
 
 ## Architecture
 
@@ -57,7 +56,7 @@ acton test        # 69 passed in 7 files
 acton check
 ```
 
-## Pre-Mainnet Package Status
+## Mainnet Package Status
 
 Complete:
 
@@ -69,9 +68,14 @@ Complete:
 6. `/Users/yudeyou/Desktop/100wan` contract-facing checks.
 7. `/Users/yudeyou/Desktop/GrowthEngine` contract-facing checks.
 8. Independent review found no new high/medium code issue after remediation.
+9. Owner sign-off on the `O-01` migration permission model.
+10. Final metadata wording confirmation.
+11. Explicit mainnet deployment authorization.
+12. Mainnet deployment on 2026-05-21.
+13. Mainnet allocation and initial state verification.
+14. TON Verifier publication for the five business contracts.
 
-Remaining before mainnet:
+Remaining non-contract item:
 
-1. Final owner sign-off on the `O-01` migration permission model.
-2. Final metadata wording confirmation.
-3. Explicit mainnet deployment authorization.
+1. Monitor Tonkeeper asset-listing PR #5299 until it is merged and cache-refresh
+   is visible in TonAPI/Tonkeeper.

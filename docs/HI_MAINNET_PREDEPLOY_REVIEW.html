@@ -369,7 +369,7 @@
     </section>
 
     <section class="card">
-      <h2>主网前验证结果</h2>
+      <h2>主网部署与验证结果</h2>
       <table>
         <tr><th>检查</th><th>结果</th></tr>
         <tr><td><code>acton fmt --check</code></td><td><span class="badge ok">通过</span></td></tr>
@@ -379,9 +379,12 @@
         <tr><td><code>acton test</code></td><td><span class="badge ok">69 passed in 7 files</span></td></tr>
         <tr><td><code>acton check</code></td><td><span class="badge ok">通过</span></td></tr>
         <tr><td><code>CODE_HASHES.md</code></td><td><span class="badge ok">与 build/*.json 一致</span></td></tr>
-        <tr><td>Fresh testnet / verifier / TonConnect E2E</td><td><span class="badge ok">已完成并记录</span></td></tr>
+        <tr><td>Fresh testnet / TonConnect E2E</td><td><span class="badge ok">已完成并记录</span></td></tr>
+        <tr><td>主网部署</td><td><span class="badge ok">已完成，见 MAINNET_DEPLOYMENT_EVIDENCE.md</span></td></tr>
+        <tr><td>主网 Minter 状态</td><td><span class="badge ok">mintable=false，admin=null</span></td></tr>
+        <tr><td>TON Verifier</td><td><span class="badge ok">5 个业务合约已正式发布</span></td></tr>
       </table>
-      <p class="note">当前状态：技术 readiness 为 conditional GO；主网部署执行仍需你明确授权。</p>
+      <p class="note">当前状态：合约主网部署、主网验证、文档与公开仓库同步均已完成。剩余外部项是 Tonkeeper 资产收录 PR #5299 等待合并和缓存刷新。</p>
     </section>
   </div>
 </body>

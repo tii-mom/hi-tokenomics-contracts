@@ -27,6 +27,14 @@ is merged into red packets. `poolType=3 red_packet` should support
 chain cap is `0 HI`; current frontend/backend operations must not create that
 batch type.
 
-After all allocations are minted and transferred, `JettonMinter` admin must be
-dropped. Mainnet deployment is not authorized until real destination addresses,
-metadata, audit/review decision, and explicit approval are provided.
+Mainnet deployment was completed on 2026-05-21. After all allocations were
+minted and transferred, `JettonMinter` admin was dropped:
+
+```text
+totalSupply=10000000000000000000
+mintable=false
+adminAddress=null
+```
+
+This means the full `10,000,000,000 HI` supply is distributed and no further HI
+can be minted.
