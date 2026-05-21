@@ -124,10 +124,13 @@ MerkleRewardVault kQDowJyQHcFXb_zhwsU5XjMLBzYV8q81GqtUJxZ4shRZin4X  514DD0ABA340
 Each dry-run returned `Backend verification successful` and skipped the final
 transaction send.
 
-## Fresh Audit-Fix Testnet Evidence: 2026-05-20
+## Historical Audit-Fix Testnet Evidence: 2026-05-20
 
-Status: **complete for current hashes**. Older evidence has been archived under
-`docs/archive/` and must not be used for mainnet readiness.
+Status: **superseded by the red-packet adjustment evidence above**. This section
+is retained only as historical audit-fix rehearsal context. Its
+`MerkleRewardVault` hash predates the final `poolType=2` zero-cap and
+`poolType=3` 100,000,000 HI red-packet cap change, so this section must not be
+used as the current mainnet readiness record.
 
 ### Contract Addresses
 
@@ -231,7 +234,9 @@ committed and migratable HI is `0`.
 
 ### TON Verifier Dry-Run
 
-All 7 contracts returned backend verification success with `--dry-run`.
+All 7 contracts returned backend verification success with `--dry-run` for this
+historical deployment. For current readiness, use the refreshed 7-contract
+dry-run table above.
 
 | Contract | Code hash |
 |---|---|
